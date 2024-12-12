@@ -37,7 +37,7 @@ jobs:
               with:
                   type: 'zip'
                   filename: 'wp-farcaster.zip'
-                  exclusions: '/*node_modules/* composer.* readme.md package.json .eslintrc.js .nvmrc .stylelintrc.json phpcs.xml tsconfig.json bun.lockb .vscode/ .wordpress-org/ .wordpress-org/* src/* /*.git/* /*.github/*'
+                  exclusions: '/*node_modules/* composer.* readme.md package.json .eslintrc.js .nvmrc .stylelintrc.json phpcs.xml tsconfig.json bun.lockb .vscode/ .wordpress-org/ .wordpress-org/* src/ src/* src/components/* src/hooks/* src/utils/* /*.git/* /*.github/*'
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
@@ -46,10 +46,12 @@ jobs:
                   path: wp-farcaster.zip
 
             - name: Upload to release
-              uses: d1ceward/release-upload-action@v4
+              uses: Shopify/upload-to-release@v1
               with:
-                token: ${{ secrets.GITHUB_TOKEN }}
-                files: wp-farcaster.zip
+                name: wp-farcaster.zip
+                path: wp-farcaster.zip
+                repo-token: ${{ secrets.GITHUB_TOKEN }}
+                content-type: application/zip
 
             - name: Unzip folder for WP.org
               uses: montudor/action-zip@v1
