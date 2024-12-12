@@ -1,6 +1,6 @@
 {
 	"name": "wp-farcaster",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "WP Farcaster connects your WordPress site to Farcaster.",
 	"author": "Davis Shaver",
 	"license": "GPL-2.0-or-later",
