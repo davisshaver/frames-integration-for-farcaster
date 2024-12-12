@@ -1,20 +1,20 @@
 {
-	"name": "wp-farcaster",
-	"version": "0.0.9",
-	"description": "WP Farcaster connects your WordPress site to Farcaster.",
+	"name": "farcaster-wp",
+	"version": "0.0.10",
+	"description": "Farcaster WP connects your WordPress site to Farcaster.",
 	"author": "Davis Shaver",
 	"license": "GPL-2.0-or-later",
 	"keywords": [
 		"wordpress",
 		"farcaster"
 	],
-	"homepage": "https://github.com/davisshaver/wp-farcaster#readme",
+	"homepage": "https://github.com/davisshaver/farcaster-wp#readme",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/davisshaver/wp-farcaster.git"
+		"url": "git+https://github.com/davisshaver/farcaster-wp.git"
 	},
 	"bugs": {
-		"url": "https://github.com/davisshaver/wp-farcaster/issues"
+		"url": "https://github.com/davisshaver/farcaster-wp/issues"
 	},
 	"dependencies": {
 		"@farcaster/frame-sdk": "^0.0.16",

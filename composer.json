@@ -1,6 +1,6 @@
 {
-	"name": "davisshaver/wp-farcaster",
-	"description": "WP Farcaster connects your WordPress site to Farcaster.",
+	"name": "davisshaver/farcaster-wp",
+	"description": "Farcaster WP connects your WordPress site to Farcaster.",
 	"type": "wordpress-plugin",
 	"license": "GPL-3.0",
 	"require-dev": {

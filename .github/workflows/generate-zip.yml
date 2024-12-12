@@ -36,24 +36,24 @@ jobs:
               uses: thedoctor0/zip-release@master
               with:
                   type: 'zip'
-                  filename: 'wp-farcaster.zip'
+                  filename: 'farcaster-wp.zip'
                   exclusions: '/*node_modules/* composer.* readme.md package.json .gitignore .eslintrc.js .nvmrc .stylelintrc.json phpcs.xml tsconfig.json bun.lockb .vscode/ .vscode/* .wordpress-org/ .wordpress-org/* src/ src/* src/components/ src/components/* src/hooks/ src/hooks/* src/utils/ src/utils/* /*.git/* /*.github/*'
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: wp-farcaster
-                  path: wp-farcaster.zip
+                  name: farcaster-wp
+                  path: farcaster-wp.zip
 
             - name: Upload to release
-              run: gh release upload ${{ github.event.release.tag_name }} wp-farcaster.zip
+              run: gh release upload ${{ github.event.release.tag_name }} farcaster-wp.zip
               env:
                 GITHUB_TOKEN: ${{ github.TOKEN }}
 
             - name: Unzip folder for WP.org
               uses: montudor/action-zip@v1
               with:
-                  args: unzip -qq wp-farcaster.zip -d wp-farcaster
+                  args: unzip -qq farcaster-wp.zip -d farcaster-wp
 
             - name: Upload plugin to WP.org
               id: deploy
@@ -61,8 +61,8 @@ jobs:
               env:
                   SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
                   SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-                  SLUG: wp-farcaster
-                  BUILD_DIR: ./wp-farcaster
+                  SLUG: farcaster-wp
+                  BUILD_DIR: ./farcaster-wp
 
             - name: Attest build provenance
               uses: johnbillion/action-wordpress-plugin-attestation@0.5.1

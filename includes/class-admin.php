@@ -1,18 +1,18 @@
 <?php
 /**
- * WP Farcaster plugin administration screen handling.
+ * Farcaster WP plugin administration screen handling.
  *
- * @package WP_Farcaster
+ * @package Farcaster_WP
  */
 
-namespace WP_Farcaster;
+namespace Farcaster_WP;
 
 /**
  * Class to handle the plugin admin pages
  */
 class Admin {
 
-	const WP_FARCASTER_PAGE_SLUG = 'wp-farcaster';
+	const FARCASTER_WP_PAGE_SLUG = 'farcaster-wp';
 
 	/**
 	 * Runs the initialization.
@@ -30,7 +30,7 @@ class Admin {
 	 * @return void
 	 */
 	public static function action_admin_enqueue_scripts( $admin_page ) {
-		if ( 'settings_page_wp-farcaster' !== $admin_page ) {
+		if ( 'settings_page_farcaster-wp' !== $admin_page ) {
 			return;
 		}
 	
@@ -43,7 +43,7 @@ class Admin {
 		$asset = include $asset_file;
 
 		wp_enqueue_script(
-			'wp-farcaster-script',
+			'farcaster-wp-script',
 			plugins_url( 'build/index.js', plugin_dir_path( __FILE__ ) ),
 			$asset['dependencies'],
 			$asset['version'],
@@ -53,7 +53,7 @@ class Admin {
 		);
 
 		wp_enqueue_style(
-			'wp-farcaster-style',
+			'farcaster-wp-style',
 			plugins_url( 'build/index.css', plugin_dir_path( __FILE__ ) ),
 			array_filter(
 				$asset['dependencies'],
@@ -68,29 +68,29 @@ class Admin {
 	}
 
 	/**
-	 * Add the WP Farcaster settings page to the admin menu.
+	 * Add the Farcaster WP settings page to the admin menu.
 	 * 
 	 * @return void
 	 */
 	public static function action_admin_menu() {
 		add_options_page(
-			__( 'Farcaster', 'wp-farcaster' ),
-			__( 'Farcaster', 'wp-farcaster' ),
+			__( 'Farcaster', 'farcaster-wp' ),
+			__( 'Farcaster', 'farcaster-wp' ),
 			'manage_options',
-			self::WP_FARCASTER_PAGE_SLUG,
+			self::FARCASTER_WP_PAGE_SLUG,
 			[ __CLASS__, 'render_options_page' ]
 		);
 	}
 
 	/**
-	 * Render the WP Farcaster settings page.
+	 * Render the Farcaster WP settings page.
 	 * 
 	 * @return void
 	 */
 	public static function render_options_page() {
 		printf(
-			'<div class="wrap" id="wp-farcaster-settings">%s</div>',
-			esc_html__( 'Loading…', 'wp-farcaster' )
+			'<div class="wrap" id="farcaster-wp-settings">%s</div>',
+			esc_html__( 'Loading…', 'farcaster-wp' )
 		);
 	}
 
@@ -101,12 +101,12 @@ class Admin {
 	 */
 	public static function action_init() {
 		$default = array(
-			'message'                 => __( 'Hello, World!', 'wp-farcaster' ),
+			'message'                 => __( 'Hello, World!', 'farcaster-wp' ),
 			'display'                 => true,
 			'size'                    => 'medium',
 			'frames_enabled'          => false,
 			'splash_background_color' => '#ffffff',
-			'button_text'             => __( 'Read More', 'wp-farcaster' ),
+			'button_text'             => __( 'Read More', 'farcaster-wp' ),
 			'splash_image'            => array(
 				'id'  => 0,
 				'url' => '',
@@ -174,7 +174,7 @@ class Admin {
 	
 		register_setting(
 			'options',
-			'wp_farcaster',
+			'farcaster_wp',
 			array(
 				'type'         => 'object',
 				'default'      => $default,

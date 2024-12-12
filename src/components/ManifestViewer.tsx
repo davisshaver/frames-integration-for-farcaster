@@ -87,10 +87,10 @@ const ManifestViewer = ( {
 			} catch ( err ) {
 				setFetchError(
 					err instanceof Error
-						? `${ __( 'Error:', 'wp-farcaster' ) } ${ err.message }`
+						? `${ __( 'Error:', 'farcaster-wp' ) } ${ err.message }`
 						: __(
 								'Farcaster manifest file not found or request timed out at /.well-known/farcaster.json',
-								'wp-farcaster'
+								'farcaster-wp'
 						  )
 				);
 			} finally {
@@ -101,7 +101,7 @@ const ManifestViewer = ( {
 	}, [] );
 
 	if ( isLoading ) {
-		return <Text>{ __( 'Loading manifest…', 'wp-farcaster' ) }</Text>;
+		return <Text>{ __( 'Loading manifest…', 'farcaster-wp' ) }</Text>;
 	}
 
 	return (
@@ -117,7 +117,7 @@ const ManifestViewer = ( {
 			<Text>
 				{ __(
 					'The Farcaster manifest file declares metadata for your frame application and defines supported triggers.',
-					'wp-farcaster'
+					'farcaster-wp'
 				) }{ ' ' }
 				<a
 					href="https://docs.farcaster.xyz/developers/frames/v2/spec#frame-manifest"
@@ -126,7 +126,7 @@ const ManifestViewer = ( {
 				>
 					{ __(
 						'Learn more about the manifest specification.',
-						'wp-farcaster'
+						'farcaster-wp'
 					) }
 				</a>
 			</Text>
@@ -136,7 +136,7 @@ const ManifestViewer = ( {
 						<Text>
 							{ __(
 								'Current manifest contents:',
-								'wp-farcaster'
+								'farcaster-wp'
 							) }
 						</Text>
 					</div>
@@ -149,7 +149,7 @@ const ManifestViewer = ( {
 						<Notice status="error" isDismissible={ false }>
 							{ __(
 								'Validation complete, manifest is not valid. Errors:',
-								'wp-farcaster'
+								'farcaster-wp'
 							) }{ ' ' }
 							<ul style={ { margin: 0, paddingLeft: '1rem' } }>
 								{ JSON.parse( validationError ).map(
@@ -172,13 +172,13 @@ const ManifestViewer = ( {
 										/* translators: %d: number of mismatches */
 										__(
 											'Validation complete, manifest is valid. %d mismatches found with current settings.',
-											'wp-farcaster'
+											'farcaster-wp'
 										),
 										mismatches.count
 								  )
 								: __(
 										'Validation complete, manifest is valid.',
-										'wp-farcaster'
+										'farcaster-wp'
 								  ) }
 						</Notice>
 					) }
@@ -191,7 +191,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest name does not match the current site name.',
-										'wp-farcaster'
+										'farcaster-wp'
 									) }
 								</Notice>
 							) }
@@ -202,7 +202,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest home URL does not match the current site home URL.',
-										'wp-farcaster'
+										'farcaster-wp'
 									) }
 								</Notice>
 							) }
@@ -213,7 +213,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest icon URL does not match the current site icon URL.',
-										'wp-farcaster'
+										'farcaster-wp'
 									) }
 								</Notice>
 							) }
@@ -224,7 +224,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest splash image URL does not match the current site splash image URL.',
-										'wp-farcaster'
+										'farcaster-wp'
 									) }
 								</Notice>
 							) }
@@ -235,7 +235,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest splash background color does not match the current site splash background color.',
-										'wp-farcaster'
+										'farcaster-wp'
 									) }
 								</Notice>
 							) }
@@ -249,7 +249,7 @@ const ManifestViewer = ( {
 									<Text>
 										{ __(
 											'Update manifest to match current settings? Here is the manifest data to reference:',
-											'wp-farcaster'
+											'farcaster-wp'
 										) }
 									</Text>
 								</div>

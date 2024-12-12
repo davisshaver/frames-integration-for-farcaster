@@ -1,11 +1,11 @@
 <?php
 /**
- * WP Farcaster plugin initialization.
+ * Farcaster WP plugin initialization.
  *
- * @package WP_Farcaster
+ * @package Farcaster_WP
  */
 
-namespace WP_Farcaster;
+namespace Farcaster_WP;
 
 /**
  * Class to handle the plugin initialization

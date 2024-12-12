@@ -4,7 +4,7 @@ import { SettingsPage } from './components';
 import './index.scss';
 
 domReady( () => {
-	const settingsElement = document.getElementById( 'wp-farcaster-settings' );
+	const settingsElement = document.getElementById( 'farcaster-wp-settings' );
 
 	if ( ! settingsElement ) {
 		return;

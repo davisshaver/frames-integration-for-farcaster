@@ -46,8 +46,8 @@ const CopyableCode = ( {
 					} }
 				>
 					{ isCopied
-						? __( 'Copied!', 'wp-farcaster' )
-						: __( 'Copy', 'wp-farcaster' ) }
+						? __( 'Copied!', 'farcaster-wp' )
+						: __( 'Copy', 'farcaster-wp' ) }
 				</Button>
 			) }
 		</div>

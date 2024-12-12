@@ -1,13 +1,13 @@
 <?php
 /**
- * WP Farcaster API setup.
+ * Farcaster WP API setup.
  *
- * @package WP_Farcaster
+ * @package Farcaster_WP
  */
 
-namespace WP_Farcaster;
+namespace Farcaster_WP;
 
-use WP_Farcaster\API\Manifest_Controller;
+use Farcaster_WP\API\Manifest_Controller;
 
 defined( 'ABSPATH' ) || exit;
 

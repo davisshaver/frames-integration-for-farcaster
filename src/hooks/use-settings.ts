@@ -5,7 +5,7 @@ import { useEffect, useState } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 
 interface WPSettings {
-	wp_farcaster: {
+	farcaster_wp: {
 		message: string;
 		display: string;
 		size: string;
@@ -54,18 +54,18 @@ export const useSettings = () => {
 	useEffect( () => {
 		apiFetch< WPSettings >( { path: '/wp/v2/settings' } ).then(
 			( settings ) => {
-				setMessage( settings.wp_farcaster.message );
-				setDisplay( settings.wp_farcaster.display );
-				setSize( settings.wp_farcaster.size );
-				setFramesEnabled( settings.wp_farcaster.frames_enabled );
+				setMessage( settings.farcaster_wp.message );
+				setDisplay( settings.farcaster_wp.display );
+				setSize( settings.farcaster_wp.size );
+				setFramesEnabled( settings.farcaster_wp.frames_enabled );
 				setSplashBackgroundColor(
-					settings.wp_farcaster.splash_background_color
+					settings.farcaster_wp.splash_background_color
 				);
-				setButtonText( settings.wp_farcaster.button_text );
-				setSplashImage( settings.wp_farcaster.splash_image );
-				setFallbackImage( settings.wp_farcaster.fallback_image );
+				setButtonText( settings.farcaster_wp.button_text );
+				setSplashImage( settings.farcaster_wp.splash_image );
+				setFallbackImage( settings.farcaster_wp.fallback_image );
 				setUseTitleAsButtonText(
-					settings.wp_farcaster.use_title_as_button_text
+					settings.farcaster_wp.use_title_as_button_text
 				);
 			}
 		);
@@ -76,7 +76,7 @@ export const useSettings = () => {
 			path: '/wp/v2/settings',
 			method: 'POST',
 			data: {
-				wp_farcaster: {
+				farcaster_wp: {
 					message,
 					display,
 					size,
@@ -91,7 +91,7 @@ export const useSettings = () => {
 		} )
 			.then( () => {
 				createSuccessNotice(
-					__( 'Settings saved.', 'wp-farcaster' )
+					__( 'Settings saved.', 'farcaster-wp' )
 				).then(
 					() =>
 						document.scrollingElement?.scrollTo( {
@@ -105,7 +105,7 @@ export const useSettings = () => {
 				console.error( error );
 				// @TODO: This doesn't seem to be styled as an error notice.
 				createErrorNotice(
-					__( 'Failed to save settings.', 'wp-farcaster' )
+					__( 'Failed to save settings.', 'farcaster-wp' )
 				).then(
 					() =>
 						document.scrollingElement?.scrollTo( {

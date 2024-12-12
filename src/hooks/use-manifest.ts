@@ -7,7 +7,7 @@ export const useManifest = () => {
 
 	useEffect( () => {
 		apiFetch< FarcasterManifest >( {
-			path: '/wp-farcaster/v1/manifest',
+			path: '/farcaster-wp/v1/manifest',
 		} ).then( ( fetchedManifest ) => {
 			setManifest( fetchedManifest );
 		} );

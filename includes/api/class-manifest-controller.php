@@ -2,15 +2,15 @@
 /**
  * Manifest API endpoints
  *
- * @package WP_Farcaster\API
+ * @package Farcaster_WP\API
  */
 
-namespace WP_Farcaster\API;
+namespace Farcaster_WP\API;
 
 use WP_REST_Controller;
 use WP_Error;
 use WP_REST_Response;
-use WP_Farcaster\Frames;
+use Farcaster_WP\Frames;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -24,7 +24,7 @@ class Manifest_Controller extends WP_REST_Controller {
 	 *
 	 * @var string
 	 */
-	protected $namespace = WP_FARCASTER_API_NAMESPACE;
+	protected $namespace = FARCASTER_WP_API_NAMESPACE;
 
 	/**
 	 * Endpoint resource.
@@ -37,7 +37,7 @@ class Manifest_Controller extends WP_REST_Controller {
 	 * Register the routes.
 	 */
 	public function register_routes() {
-		// Register wp-farcaster/v1/manifest endpoint.
+		// Register farcaster-wp/v1/manifest endpoint.
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->resource_name,
@@ -60,7 +60,7 @@ class Manifest_Controller extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_manifest() {
-		$options                 = get_option( 'wp_farcaster', array() );
+		$options                 = get_option( 'farcaster_wp', array() );
 		$splash_background_color = Frames::get_splash_background_color( $options );
 		$splash_image_url        = Frames::get_splash_image_url( $options );
 

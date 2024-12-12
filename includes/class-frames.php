@@ -1,11 +1,11 @@
 <?php
 /**
- * WP Farcaster plugin frames handling.
+ * Farcaster WP plugin frames handling.
  *
- * @package WP_Farcaster
+ * @package Farcaster_WP
  */
 
-namespace WP_Farcaster;
+namespace Farcaster_WP;
 
 /**
  * Class to handle Farcaster frames integration.
@@ -25,8 +25,8 @@ class Frames {
 	 * Add image sizes.
 	 */
 	public static function action_add_image_size() {
-		add_image_size( 'wp-farcaster-splash-image', 200, 200, array( 'center', 'center' ) );
-		add_image_size( 'wp-farcaster-frame-image', 2400, 1600, array( 'center', 'center' ) );
+		add_image_size( 'farcaster-wp-splash-image', 200, 200, array( 'center', 'center' ) );
+		add_image_size( 'farcaster-wp-frame-image', 2400, 1600, array( 'center', 'center' ) );
 	}
 
 	/**
@@ -39,7 +39,7 @@ class Frames {
 		$splash_image = $options['splash_image'] ?? '';
 		
 		if ( ! empty( $splash_image ) && ! empty( $splash_image['id'] ) ) {
-			$splash_image_src = wp_get_attachment_image_src( $splash_image['id'], 'wp-farcaster-splash-image' );
+			$splash_image_src = wp_get_attachment_image_src( $splash_image['id'], 'farcaster-wp-splash-image' );
 			if ( ! empty( $splash_image_src ) ) {
 				return $splash_image_src[0];
 			}
@@ -64,7 +64,7 @@ class Frames {
 	 * @return array|null Frame data array or null if frames are disabled.
 	 */
 	public static function get_frame_data() {
-		$options = get_option( 'wp_farcaster', array() );
+		$options = get_option( 'farcaster_wp', array() );
 		
 		if ( empty( $options['frames_enabled'] ) ) {
 			return null;
@@ -74,7 +74,7 @@ class Frames {
 		
 		$use_title_as_button_text = $options['use_title_as_button_text'] ?? false;
 		if ( empty( $use_title_as_button_text ) ) {
-			$button_text = $options['button_text'] ?? __( 'Read More', 'wp-farcaster' );
+			$button_text = $options['button_text'] ?? __( 'Read More', 'farcaster-wp' );
 		} else {
 			$button_text = mb_strimwidth( wp_get_document_title(), 0, 32, '...' );
 		}
@@ -82,11 +82,11 @@ class Frames {
 		$splash_image_url        = self::get_splash_image_url( $options );
 		$splash_background_color = self::get_splash_background_color( $options );
 
-		$frame_image = get_the_post_thumbnail_url( null, 'wp-farcaster-frame-image' );
+		$frame_image = get_the_post_thumbnail_url( null, 'farcaster-wp-frame-image' );
 		if ( empty( $frame_image ) ) {
 			$fallback_image = $options['fallback_image'] ?? '';
 			if ( ! empty( $fallback_image ) && ! empty( $fallback_image['id'] ) ) {
-				$frame_image_src = wp_get_attachment_image_src( $fallback_image['id'], 'wp-farcaster-frame-image' );
+				$frame_image_src = wp_get_attachment_image_src( $fallback_image['id'], 'farcaster-wp-frame-image' );
 				if ( ! empty( $frame_image_src ) ) {
 					$frame_image = $frame_image_src[0];
 				}
@@ -129,7 +129,7 @@ class Frames {
 	 * Enqueue scripts.
 	 */
 	public static function action_enqueue_scripts() {
-		$options = get_option( 'wp_farcaster', array() );
+		$options = get_option( 'farcaster_wp', array() );
 		
 		// Only enqueue if frames are enabled in settings.
 		if ( ! empty( $options['frames_enabled'] ) ) {
@@ -137,7 +137,7 @@ class Frames {
 				'farcaster-frame-sdk',
 				plugins_url( 'build/sdk.js', plugin_dir_path( __FILE__ ) ),
 				array(),
-				WP_FARCASTER_VERSION,
+				FARCASTER_WP_VERSION,
 				array(
 					'in_footer' => true,
 					'strategy'  => 'defer',

@@ -24,7 +24,7 @@ import { ManifestViewer } from './ManifestViewer';
 const SettingsTitle = () => {
 	return (
 		<Heading level={ 1 }>
-			{ __( 'Farcaster Settings', 'wp-farcaster' ) }
+			{ __( 'Farcaster Settings', 'farcaster-wp' ) }
 		</Heading>
 	);
 };
@@ -32,7 +32,7 @@ const SettingsTitle = () => {
 const SaveButton = ( { onClick } ) => {
 	return (
 		<Button variant="primary" onClick={ onClick } __next40pxDefaultSize>
-			{ __( 'Save', 'wp-farcaster' ) }
+			{ __( 'Save', 'farcaster-wp' ) }
 		</Button>
 	);
 };
@@ -70,7 +70,7 @@ const SettingsPage = () => {
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Frame Button', 'wp-farcaster' ) }
+					title={ __( 'Frame Button', 'farcaster-wp' ) }
 					initialOpen={ framesEnabled }
 				>
 					<PanelRow>
@@ -89,7 +89,7 @@ const SettingsPage = () => {
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Splash Background Color', 'wp-farcaster' ) }
+					title={ __( 'Splash Background Color', 'farcaster-wp' ) }
 					initialOpen={ framesEnabled }
 				>
 					<PanelRow>
@@ -100,7 +100,7 @@ const SettingsPage = () => {
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Frame Splash Image', 'wp-farcaster' ) }
+					title={ __( 'Frame Splash Image', 'farcaster-wp' ) }
 					initialOpen={ framesEnabled }
 				>
 					<PanelRow>
@@ -109,20 +109,20 @@ const SettingsPage = () => {
 							onChange={ setSplashImage }
 							labelText={ __(
 								'Image will be displayed as 200x200px.',
-								'wp-farcaster'
+								'farcaster-wp'
 							) }
 						/>
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Fallback Frame Image', 'wp-farcaster' ) }
+					title={ __( 'Fallback Frame Image', 'farcaster-wp' ) }
 					initialOpen={ framesEnabled }
 				>
 					<PanelRow>
 						<ImageUploadControl
 							labelText={ __(
 								'Image will be displayed in 3:2 aspect ratio.',
-								'wp-farcaster'
+								'farcaster-wp'
 							) }
 							value={ fallbackImage }
 							onChange={ setFallbackImage }
@@ -132,7 +132,7 @@ const SettingsPage = () => {
 			</Panel>
 			<Panel header="Manifest">
 				<PanelBody
-					title={ __( 'Manifest Validation', 'wp-farcaster' ) }
+					title={ __( 'Manifest Validation', 'farcaster-wp' ) }
 				>
 					<PanelRow>
 						<ManifestViewer currentManifest={ manifest } />

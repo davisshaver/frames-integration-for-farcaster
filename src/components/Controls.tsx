@@ -16,11 +16,11 @@ const SplashBackgroundColorControl = ( { value, onChange } ) => {
 const ButtonTextControl = ( { value, onChange } ) => {
 	return (
 		<TextControl
-			label={ __( 'Button Text', 'wp-farcaster' ) }
+			label={ __( 'Button Text', 'farcaster-wp' ) }
 			value={ value }
 			help={ __(
 				'This text will be used as the button text for all posts. Limited to 32 characters.',
-				'wp-farcaster'
+				'farcaster-wp'
 			) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
@@ -32,7 +32,7 @@ const ButtonTextControl = ( { value, onChange } ) => {
 const MessageControl = ( { value, onChange } ) => {
 	return (
 		<TextareaControl
-			label={ __( 'Message', 'wp-farcaster' ) }
+			label={ __( 'Message', 'farcaster-wp' ) }
 			value={ value }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
@@ -44,7 +44,7 @@ const UseTitleAsButtonTextControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
 			checked={ value }
-			label={ __( 'Use Title as Button Text', 'wp-farcaster' ) }
+			label={ __( 'Use Title as Button Text', 'farcaster-wp' ) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 		/>
@@ -55,7 +55,7 @@ const FramesEnabledControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
 			checked={ value }
-			label={ __( 'Enable Farcaster Frames', 'wp-farcaster' ) }
+			label={ __( 'Enable Farcaster Frames', 'farcaster-wp' ) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 		/>
@@ -66,7 +66,7 @@ const DisplayControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
 			checked={ value }
-			label={ __( 'Display', 'wp-farcaster' ) }
+			label={ __( 'Display', 'farcaster-wp' ) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 		/>
@@ -78,22 +78,22 @@ const SizeControl = ( { value, onChange } ) => {
 		<FontSizePicker
 			fontSizes={ [
 				{
-					name: __( 'Small', 'wp-farcaster' ),
+					name: __( 'Small', 'farcaster-wp' ),
 					size: 'small',
 					slug: 'small',
 				},
 				{
-					name: __( 'Medium', 'wp-farcaster' ),
+					name: __( 'Medium', 'farcaster-wp' ),
 					size: 'medium',
 					slug: 'medium',
 				},
 				{
-					name: __( 'Large', 'wp-farcaster' ),
+					name: __( 'Large', 'farcaster-wp' ),
 					size: 'large',
 					slug: 'large',
 				},
 				{
-					name: __( 'Extra Large', 'wp-farcaster' ),
+					name: __( 'Extra Large', 'farcaster-wp' ),
 					size: 'x-large',
 					slug: 'x-large',
 				},
@@ -123,7 +123,7 @@ const ImageUploadControl = ( {
 			}
 			help={ __(
 				'This image will be used as the splash image for all posts.',
-				'wp-farcaster'
+				'farcaster-wp'
 			) }
 			allowedTypes={ [ 'image' ] }
 			value={ value }

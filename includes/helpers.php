@@ -2,5 +2,5 @@
 /**
  * Helper functions.
  *
- * @package WP_Farcaster
+ * @package Farcaster_WP
  */
