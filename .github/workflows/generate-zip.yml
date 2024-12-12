@@ -8,6 +8,13 @@ jobs:
     build:
         runs-on: ubuntu-latest
 
+        permissions:
+          attestations: write
+          contents: read
+          id-token: write
+
+        timeout-minutes: 70
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -51,9 +58,15 @@ jobs:
                   args: unzip -qq wp-farcaster.zip -d wp-farcaster
 
             - name: Upload plugin to WP.org
+              id: deploy
               uses: 10up/action-wordpress-plugin-deploy@2.1.0
               env:
                   SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
                   SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
                   SLUG: wp-farcaster
                   BUILD_DIR: ./wp-farcaster
+
+            - name: Attest build provenance
+              uses: johnbillion/action-wordpress-plugin-attestation@0.5.1
+              with:
+                zip-path: ${{ steps.deploy.outputs.zip-path }}
