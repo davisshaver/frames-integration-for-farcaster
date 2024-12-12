@@ -10,7 +10,7 @@
  * Plugin Name:       WP Farcaster
  * Plugin URI:        https://wp-farcaster.davisshaver.com/
  * Description:       WP Farcaster connects your WordPress site to Farcaster.
- * Version:           0.0.1
+ * Version:           0.0.2
  * Author:            Davis Shaver
  * Author URI:        https://davisshaver.com/
  * License:           GPL v2 or later
@@ -22,7 +22,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WP_FARCASTER_VERSION', '0.0.1' );
+define( 'WP_FARCASTER_VERSION', '0.0.2' );
 
 define( 'WP_FARCASTER_API_NAMESPACE', 'wp-farcaster/v1' );
 define( 'WP_FARCASTER_API_URL', get_site_url() . '/wp-json/' . WP_FARCASTER_API_NAMESPACE );
