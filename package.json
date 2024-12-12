@@ -1,0 +1,54 @@
+{
+	"name": "wp-farcaster",
+	"version": "0.0.1",
+	"description": "WP Farcaster connects your WordPress site to Farcaster.",
+	"author": "Davis Shaver",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"wordpress",
+		"farcaster"
+	],
+	"homepage": "https://github.com/davisshaver/wp-farcaster#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/davisshaver/wp-farcaster.git"
+	},
+	"bugs": {
+		"url": "https://github.com/davisshaver/wp-farcaster/issues"
+	},
+	"dependencies": {
+		"@farcaster/frame-sdk": "^0.0.16",
+		"@wordpress/api-fetch": "^7.14.0",
+		"@wordpress/components": "^29.0.0",
+		"@wordpress/data": "^10.14.0",
+		"@wordpress/dom-ready": "^4.14.0",
+		"@wordpress/element": "^6.14.0",
+		"@wordpress/i18n": "^5.14.0",
+		"@wordpress/icons": "^10.14.0",
+		"@wordpress/media-utils": "^5.14.0",
+		"@wordpress/notices": "^5.14.0",
+		"typescript": "5.3.3",
+		"zod": "^3.24.1"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^30.7.0"
+	},
+	"peerDependencies": {
+		"react": "^18.0.0",
+		"react-dom": "^18.0.0"
+	},
+	"scripts": {
+		"build": "wp-scripts build src/index src/sdk",
+		"check-licenses": "wp-scripts check-licenses",
+		"fix:php": "./vendor/bin/phpcbf",
+		"format": "wp-scripts format",
+		"lint:all": "bun run lint:php && bun run lint:js && bun run lint:ts && bun run lint:css && bun run lint:md:docs && bun run lint:pkg-json",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"lint:md:docs": "wp-scripts lint-md-docs",
+		"lint:php": "./vendor/bin/phpcs",
+		"lint:ts": "tsc --noEmit",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"start": "wp-scripts start"
+	}
+}

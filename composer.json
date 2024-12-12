@@ -1,0 +1,26 @@
+{
+	"name": "davisshaver/wp-farcaster",
+	"description": "WP Farcaster connects your WordPress site to Farcaster.",
+	"type": "wordpress-plugin",
+	"license": "GPL-3.0",
+	"require-dev": {
+		"automattic/vipwpcs": "^3.0",
+		"wp-coding-standards/wpcs": "^3.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "*",
+		"phpcompatibility/phpcompatibility-wp": "*"
+	},
+	"autoload": {
+		"classmap": [
+			"./includes"
+		]
+	},
+	"config": {
+		"platform": {
+			"php": "8.0"
+		},
+		"allow-plugins": {
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
+}

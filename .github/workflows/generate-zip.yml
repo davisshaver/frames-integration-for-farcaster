@@ -1,0 +1,59 @@
+name: Generate ZIP for Release
+
+on:
+    release:
+        types: [published]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Build PHP
+              run: composer install --no-dev --optimize-autoloader
+
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: latest
+
+            - name: Install packages w/ Bun
+              run: bun install
+
+            - name: Build with Bun
+              run: bun run build
+
+            - name: Create release ZIP
+              uses: thedoctor0/zip-release@master
+              with:
+                  type: 'zip'
+                  filename: 'wp-farcaster.zip'
+                  exclusions: '/*node_modules/* composer.* readme.md package.json .eslintrc.js .nvmrc .stylelintrc.json phpcs.xml tsconfig.json bun.lockb .vscode/ .wordpress-org/ .wordpress-org/* src/ /*.git/* /*.github/*'
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: wp-farcaster
+                  path: wp-farcaster.zip
+
+            - name: Upload to release
+              uses: JasonEtco/upload-to-release@master
+              with:
+                  args: wp-farcaster.zip application/zip
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Unzip folder for WP.org
+              uses: montudor/action-zip@v1
+              with:
+                  args: unzip -qq wp-farcaster.zip -d wp-farcaster
+
+            - name: Upload plugin to WP.org
+              uses: 10up/action-wordpress-plugin-deploy@2.1.0
+              env:
+                  SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+                  SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+                  SLUG: wp-farcaster
+                  BUILD_DIR: ./wp-farcaster

@@ -1,0 +1,39 @@
+name: Linting
+
+on: [push]
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Build PHP
+              run: composer install --optimize-autoloader
+
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: latest
+
+            - name: Install packages w/ Bun
+              run: bun install
+
+            - name: Lint PHP
+              run: bun run lint:php
+
+            - name: Lint JS
+              run: bun run lint:js
+
+            - name: Validate types
+              run: bun run lint:ts
+
+            - name: Lint CSS
+              run: bun run lint:css
+
+            - name: Lint package.json
+              run: bun run lint:pkg-json
+
+            - name: Lint Markdown docs
+              run: bun run lint:md:docs

@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"checkJs": false,
+		"jsx": "react-jsx",
+		"noImplicitAny": false,
+		"rootDir": "src",
+		"skipLibCheck": true
+	},
+	"include": [ "src/**/*" ]
+}
