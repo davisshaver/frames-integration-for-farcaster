@@ -133,9 +133,11 @@ class Notifications {
 	 * @return array The notification body.
 	 */
 	public static function get_notification_body( $post_id ) {
+		$stripped_title = substr( wp_strip_all_tags( get_the_title( $post_id ) ), 0, 32 );
+		$title          = strlen( $stripped_title ) > 29 ? substr( $stripped_title, 0, 29 ) . '...' : $stripped_title;
 		return array(
 			'notificationId' => self::get_notification_id( $post_id ),
-			'title'          => substr( wp_strip_all_tags( get_the_title( $post_id ) ), 0, 32 ),
+			'title'          => $title,
 			'body'           => substr( wp_strip_all_tags( get_the_excerpt( $post_id ) ), 0, 128 ),
 			'targetUrl'      => get_permalink( $post_id ),
 		);
