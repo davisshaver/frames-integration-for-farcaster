@@ -97,7 +97,7 @@ const loadSdk = async () => {
 	if ( context?.client?.added ) {
 		if ( window.farcasterWP.debugEnabled ) {
 			// eslint-disable-next-line no-console
-			console.log( 'FWP: Already added frame, trying prompt' );
+			console.log( 'FWP: Already added frame, skipping prompt' );
 		}
 		// @TODO: Right now, addFrame will immediately resolve if the
 		// user has added the frame but not subscribed. So we can leave
