@@ -333,28 +333,23 @@ const ManifestViewer = ( {
 							) }
 						</>
 					) }
-
-					<>
-						<div style={ { marginTop: '16px' } }>
-							<Text>
-								{ __(
-									'Are you going to update the manifest to match current settings? Here is the manifest data to reference:',
-									'farcaster-wp'
-								) }
-							</Text>
-						</div>
-						<CopyableCode
-							showDownloadButton={ true }
-							downloadFilename="farcaster.json"
-							content={ JSON.stringify(
-								currentManifest,
-								null,
-								2
-							) }
-						/>
-					</>
 				</>
 			) }
+			<>
+				<div style={ { marginTop: '16px' } }>
+					<Text>
+						{ __(
+							'Are you going to update the manifest to match current settings? Here is the manifest data to reference:',
+							'farcaster-wp'
+						) }
+					</Text>
+				</div>
+				<CopyableCode
+					showDownloadButton={ true }
+					downloadFilename="farcaster.json"
+					content={ JSON.stringify( currentManifest, null, 2 ) }
+				/>
+			</>
 		</div>
 	);
 };
