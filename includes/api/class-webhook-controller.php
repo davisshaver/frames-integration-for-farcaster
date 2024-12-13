@@ -101,6 +101,8 @@ class Webhook_Controller extends WP_REST_Controller {
 			return new WP_Error( 'invalid_notification_details', 'Invalid notification details', [ 'status' => 400 ] );
 		}
 
+        // @TODO We should process the signature here.
+
 		return true;
 	}
 
