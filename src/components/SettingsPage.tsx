@@ -21,6 +21,7 @@ import {
 	NotificationsEnabledControl,
 } from './Controls';
 import { ManifestViewer } from './ManifestViewer';
+import { SubscriptionsList } from './SubscriptionsList';
 
 const SettingsTitle = () => {
 	return (
@@ -142,6 +143,9 @@ const SettingsPage = () => {
 							value={ notificationsEnabled }
 							onChange={ setNotificationsEnabled }
 						/>
+					</PanelRow>
+					<PanelRow>
+						<SubscriptionsList />
 					</PanelRow>
 				</PanelBody>
 			</Panel>

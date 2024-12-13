@@ -17,7 +17,7 @@ class Notifications {
 	 *
 	 * @var string
 	 */
-	protected static $notifications_option_name = 'farcaster_wp_subscriptions';
+	public static $notifications_option_name = 'farcaster_wp_subscriptions';
 
 	/**
 	 * Runs the initialization.
@@ -277,8 +277,9 @@ class Notifications {
 	public static function add_subscription( $fid, $key, $url, $token ) {
 		$current_subscriptions                 = get_option( self::$notifications_option_name, array() );
 		$current_subscriptions[ $fid ][ $key ] = [
-			'url'   => $url,
-			'token' => $token,
+			'url'       => $url,
+			'token'     => $token,
+			'timestamp' => time(),
 		];
 		update_option( self::$notifications_option_name, $current_subscriptions );
 		return [ 'success' => true ];
