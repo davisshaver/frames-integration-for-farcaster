@@ -28,6 +28,7 @@ export const showToast = ( {
         box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         color: white;
         display: flex;
+        font-size: 14px;
         gap: 12px;
         left: 50%;
         max-width: calc(100% - 80px);
