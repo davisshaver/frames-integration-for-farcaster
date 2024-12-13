@@ -114,11 +114,15 @@ class Admin {
 				'url' => '',
 			),
 			'domain_manifest'          => '',
+			'notifications_enabled'    => false,
 		);
 		$schema  = array(
 			'type'       => 'object',
 			'properties' => array(
 				'frames_enabled'           => array(
+					'type' => 'boolean',
+				),
+				'notifications_enabled'    => array(
 					'type' => 'boolean',
 				),
 				'splash_background_color'  => array(

@@ -8,6 +8,7 @@
 namespace Farcaster_WP;
 
 use Farcaster_WP\API\Manifest_Controller;
+use Farcaster_WP\API\Webhook_Controller;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -23,5 +24,11 @@ class API {
 		include_once 'api/class-manifest-controller.php';
 		$manifest_api = new Manifest_Controller();
 		add_action( 'rest_api_init', [ $manifest_api, 'register_routes' ] );
+
+		if ( Notifications::are_enabled() ) {
+			include_once 'api/class-webhook-controller.php';
+			$webhook_api = new Webhook_Controller();
+			add_action( 'rest_api_init', [ $webhook_api, 'register_routes' ] );
+		}
 	}
 }

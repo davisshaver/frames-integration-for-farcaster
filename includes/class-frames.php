@@ -130,8 +130,9 @@ class Frames {
 	 * Enqueue scripts.
 	 */
 	public static function action_enqueue_scripts() {
-		$options = get_option( 'farcaster_wp', array() );
-		
+		$options               = get_option( 'farcaster_wp', array() );
+		$notifications_enabled = $options['notifications_enabled'] ?? false;
+
 		// Only enqueue if frames are enabled in settings.
 		if ( ! empty( $options['frames_enabled'] ) ) {
 			wp_enqueue_script(
@@ -142,6 +143,13 @@ class Frames {
 				array(
 					'in_footer' => true,
 					'strategy'  => 'defer',
+				)
+			);
+			wp_localize_script(
+				'farcaster-frame-sdk',
+				'farcasterWP',
+				array(
+					'notificationsEnabled' => $notifications_enabled,
 				)
 			);
 		}

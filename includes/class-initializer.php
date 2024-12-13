@@ -19,5 +19,6 @@ class Initializer {
 		Admin::init();
 		API::init();
 		Frames::init();
+		Notifications::init();
 	}
 }
