@@ -101,7 +101,7 @@ const loadSdk = async () => {
 		}
 		showToast( {
 			message: 'Want to receive notifications?',
-			duration: 3000,
+			duration: 10000,
 			buttonText: 'Subscribe',
 			onButtonClick: addFrame,
 		} );
