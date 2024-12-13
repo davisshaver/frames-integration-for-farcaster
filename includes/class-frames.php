@@ -77,7 +77,7 @@ class Frames {
 			$button_text = $options['button_text'] ?? __( 'Read More', 'farcaster-wp' );
 		} else {
 			$title       = is_singular() ? get_the_title() : get_bloginfo( 'name' );
-			$button_text = mb_strimwidth( $title, 0, 32, '...' );
+			$button_text = mb_substr( $title, 0, 32 );
 		}
 		
 		$splash_image_url        = self::get_splash_image_url( $options );
