@@ -42,13 +42,13 @@ class Subscriptions_Controller extends WP_REST_Controller {
 			'/' . $this->resource_name,
 			[
 				[
-					'methods'  => 'GET',
-					'callback' => [ $this, 'get_subscriptions' ],
+					'methods'             => 'GET',
+					'callback'            => [ $this, 'get_subscriptions' ],
+					'permission_callback' => function() {
+						return current_user_can( 'manage_options' );
+					},
 				],
-				'schema'              => [ $this, 'get_subscriptions_schema' ],
-				'permission_callback' => function() {
-					return current_user_can( 'manage_options' );
-				},
+				'schema' => [ $this, 'get_subscriptions_schema' ],
 			]
 		);
 	}

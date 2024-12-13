@@ -44,13 +44,13 @@ class Manifest_Controller extends WP_REST_Controller {
 			'/' . $this->resource_name,
 			[
 				[
-					'methods'  => 'GET',
-					'callback' => [ $this, 'get_manifest' ],
+					'methods'             => 'GET',
+					'callback'            => [ $this, 'get_manifest' ],
+					'permission_callback' => function() {
+						return current_user_can( 'manage_options' );
+					},
 				],
-				'schema'              => [ $this, 'get_manifest_schema' ],
-				'permission_callback' => function() {
-					return current_user_can( 'manage_options' );
-				},
+				'schema' => [ $this, 'get_manifest_schema' ],
 			]
 		);
 	}

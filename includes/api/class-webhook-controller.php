@@ -44,9 +44,10 @@ class Webhook_Controller extends WP_REST_Controller {
 			'/' . $this->resource_name,
 			[
 				[
-					'methods'           => 'POST',
-					'callback'          => [ $this, 'process_webhook' ],
-					'validate_callback' => [ $this, 'validate_webhook' ],
+					'methods'             => 'POST',
+					'callback'            => [ $this, 'process_webhook' ],
+					'validate_callback'   => [ $this, 'validate_webhook' ],
+					'permission_callback' => '__return_true',
 				],
 				'schema' => [ $this, 'get_webhook_schema' ],
 			]
