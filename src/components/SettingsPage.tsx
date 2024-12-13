@@ -52,9 +52,11 @@ const SettingsPage = () => {
 		setFallbackImage,
 		useTitleAsButtonText,
 		setUseTitleAsButtonText,
+		domainManifest,
+		setDomainManifest,
 	} = useSettings();
 
-	const { manifest } = useManifest();
+	const { manifest, fetchManifest } = useManifest();
 
 	return (
 		<>
@@ -135,11 +137,15 @@ const SettingsPage = () => {
 					title={ __( 'Manifest Validation', 'farcaster-wp' ) }
 				>
 					<PanelRow>
-						<ManifestViewer currentManifest={ manifest } />
+						<ManifestViewer
+							currentManifest={ manifest }
+							domainManifest={ domainManifest }
+							setDomainManifest={ setDomainManifest }
+						/>
 					</PanelRow>
 				</PanelBody>
 			</Panel>
-			<SaveButton onClick={ saveSettings } />
+			<SaveButton onClick={ () => saveSettings( fetchManifest ) } />
 		</>
 	);
 };

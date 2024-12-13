@@ -101,20 +101,19 @@ class Admin {
 	 */
 	public static function action_init() {
 		$default = array(
-			'message'                 => __( 'Hello, World!', 'farcaster-wp' ),
-			'display'                 => true,
-			'size'                    => 'medium',
-			'frames_enabled'          => false,
-			'splash_background_color' => '#ffffff',
-			'button_text'             => __( 'Read More', 'farcaster-wp' ),
-			'splash_image'            => array(
+			'frames_enabled'           => false,
+			'splash_background_color'  => '#ffffff',
+			'button_text'              => __( 'Read More', 'farcaster-wp' ),
+			'use_title_as_button_text' => false,
+			'splash_image'             => array(
 				'id'  => 0,
 				'url' => '',
 			),
-			'fallback_image'          => array(
+			'fallback_image'           => array(
 				'id'  => 0,
 				'url' => '',
 			),
+			'domain_manifest'          => '',
 		);
 		$schema  = array(
 			'type'       => 'object',
@@ -154,20 +153,8 @@ class Admin {
 					'type'      => 'string',
 					'maxLength' => 32,
 				),
-				'message'                  => array(
+				'domain_manifest'          => array(
 					'type' => 'string',
-				),
-				'display'                  => array(
-					'type' => 'boolean',
-				),
-				'size'                     => array(
-					'type' => 'string',
-					'enum' => array(
-						'small',
-						'medium',
-						'large',
-						'x-large',
-					),
 				),
 			),
 		);

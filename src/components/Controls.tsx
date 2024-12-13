@@ -13,6 +13,16 @@ const SplashBackgroundColorControl = ( { value, onChange } ) => {
 	return <ColorPicker color={ value } onChange={ onChange } />;
 };
 
+const ManifestControl = ( { value, onChange } ) => {
+	return (
+		<TextareaControl
+			label={ __( 'Domain Manifest', 'farcaster-wp' ) }
+			value={ value }
+			onChange={ onChange }
+		/>
+	);
+};
+
 const ButtonTextControl = ( { value, onChange } ) => {
 	return (
 		<TextControl
@@ -188,4 +198,5 @@ export {
 	ButtonTextControl,
 	ImageUploadControl,
 	UseTitleAsButtonTextControl,
+	ManifestControl,
 };

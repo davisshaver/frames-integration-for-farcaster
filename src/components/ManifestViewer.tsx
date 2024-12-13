@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from '@wordpress/element';
 import { Notice, __experimentalText as Text } from '@wordpress/components';
 import { FarcasterManifest, FarcasterManifestSchema } from '../utils/manifest';
 import { CopyableCode } from './CopyableCode';
+import { ManifestControl } from './Controls';
 
 interface ManifestMismatches {
 	count: number;
@@ -13,13 +14,20 @@ interface ManifestMismatches {
 		iconUrl: boolean;
 		splashImageUrl: boolean;
 		splashBackgroundColor: boolean;
+		header: boolean;
+		payload: boolean;
+		signature: boolean;
 	};
 }
 
 const ManifestViewer = ( {
 	currentManifest,
+	domainManifest,
+	setDomainManifest,
 }: {
 	currentManifest: FarcasterManifest;
+	domainManifest: string;
+	setDomainManifest: ( manifest: string ) => void;
 	mismatches?: ManifestMismatches;
 } ) => {
 	const [ manifest, setManifest ] = useState< FarcasterManifest | null >(
@@ -29,10 +37,26 @@ const ManifestViewer = ( {
 	const [ fetchError, setFetchError ] = useState< string >( '' );
 	const [ isLoading, setIsLoading ] = useState( true );
 
+	const parsedDomainManifest = useMemo( () => {
+		if ( ! domainManifest ) {
+			return null;
+		}
+		let parsedManifest = null;
+		try {
+			parsedManifest = JSON.parse( domainManifest ) as FarcasterManifest;
+		} catch {}
+		return parsedManifest;
+	}, [ domainManifest ] );
+
 	const mismatches = useMemo( () => {
 		if ( ! manifest || ! currentManifest ) {
 			return null;
 		}
+
+		const hasParsedDomainManifest =
+			parsedDomainManifest &&
+			typeof parsedDomainManifest === 'object' &&
+			Object.keys( parsedDomainManifest ).length !== 0;
 
 		const details = {
 			name: manifest?.frame?.name !== currentManifest?.frame?.name,
@@ -46,12 +70,27 @@ const ManifestViewer = ( {
 			splashBackgroundColor:
 				manifest?.frame?.splashBackgroundColor !==
 				currentManifest?.frame?.splashBackgroundColor,
+			...( hasParsedDomainManifest
+				? {
+						header:
+							parsedDomainManifest?.accountAssociation?.header !==
+							manifest?.accountAssociation?.header,
+						payload:
+							parsedDomainManifest?.accountAssociation
+								?.payload !==
+							manifest?.accountAssociation?.payload,
+						signature:
+							parsedDomainManifest?.accountAssociation
+								?.signature !==
+							manifest?.accountAssociation?.signature,
+				  }
+				: {} ),
 		};
 
 		const count = Object.values( details ).filter( Boolean ).length;
 
 		return { count, details } as ManifestMismatches;
-	}, [ manifest, currentManifest ] );
+	}, [ manifest, currentManifest, parsedDomainManifest ] );
 
 	const validateManifest = ( data: unknown ) => {
 		const result = FarcasterManifestSchema.safeParse( data );
@@ -128,14 +167,34 @@ const ManifestViewer = ( {
 						'Learn more about the manifest specification.',
 						'farcaster-wp'
 					) }
+				</a>{ ' ' }
+				{ __(
+					'Farcaster WP can help you manage your manifest file. To start, enter the domain manifest obtained from the Warpcast app.',
+					'farcaster-wp'
+				) }{ ' ' }
+				<a
+					href="https://docs.farcaster.xyz/developers/frames/v2/notifications_webhooks#create-a-farcaster-domain-manifest"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					{ __(
+						'Follow the instructions here to create a domain manifest.',
+						'farcaster-wp'
+					) }
 				</a>
 			</Text>
+			<div style={ { marginTop: '16px' } }>
+				<ManifestControl
+					value={ domainManifest }
+					onChange={ setDomainManifest }
+				/>
+			</div>
 			{ manifest && (
 				<>
 					<div style={ { marginTop: '16px' } }>
 						<Text>
 							{ __(
-								'Current manifest contents:',
+								'Here is the current manifest on your site:',
 								'farcaster-wp'
 							) }
 						</Text>
@@ -239,29 +298,61 @@ const ManifestViewer = ( {
 									) }
 								</Notice>
 							) }
+							{ mismatches.details.header && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest header does not match the domain manifest header.',
+										'farcaster-wp'
+									) }
+								</Notice>
+							) }
+							{ mismatches.details.payload && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest payload does not match the domain manifest payload.',
+										'farcaster-wp'
+									) }
+								</Notice>
+							) }
+							{ mismatches.details.signature && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest signature does not match the domain manifest signature.',
+										'farcaster-wp'
+									) }
+								</Notice>
+							) }
 						</>
 					) }
 
-					{ validationError ||
-						( mismatches?.count > 0 && (
-							<>
-								<div style={ { marginTop: '16px' } }>
-									<Text>
-										{ __(
-											'Update manifest to match current settings? Here is the manifest data to reference:',
-											'farcaster-wp'
-										) }
-									</Text>
-								</div>
-								<CopyableCode
-									content={ JSON.stringify(
-										currentManifest,
-										null,
-										2
-									) }
-								/>
-							</>
-						) ) }
+					<>
+						<div style={ { marginTop: '16px' } }>
+							<Text>
+								{ __(
+									'Are you going to update the manifest to match current settings? Here is the manifest data to reference:',
+									'farcaster-wp'
+								) }
+							</Text>
+						</div>
+						<CopyableCode
+							showDownloadButton={ true }
+							downloadFilename="farcaster.json"
+							content={ JSON.stringify(
+								currentManifest,
+								null,
+								2
+							) }
+						/>
+					</>
 				</>
 			) }
 		</div>

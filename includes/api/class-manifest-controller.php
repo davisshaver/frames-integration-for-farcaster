@@ -63,12 +63,34 @@ class Manifest_Controller extends WP_REST_Controller {
 		$options                 = get_option( 'farcaster_wp', array() );
 		$splash_background_color = Frames::get_splash_background_color( $options );
 		$splash_image_url        = Frames::get_splash_image_url( $options );
+		$domain_manifest         = json_decode( $options['domain_manifest'], true );
+
+		$header = '';
+		if ( ! empty( $domain_manifest['accountAssociation']['header'] ) ) {
+			$header = $domain_manifest['accountAssociation']['header'];
+		} elseif ( ! empty( $domain_manifest['header'] ) ) {
+			$header = $domain_manifest['header'];
+		}
+
+		$payload = '';
+		if ( ! empty( $domain_manifest['accountAssociation']['payload'] ) ) {
+			$payload = $domain_manifest['accountAssociation']['payload'];
+		} elseif ( ! empty( $domain_manifest['payload'] ) ) {
+			$payload = $domain_manifest['payload'];
+		}
+
+		$signature = '';
+		if ( ! empty( $domain_manifest['accountAssociation']['signature'] ) ) {
+			$signature = $domain_manifest['accountAssociation']['signature'];
+		} elseif ( ! empty( $domain_manifest['signature'] ) ) {
+			$signature = $domain_manifest['signature'];
+		}
 
 		$manifest = [
 			'accountAssociation' => [
-				'header'    => '',
-				'payload'   => '',
-				'signature' => '',
+				'header'    => $header,
+				'payload'   => $payload,
+				'signature' => $signature,
 			],
 			'frame'              => [
 				'version'               => '1',

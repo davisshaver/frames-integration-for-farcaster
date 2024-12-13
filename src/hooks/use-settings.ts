@@ -3,6 +3,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { store as noticesStore } from '@wordpress/notices';
 import { useEffect, useState } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
+import { FarcasterManifestSchema } from '../utils/manifest';
 
 interface WPSettings {
 	farcaster_wp: {
@@ -21,13 +22,12 @@ interface WPSettings {
 			url: string;
 		};
 		use_title_as_button_text: boolean;
+		domain_manifest: string;
 	};
 }
 
 export const useSettings = () => {
-	const [ message, setMessage ] = useState< string >();
-	const [ display, setDisplay ] = useState< string >();
-	const [ size, setSize ] = useState< string >();
+	const [ domainManifest, setDomainManifest ] = useState< string >();
 	const [ framesEnabled, setFramesEnabled ] = useState< boolean >();
 	const [ splashBackgroundColor, setSplashBackgroundColor ] =
 		useState< string >();
@@ -54,9 +54,6 @@ export const useSettings = () => {
 	useEffect( () => {
 		apiFetch< WPSettings >( { path: '/wp/v2/settings' } ).then(
 			( settings ) => {
-				setMessage( settings.farcaster_wp.message );
-				setDisplay( settings.farcaster_wp.display );
-				setSize( settings.farcaster_wp.size );
 				setFramesEnabled( settings.farcaster_wp.frames_enabled );
 				setSplashBackgroundColor(
 					settings.farcaster_wp.splash_background_color
@@ -67,31 +64,26 @@ export const useSettings = () => {
 				setUseTitleAsButtonText(
 					settings.farcaster_wp.use_title_as_button_text
 				);
+				setDomainManifest( settings.farcaster_wp.domain_manifest );
 			}
 		);
 	}, [] );
 
-	const saveSettings = () => {
-		apiFetch( {
-			path: '/wp/v2/settings',
-			method: 'POST',
-			data: {
-				farcaster_wp: {
-					message,
-					display,
-					size,
-					frames_enabled: framesEnabled,
-					splash_background_color: splashBackgroundColor,
-					button_text: buttonText,
-					splash_image: splashImage,
-					fallback_image: fallbackImage,
-					use_title_as_button_text: useTitleAsButtonText,
-				},
-			},
-		} )
-			.then( () => {
-				createSuccessNotice(
-					__( 'Settings saved.', 'farcaster-wp' )
+	const saveSettings = ( callback?: () => void ) => {
+		// Hacky validation here to prevent saving invalid manifest.
+		if ( domainManifest ) {
+			let parsedDomainManifest = null;
+			try {
+				parsedDomainManifest = JSON.parse( domainManifest );
+			} catch {}
+			const result =
+				FarcasterManifestSchema.safeParse( parsedDomainManifest );
+			if ( ! result.success ) {
+				createErrorNotice(
+					__(
+						'Did not save settings, domain manifest is invalid.',
+						'farcaster-wp'
+					)
 				).then(
 					() =>
 						document.scrollingElement?.scrollTo( {
@@ -99,6 +91,37 @@ export const useSettings = () => {
 							behavior: 'smooth',
 						} )
 				);
+				return;
+			}
+		}
+
+		apiFetch( {
+			path: '/wp/v2/settings',
+			method: 'POST',
+			data: {
+				farcaster_wp: {
+					frames_enabled: framesEnabled,
+					splash_background_color: splashBackgroundColor,
+					button_text: buttonText,
+					splash_image: splashImage,
+					fallback_image: fallbackImage,
+					use_title_as_button_text: useTitleAsButtonText,
+					domain_manifest: domainManifest,
+				},
+			},
+		} )
+			.then( () => {
+				createSuccessNotice(
+					__( 'Settings saved.', 'farcaster-wp' )
+				).then( () => {
+					if ( callback ) {
+						callback();
+					}
+					document.scrollingElement?.scrollTo( {
+						top: 0,
+						behavior: 'smooth',
+					} );
+				} );
 			} )
 			.catch( ( error ) => {
 				// eslint-disable-next-line no-console
@@ -117,12 +140,6 @@ export const useSettings = () => {
 	};
 
 	return {
-		message,
-		setMessage,
-		display,
-		setDisplay,
-		size,
-		setSize,
 		saveSettings,
 		framesEnabled,
 		setFramesEnabled,
@@ -136,5 +153,7 @@ export const useSettings = () => {
 		setFallbackImage,
 		useTitleAsButtonText,
 		setUseTitleAsButtonText,
+		domainManifest,
+		setDomainManifest,
 	};
 };

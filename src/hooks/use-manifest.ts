@@ -1,11 +1,11 @@
 import apiFetch from '@wordpress/api-fetch';
-import { useEffect, useState } from '@wordpress/element';
+import { useCallback, useEffect, useState } from '@wordpress/element';
 import { FarcasterManifest } from '../utils/manifest';
 
 export const useManifest = () => {
 	const [ manifest, setManifest ] = useState< FarcasterManifest >();
 
-	useEffect( () => {
+	const fetchManifest = useCallback( () => {
 		apiFetch< FarcasterManifest >( {
 			path: '/farcaster-wp/v1/manifest',
 		} ).then( ( fetchedManifest ) => {
@@ -13,7 +13,12 @@ export const useManifest = () => {
 		} );
 	}, [] );
 
+	useEffect( () => {
+		fetchManifest();
+	}, [ fetchManifest ] );
+
 	return {
 		manifest,
+		fetchManifest,
 	};
 };
