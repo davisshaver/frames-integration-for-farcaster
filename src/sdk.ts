@@ -38,7 +38,10 @@ const loadSdk = async () => {
 		return;
 	}
 
-	if ( context?.location?.type === 'notification' ) {
+	if (
+		context?.client?.added ||
+		context?.location?.type === 'notification'
+	) {
 		if ( window.farcasterWP.debugEnabled ) {
 			// eslint-disable-next-line no-console
 			console.log( 'FWP: Showing thanks for being a susbcriber toast' );
