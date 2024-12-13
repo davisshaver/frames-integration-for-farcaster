@@ -339,7 +339,7 @@ const ManifestViewer = ( {
 				<div style={ { marginTop: '16px' } }>
 					<Text>
 						{ __(
-							'Are you going to update the manifest to match current settings? Here is the manifest data to reference:',
+							'Are you going to update the manifest to match current settings? Here is the manifest data to reference. This should be available at /.well-known/farcaster.json on your site.',
 							'farcaster-wp'
 						) }
 					</Text>

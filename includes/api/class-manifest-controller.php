@@ -100,7 +100,7 @@ class Manifest_Controller extends WP_REST_Controller {
 				'splashImageUrl'        => $splash_image_url,
 				'splashBackgroundColor' => $splash_background_color,
 				// @TODO: Add API endpoint for webhook to do... something?
-				'webhookUrl'            => '',
+				// 'webhookUrl'            => '',
 			],
 		];
 
