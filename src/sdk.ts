@@ -99,12 +99,15 @@ const loadSdk = async () => {
 			// eslint-disable-next-line no-console
 			console.log( 'FWP: Already added frame, trying prompt' );
 		}
-		showToast( {
-			message: 'Want to receive notifications?',
-			duration: 10000,
-			buttonText: 'Subscribe',
-			onButtonClick: addFrame,
-		} );
+		// @TODO: Right now, addFrame will immediately resolve if the
+		// user has added the frame but not subscribed. So we can leave
+		// this interaction out until the SDK is updated to handle this.
+		// showToast( {
+		// 	message: 'Want to receive notifications?',
+		// 	duration: 10000,
+		// 	buttonText: 'Subscribe',
+		// 	onButtonClick: addFrame,
+		// } );
 		return;
 	}
 	addFrame();
