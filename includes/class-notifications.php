@@ -155,6 +155,24 @@ class Notifications {
 	}
 
 	/**
+	 * Log Farcaster WP notifications errors.
+	 *
+	 * @param mixed $data The data to log.
+	 */
+	private static function log_error( $data ) {
+		if ( ! apply_filters( 'farcaster_wp_log_notification_info_as_errors', '__return_false' ) ) {
+			return;
+		}
+		if ( is_array( $data ) || is_object( $data ) ) {
+			// phpcs:ignore
+			error_log( print_r( $data, true ) );
+		} else {
+			// phpcs:ignore
+			error_log( $data );
+		}
+	}
+
+	/**
 	 * Send the notification.
 	 *
 	 * @param string $url The URL.
@@ -163,11 +181,23 @@ class Notifications {
 	 * @return array The response.
 	 */
 	public static function send_notification( $url, $notification_body, $post_id ) {
-		$response = wp_safe_remote_post( $url, array( 'body' => $notification_body ) );
+		self::log_error( 'Sending notification to ' . $url );
+		self::log_error( $notification_body );
+		$response = wp_safe_remote_post(
+			$url,
+			array(
+				'body'    => wp_json_encode( $notification_body ),
+				'headers' => array(
+					'Content-Type' => 'application/json',
+				),
+			) 
+		);
 		if ( is_wp_error( $response ) ) {
 			$admin_email   = get_option( 'admin_email' );
 			$error_message = $response->get_error_message();
-			
+
+			self::log_error( 'Notification error: ' . $error_message );
+
 			// phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
 			wp_mail(
 				$admin_email,
@@ -190,7 +220,9 @@ class Notifications {
 			);
 			return array(); // Return empty array since request failed.
 		}
-		return json_decode( wp_remote_retrieve_body( $response ), true );
+		$response = json_decode( wp_remote_retrieve_body( $response ), true );
+		self::log_error( $response );
+		return $response;
 	}
 
 	/**
