@@ -150,6 +150,7 @@ class Frames {
 				'farcasterWP',
 				array(
 					'notificationsEnabled' => $notifications_enabled,
+					'debugEnabled'         => $options['debug_enabled'] ?? false,
 				)
 			);
 		}

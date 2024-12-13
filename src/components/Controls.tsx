@@ -72,6 +72,17 @@ const NotificationsEnabledControl = ( { value, onChange } ) => {
 	);
 };
 
+const DebugEnabledControl = ( { value, onChange } ) => {
+	return (
+		<ToggleControl
+			checked={ value }
+			label={ __( 'Enable SDK Logging', 'farcaster-wp' ) }
+			onChange={ onChange }
+			__nextHasNoMarginBottom
+		/>
+	);
+};
+
 const FramesEnabledControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
@@ -211,4 +222,5 @@ export {
 	UseTitleAsButtonTextControl,
 	ManifestControl,
 	NotificationsEnabledControl,
+	DebugEnabledControl,
 };

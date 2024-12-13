@@ -19,6 +19,7 @@ import {
 	ImageUploadControl,
 	UseTitleAsButtonTextControl,
 	NotificationsEnabledControl,
+	DebugEnabledControl,
 } from './Controls';
 import { ManifestViewer } from './ManifestViewer';
 import { SubscriptionsList } from './SubscriptionsList';
@@ -58,6 +59,8 @@ const SettingsPage = () => {
 		setDomainManifest,
 		notificationsEnabled,
 		setNotificationsEnabled,
+		debugEnabled,
+		setDebugEnabled,
 	} = useSettings();
 
 	const { manifest, fetchManifest } = useManifest();
@@ -142,6 +145,12 @@ const SettingsPage = () => {
 						<NotificationsEnabledControl
 							value={ notificationsEnabled }
 							onChange={ setNotificationsEnabled }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<DebugEnabledControl
+							value={ debugEnabled }
+							onChange={ setDebugEnabled }
 						/>
 					</PanelRow>
 					<PanelRow>

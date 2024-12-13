@@ -115,6 +115,7 @@ class Admin {
 			),
 			'domain_manifest'          => '',
 			'notifications_enabled'    => false,
+			'debug_enabled'            => false,
 		);
 		$schema  = array(
 			'type'       => 'object',
@@ -123,6 +124,9 @@ class Admin {
 					'type' => 'boolean',
 				),
 				'notifications_enabled'    => array(
+					'type' => 'boolean',
+				),
+				'debug_enabled'            => array(
 					'type' => 'boolean',
 				),
 				'splash_background_color'  => array(
