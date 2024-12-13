@@ -61,6 +61,28 @@ const UseTitleAsButtonTextControl = ( { value, onChange } ) => {
 	);
 };
 
+const NotificationsEnabledControl = ( { value, onChange } ) => {
+	return (
+		<ToggleControl
+			checked={ value }
+			label={ __( 'Enable Notifications', 'farcaster-wp' ) }
+			onChange={ onChange }
+			__nextHasNoMarginBottom
+		/>
+	);
+};
+
+const DebugEnabledControl = ( { value, onChange } ) => {
+	return (
+		<ToggleControl
+			checked={ value }
+			label={ __( 'Enable SDK Logging', 'farcaster-wp' ) }
+			onChange={ onChange }
+			__nextHasNoMarginBottom
+		/>
+	);
+};
+
 const FramesEnabledControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
@@ -199,4 +221,6 @@ export {
 	ImageUploadControl,
 	UseTitleAsButtonTextControl,
 	ManifestControl,
+	NotificationsEnabledControl,
+	DebugEnabledControl,
 };

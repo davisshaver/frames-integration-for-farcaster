@@ -18,8 +18,11 @@ import {
 	ButtonTextControl,
 	ImageUploadControl,
 	UseTitleAsButtonTextControl,
+	NotificationsEnabledControl,
+	DebugEnabledControl,
 } from './Controls';
 import { ManifestViewer } from './ManifestViewer';
+import { SubscriptionsList } from './SubscriptionsList';
 
 const SettingsTitle = () => {
 	return (
@@ -54,6 +57,10 @@ const SettingsPage = () => {
 		setUseTitleAsButtonText,
 		domainManifest,
 		setDomainManifest,
+		notificationsEnabled,
+		setNotificationsEnabled,
+		debugEnabled,
+		setDebugEnabled,
 	} = useSettings();
 
 	const { manifest, fetchManifest } = useManifest();
@@ -129,6 +136,25 @@ const SettingsPage = () => {
 							value={ fallbackImage }
 							onChange={ setFallbackImage }
 						/>
+					</PanelRow>
+				</PanelBody>
+			</Panel>
+			<Panel header="Notifications">
+				<PanelBody>
+					<PanelRow>
+						<NotificationsEnabledControl
+							value={ notificationsEnabled }
+							onChange={ setNotificationsEnabled }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<DebugEnabledControl
+							value={ debugEnabled }
+							onChange={ setDebugEnabled }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<SubscriptionsList />
 					</PanelRow>
 				</PanelBody>
 			</Panel>

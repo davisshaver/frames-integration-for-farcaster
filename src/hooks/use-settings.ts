@@ -23,12 +23,17 @@ interface WPSettings {
 		};
 		use_title_as_button_text: boolean;
 		domain_manifest: string;
+		notifications_enabled: boolean;
+		debug_enabled: boolean;
 	};
 }
 
 export const useSettings = () => {
 	const [ domainManifest, setDomainManifest ] = useState< string >();
 	const [ framesEnabled, setFramesEnabled ] = useState< boolean >();
+	const [ notificationsEnabled, setNotificationsEnabled ] =
+		useState< boolean >( false );
+	const [ debugEnabled, setDebugEnabled ] = useState< boolean >( false );
 	const [ splashBackgroundColor, setSplashBackgroundColor ] =
 		useState< string >();
 	const [ buttonText, setButtonText ] = useState< string >();
@@ -65,6 +70,10 @@ export const useSettings = () => {
 					settings.farcaster_wp.use_title_as_button_text
 				);
 				setDomainManifest( settings.farcaster_wp.domain_manifest );
+				setNotificationsEnabled(
+					settings.farcaster_wp.notifications_enabled
+				);
+				setDebugEnabled( settings.farcaster_wp.debug_enabled );
 			}
 		);
 	}, [] );
@@ -107,6 +116,8 @@ export const useSettings = () => {
 					fallback_image: fallbackImage,
 					use_title_as_button_text: useTitleAsButtonText,
 					domain_manifest: domainManifest,
+					notifications_enabled: notificationsEnabled,
+					debug_enabled: debugEnabled,
 				},
 			},
 		} )
@@ -155,5 +166,9 @@ export const useSettings = () => {
 		setUseTitleAsButtonText,
 		domainManifest,
 		setDomainManifest,
+		notificationsEnabled,
+		setNotificationsEnabled,
+		debugEnabled,
+		setDebugEnabled,
 	};
 };

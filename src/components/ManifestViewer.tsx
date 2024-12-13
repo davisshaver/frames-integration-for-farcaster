@@ -14,9 +14,10 @@ interface ManifestMismatches {
 		iconUrl: boolean;
 		splashImageUrl: boolean;
 		splashBackgroundColor: boolean;
-		header: boolean;
-		payload: boolean;
-		signature: boolean;
+		webhookUrl?: boolean;
+		header?: boolean;
+		payload?: boolean;
+		signature?: boolean;
 	};
 }
 
@@ -70,6 +71,13 @@ const ManifestViewer = ( {
 			splashBackgroundColor:
 				manifest?.frame?.splashBackgroundColor !==
 				currentManifest?.frame?.splashBackgroundColor,
+			...( currentManifest?.frame?.webhookUrl
+				? {
+						webhookUrl:
+							currentManifest?.frame?.webhookUrl !==
+							manifest?.frame?.webhookUrl,
+				  }
+				: {} ),
 			...( hasParsedDomainManifest
 				? {
 						header:
@@ -294,6 +302,17 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest splash background color does not match the current site splash background color.',
+										'farcaster-wp'
+									) }
+								</Notice>
+							) }
+							{ mismatches.details.webhookUrl && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest webhook URL does not match the current site webhook URL.',
 										'farcaster-wp'
 									) }
 								</Notice>

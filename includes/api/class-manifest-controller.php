@@ -1,6 +1,6 @@
 <?php
 /**
- * Manifest API endpoints
+ * Manifest API endpoint
  *
  * @package Farcaster_WP\API
  */
@@ -11,11 +11,12 @@ use WP_REST_Controller;
 use WP_Error;
 use WP_REST_Response;
 use Farcaster_WP\Frames;
+use Farcaster_WP\Notifications;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * REST API endpoints for Farcastermanifest.
+ * REST API endpoints for Farcaster manifest.
  */
 class Manifest_Controller extends WP_REST_Controller {
 
@@ -86,6 +87,7 @@ class Manifest_Controller extends WP_REST_Controller {
 			$signature = $domain_manifest['signature'];
 		}
 
+
 		$manifest = [
 			'accountAssociation' => [
 				'header'    => $header,
@@ -99,10 +101,13 @@ class Manifest_Controller extends WP_REST_Controller {
 				'iconUrl'               => get_site_icon_url(),
 				'splashImageUrl'        => $splash_image_url,
 				'splashBackgroundColor' => $splash_background_color,
-				// @TODO: Add API endpoint for webhook to do... something?
-				// 'webhookUrl'            => '',
+	
 			],
 		];
+
+		if ( Notifications::are_enabled() ) {
+			$manifest['frame']['webhookUrl'] = get_rest_url( null, FARCASTER_WP_API_NAMESPACE . '/webhook' );
+		}
 
 		return new WP_REST_Response( $manifest );
 	}
@@ -112,7 +117,7 @@ class Manifest_Controller extends WP_REST_Controller {
 	 *
 	 * @return array
 	 */
-	public function get_app_config_schema() {
+	public function get_manifest_schema() {
 		return [
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
 			'title'      => $this->resource_name,

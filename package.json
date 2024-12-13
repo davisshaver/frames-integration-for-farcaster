@@ -1,6 +1,6 @@
 {
 	"name": "farcaster-wp",
-	"version": "0.0.16",
+	"version": "0.0.25",
 	"description": "Farcaster WP connects your WordPress site to Farcaster.",
 	"author": "Davis Shaver",
 	"license": "GPL-2.0-or-later",
@@ -49,6 +49,6 @@
 		"lint:php": "./vendor/bin/phpcs",
 		"lint:ts": "tsc --noEmit",
 		"lint:pkg-json": "wp-scripts lint-pkg-json",
-		"start": "wp-scripts start"
+		"start": "wp-scripts start src/index src/sdk"
 	}
 }
