@@ -13,7 +13,7 @@ namespace Farcaster_WP;
 class Notifications {
 
 	/**
-	 * The option name for the notifications.
+	 * The option name for the notification subscriptions.
 	 *
 	 * @var string
 	 */
