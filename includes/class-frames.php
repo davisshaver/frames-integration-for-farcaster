@@ -82,7 +82,7 @@ class Frames {
 		$splash_image_url        = self::get_splash_image_url( $options );
 		$splash_background_color = self::get_splash_background_color( $options );
 
-		$frame_image = get_the_post_thumbnail_url( null, 'farcaster-wp-frame-image' );
+		$frame_image = is_singular() ? get_the_post_thumbnail_url( null, 'farcaster-wp-frame-image' ) : '';
 		if ( empty( $frame_image ) ) {
 			$fallback_image = $options['fallback_image'] ?? '';
 			if ( ! empty( $fallback_image ) && ! empty( $fallback_image['id'] ) ) {
