@@ -76,7 +76,7 @@ class Frames {
 		if ( empty( $use_title_as_button_text ) ) {
 			$button_text = $options['button_text'] ?? __( 'Read More', 'farcaster-wp' );
 		} else {
-			$title       = is_singular() ? get_the_title() : get_bloginfo( 'name' );
+			$title       = ! is_front_page() && is_singular() ? get_the_title() : get_bloginfo( 'name' );
 			$button_text = mb_substr( $title, 0, 32 );
 		}
 		

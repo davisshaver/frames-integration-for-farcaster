@@ -3,7 +3,7 @@ interface ToastOptions {
 	duration?: number;
 	message: string;
 	onButtonClick?: () => void;
-	type?: 'prompt' | 'success' | 'error';
+	type?: 'success' | 'error';
 }
 
 export const showToast = ( {
@@ -11,14 +11,13 @@ export const showToast = ( {
 	duration = 10000,
 	message,
 	onButtonClick,
-	type = 'prompt',
+	type = 'success',
 }: ToastOptions ) => {
 	const toast = document.createElement( 'div' );
 
 	const backgroundColorMap = {
 		error: '#FF453A',
-		prompt: '#472A91',
-		success: '#4CAF50',
+		success: '#472A91',
 	};
 
 	toast.style.cssText = `
