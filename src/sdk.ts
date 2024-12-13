@@ -10,54 +10,7 @@ declare global {
 	}
 }
 
-const loadSdk = async () => {
-	const context = await sdk.context;
-	sdk.actions.ready();
-
-	if ( window.farcasterWP.debugEnabled ) {
-		// eslint-disable-next-line no-console
-		console.log( 'FWP: Frame SDK loaded' );
-		// eslint-disable-next-line no-console
-		console.log( 'FWP: Context', context );
-	}
-
-	if ( ! window.farcasterWP.notificationsEnabled ) {
-		if ( window.farcasterWP.debugEnabled ) {
-			// eslint-disable-next-line no-console
-			console.log( 'FWP: Notifications not enabled' );
-		}
-		return;
-	}
-
-	if ( ! context ) {
-		// No context, probably not in a frame.
-		if ( window.farcasterWP.debugEnabled ) {
-			// eslint-disable-next-line no-console
-			console.log( 'FWP: No context, probably not in a frame' );
-		}
-		return;
-	}
-
-	if (
-		context?.client?.added ||
-		context?.location?.type === 'notification'
-	) {
-		if ( window.farcasterWP.debugEnabled ) {
-			// eslint-disable-next-line no-console
-			console.log( 'FWP: Showing thanks for being a susbcriber toast' );
-		}
-		showToast( {
-			message: 'Thanks for being a subscriber!',
-			duration: 3000,
-		} );
-		return;
-	}
-
-	if ( window.farcasterWP.debugEnabled ) {
-		// eslint-disable-next-line no-console
-		console.log( 'FWP: Calling add frame' );
-	}
-
+const addFrame = () => {
 	sdk.actions
 		.addFrame()
 		.then( ( result ) => {
@@ -91,6 +44,70 @@ const loadSdk = async () => {
 				duration: 3000,
 			} );
 		} );
+};
+
+const loadSdk = async () => {
+	const context = await sdk.context;
+	sdk.actions.ready();
+
+	if ( window.farcasterWP.debugEnabled ) {
+		// eslint-disable-next-line no-console
+		console.log( 'FWP: Frame SDK loaded' );
+		// eslint-disable-next-line no-console
+		console.log( 'FWP: Context', context );
+	}
+
+	if ( ! window.farcasterWP.notificationsEnabled ) {
+		if ( window.farcasterWP.debugEnabled ) {
+			// eslint-disable-next-line no-console
+			console.log( 'FWP: Notifications not enabled' );
+		}
+		return;
+	}
+
+	if ( ! context ) {
+		// No context, probably not in a frame.
+		if ( window.farcasterWP.debugEnabled ) {
+			// eslint-disable-next-line no-console
+			console.log( 'FWP: No context, probably not in a frame' );
+		}
+		return;
+	}
+
+	if (
+		context?.client?.notificationDetails ||
+		context?.location?.type === 'notification'
+	) {
+		if ( window.farcasterWP.debugEnabled ) {
+			// eslint-disable-next-line no-console
+			console.log( 'FWP: Showing thanks for being a susbcriber toast' );
+		}
+		showToast( {
+			message: 'Thanks for being a subscriber!',
+			duration: 3000,
+		} );
+		return;
+	}
+
+	if ( window.farcasterWP.debugEnabled ) {
+		// eslint-disable-next-line no-console
+		console.log( 'FWP: Calling add frame' );
+	}
+
+	if ( context?.client?.added ) {
+		if ( window.farcasterWP.debugEnabled ) {
+			// eslint-disable-next-line no-console
+			console.log( 'FWP: Already added frame, trying prompt' );
+		}
+		showToast( {
+			message: 'Want to receive notifications?',
+			duration: 3000,
+			buttonText: 'Subscribe',
+			onButtonClick: addFrame,
+		} );
+		return;
+	}
+	addFrame();
 };
 
 if ( window.farcasterWP.debugEnabled ) {
