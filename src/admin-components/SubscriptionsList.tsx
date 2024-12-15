@@ -1,7 +1,7 @@
 // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 import { __experimentalText as Text } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useSubscriptions } from '../hooks/use-subscriptions';
+import { useSubscriptions } from '../admin-hooks/use-subscriptions';
 
 export const SubscriptionsList = () => {
 	const { subscriptions } = useSubscriptions();

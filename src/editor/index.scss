@@ -1,0 +1,16 @@
+/** === Post Meta Toggles === */
+
+// stylelint-disable selector-class-pattern
+.components-panel__row.farcaster_wp__post-meta-toggles {
+	flex-direction: column;
+
+	> div {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+
+		+ div {
+			margin-top: 1rem;
+		}
+	}
+}

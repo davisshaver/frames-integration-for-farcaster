@@ -1,0 +1,31 @@
+@keyframes pseudoGlow {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+
+    50% {
+        opacity: 1;
+        box-shadow:
+            0 0 15px 3px rgba(255, 255, 255, 1),
+            0 0 30px 8px rgba(255, 255, 255, 0.6);
+    }
+}
+
+.pseudo-glow {
+    position: relative;
+}
+
+.pseudo-glow::after {
+    animation: pseudoGlow 2s ease-in-out infinite;
+    border: .5rem solid #4BB543;
+    bottom: 0;
+    content: '';
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+}

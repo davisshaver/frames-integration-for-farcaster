@@ -1,6 +1,6 @@
 import domReady from '@wordpress/dom-ready';
 import { createRoot } from '@wordpress/element';
-import { SettingsPage } from './components';
+import { SettingsPage } from './admin-components';
 import './index.scss';
 
 domReady( () => {

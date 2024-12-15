@@ -23,6 +23,73 @@ const ManifestControl = ( { value, onChange } ) => {
 	);
 };
 
+const TippingAmountsControl = ( { value = [], onChange } ) => {
+	const addAmount = () => {
+		onChange( [ ...value, 0 ] );
+	};
+
+	const removeAmount = ( index ) => {
+		const newAmounts = [ ...value ];
+		newAmounts.splice( index, 1 );
+		onChange( newAmounts );
+	};
+
+	const updateAmount = ( index, newValue ) => {
+		const newAmounts = [ ...value ];
+		// Convert to integer and ensure positive
+		newAmounts[ index ] = Math.max( 0, parseInt( newValue ) || 0 );
+		onChange( newAmounts );
+	};
+
+	return (
+		<div>
+			{ /* eslint-disable-next-line jsx-a11y/label-has-associated-control */ }
+			<label
+				className="components-base-control__label"
+				style={ {
+					display: 'block',
+					fontSize: '11px',
+					fontWeight: '500',
+					lineHeight: '1.4',
+					marginBottom: '8px',
+					padding: '0px',
+					textTransform: 'uppercase',
+				} }
+			>
+				{ __( 'Tipping Amounts (in Sparks)', 'farcaster-wp' ) }
+			</label>
+			{ value.map( ( amount, index ) => (
+				<div
+					key={ index }
+					style={ {
+						display: 'flex',
+						gap: '8px',
+						marginBottom: '8px',
+					} }
+				>
+					<TextControl
+						type="number"
+						value={ amount }
+						onChange={ ( newValue ) =>
+							updateAmount( index, newValue )
+						}
+						min={ 0 }
+					/>
+					<Button
+						variant="secondary"
+						isDestructive
+						onClick={ () => removeAmount( index ) }
+						icon="trash"
+					/>
+				</div>
+			) ) }
+			<Button variant="secondary" onClick={ addAmount } icon="plus">
+				{ __( 'Add Amount', 'farcaster-wp' ) }
+			</Button>
+		</div>
+	);
+};
+
 const ButtonTextControl = ( { value, onChange } ) => {
 	return (
 		<TextControl
@@ -35,6 +102,21 @@ const ButtonTextControl = ( { value, onChange } ) => {
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 			maxLength={ 32 }
+		/>
+	);
+};
+
+const TippingAddressControl = ( { value, onChange } ) => {
+	return (
+		<TextControl
+			label={ __( 'Tipping Address', 'farcaster-wp' ) }
+			value={ value }
+			help={ __(
+				'This address will be used to tip the site creator when a user clicks the button.',
+				'farcaster-wp'
+			) }
+			onChange={ onChange }
+			__nextHasNoMarginBottom
 		/>
 	);
 };
@@ -88,6 +170,17 @@ const FramesEnabledControl = ( { value, onChange } ) => {
 		<ToggleControl
 			checked={ value }
 			label={ __( 'Enable Farcaster Frames', 'farcaster-wp' ) }
+			onChange={ onChange }
+			__nextHasNoMarginBottom
+		/>
+	);
+};
+
+const TippingEnabledControl = ( { value, onChange } ) => {
+	return (
+		<ToggleControl
+			checked={ value }
+			label={ __( 'Enable Tipping', 'farcaster-wp' ) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 		/>
@@ -223,4 +316,7 @@ export {
 	ManifestControl,
 	NotificationsEnabledControl,
 	DebugEnabledControl,
+	TippingEnabledControl,
+	TippingAddressControl,
+	TippingAmountsControl,
 };

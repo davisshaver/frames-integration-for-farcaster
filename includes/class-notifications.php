@@ -73,6 +73,11 @@ class Notifications {
 	public static function send_publish_post_notifications( $post_id ) {
 		$post = get_post( $post_id );
 		if ( ! empty( $post ) ) {
+			$suppress_notifications = get_post_meta( $post_id, 'farcaster_wp_suppress_notifications', true );
+			if ( empty( $suppress_notifications ) ) {
+				self::log_error( 'Notifications suppressed for post ' . $post_id );
+				return;
+			}
 			self::initiate_notifications( $post );
 		}
 	}
@@ -284,6 +289,9 @@ class Notifications {
 	 */
 	public static function process_webhook( $header, $payload ) {
 		$event = $payload['event'];
+		self::log_error( 'Processing webhook event: ' . $event );
+		self::log_error( $header );
+		self::log_error( $payload );
 		switch ( $event ) {
 			case 'frame_added':
 				return self::process_frame_added( $header, $payload );
