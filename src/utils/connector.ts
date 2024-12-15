@@ -85,7 +85,6 @@ export function frameConnector() {
 			}
 		},
 		onChainChanged( chain ) {
-			console.log( 'onChainChanged', chain );
 			const chainId = Number( chain );
 			config.emitter.emit( 'change', { chainId } );
 		},
