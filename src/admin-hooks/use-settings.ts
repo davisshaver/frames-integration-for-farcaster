@@ -3,7 +3,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { store as noticesStore } from '@wordpress/notices';
 import { useEffect, useState } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
-import { FarcasterManifestSchema } from '../utils/manifest';
+import { FarcasterManifestSchema } from '../admin-utils/manifest';
 
 interface WPSettings {
 	farcaster_wp: {
@@ -25,6 +25,9 @@ interface WPSettings {
 		domain_manifest: string;
 		notifications_enabled: boolean;
 		debug_enabled: boolean;
+		tipping_enabled: boolean;
+		tipping_address: string;
+		tipping_amounts: number[];
 	};
 }
 
@@ -34,6 +37,9 @@ export const useSettings = () => {
 	const [ notificationsEnabled, setNotificationsEnabled ] =
 		useState< boolean >( false );
 	const [ debugEnabled, setDebugEnabled ] = useState< boolean >( false );
+	const [ tippingEnabled, setTippingEnabled ] = useState< boolean >( false );
+	const [ tippingAddress, setTippingAddress ] = useState< string >();
+	const [ tippingAmounts, setTippingAmounts ] = useState< number[] >( [] );
 	const [ splashBackgroundColor, setSplashBackgroundColor ] =
 		useState< string >();
 	const [ buttonText, setButtonText ] = useState< string >();
@@ -74,6 +80,9 @@ export const useSettings = () => {
 					settings.farcaster_wp.notifications_enabled
 				);
 				setDebugEnabled( settings.farcaster_wp.debug_enabled );
+				setTippingEnabled( settings.farcaster_wp.tipping_enabled );
+				setTippingAddress( settings.farcaster_wp.tipping_address );
+				setTippingAmounts( settings.farcaster_wp.tipping_amounts );
 			}
 		);
 	}, [] );
@@ -118,6 +127,9 @@ export const useSettings = () => {
 					domain_manifest: domainManifest,
 					notifications_enabled: notificationsEnabled,
 					debug_enabled: debugEnabled,
+					tipping_enabled: tippingEnabled,
+					tipping_address: tippingAddress,
+					tipping_amounts: tippingAmounts,
 				},
 			},
 		} )
@@ -170,5 +182,11 @@ export const useSettings = () => {
 		setNotificationsEnabled,
 		debugEnabled,
 		setDebugEnabled,
+		tippingEnabled,
+		setTippingEnabled,
+		tippingAddress,
+		setTippingAddress,
+		tippingAmounts,
+		setTippingAmounts,
 	};
 };

@@ -9,8 +9,8 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalVStack as VStack,
 } from '@wordpress/components';
-import { useSettings } from '../hooks/use-settings';
-import { useManifest } from '../hooks/use-manifest';
+import { useSettings } from '../admin-hooks/use-settings';
+import { useManifest } from '../admin-hooks/use-manifest';
 import { Notices } from './Notices';
 import {
 	FramesEnabledControl,
@@ -20,6 +20,9 @@ import {
 	UseTitleAsButtonTextControl,
 	NotificationsEnabledControl,
 	DebugEnabledControl,
+	TippingEnabledControl,
+	TippingAddressControl,
+	TippingAmountsControl,
 } from './Controls';
 import { ManifestViewer } from './ManifestViewer';
 import { SubscriptionsList } from './SubscriptionsList';
@@ -61,6 +64,12 @@ const SettingsPage = () => {
 		setNotificationsEnabled,
 		debugEnabled,
 		setDebugEnabled,
+		tippingEnabled,
+		setTippingEnabled,
+		tippingAddress,
+		setTippingAddress,
+		tippingAmounts,
+		setTippingAmounts,
 	} = useSettings();
 
 	const { manifest, fetchManifest } = useManifest();
@@ -135,6 +144,28 @@ const SettingsPage = () => {
 							) }
 							value={ fallbackImage }
 							onChange={ setFallbackImage }
+						/>
+					</PanelRow>
+				</PanelBody>
+			</Panel>
+			<Panel header="Tipping">
+				<PanelBody>
+					<PanelRow>
+						<TippingEnabledControl
+							value={ tippingEnabled }
+							onChange={ setTippingEnabled }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<TippingAddressControl
+							value={ tippingAddress }
+							onChange={ setTippingAddress }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<TippingAmountsControl
+							value={ tippingAmounts }
+							onChange={ setTippingAmounts }
 						/>
 					</PanelRow>
 				</PanelBody>

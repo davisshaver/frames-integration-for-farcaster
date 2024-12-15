@@ -18,6 +18,7 @@ class Frames {
 	public static function init() {
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'action_enqueue_scripts' ) );
 		add_action( 'wp_head', array( __CLASS__, 'action_wp_head' ) );
+		add_action( 'wp_footer', array( __CLASS__, 'action_wp_footer' ) );
 		add_action( 'after_setup_theme', array( __CLASS__, 'action_add_image_size' ) );
 	}
 
@@ -135,24 +136,61 @@ class Frames {
 
 		// Only enqueue if frames are enabled in settings.
 		if ( ! empty( $options['frames_enabled'] ) ) {
+
+			$asset_file = dirname( plugin_dir_path( __FILE__ ) ) . '/build/sdk.asset.php';
+
+			if ( ! file_exists( $asset_file ) ) {
+				return;
+			}
+		
+			$asset = include $asset_file;
+	
 			wp_enqueue_script(
 				'farcaster-frame-sdk',
 				plugins_url( 'build/sdk.js', plugin_dir_path( __FILE__ ) ),
-				array(),
-				FARCASTER_WP_VERSION,
+				$asset['dependencies'],
+				$asset['version'],
 				array(
 					'in_footer' => true,
 					'strategy'  => 'defer',
 				)
 			);
+
+			$cast_text = is_singular() ?
+				sprintf( 'I just read %s on %s //', get_the_title(), get_bloginfo( 'name' ) ) :
+				sprintf( 'I just read %s //', get_bloginfo( 'name' ) );
+
 			wp_localize_script(
 				'farcaster-frame-sdk',
 				'farcasterWP',
 				array(
 					'notificationsEnabled' => $notifications_enabled,
 					'debugEnabled'         => $options['debug_enabled'] ?? false,
+					'castText'             => $cast_text,
+					'tippingAddress'       => $options['tipping_address'] ?? '',
+					'tippingAmounts'       => $options['tipping_amounts'] ?? array(),
 				)
 			);
+
+			wp_register_style(
+				'farcaster-frame-sdk',
+				plugins_url( '../build/sdk.css', __FILE__ ),
+				false,
+				$asset['version']
+			);
+			wp_enqueue_style( 'farcaster-frame-sdk' );
+		}
+	}
+
+	/**
+	 * Add tipping modal container to footer if enabled.
+	 */
+	public static function action_wp_footer() {
+		$options         = get_option( 'farcaster_wp', array() );
+		$tipping_enabled = $options['tipping_enabled'] ?? false;
+
+		if ( $tipping_enabled ) {
+			echo '<div id="farcaster-wp-tipping-modal"></div>';
 		}
 	}
 }

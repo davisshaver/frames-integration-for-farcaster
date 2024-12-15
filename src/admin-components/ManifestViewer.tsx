@@ -2,7 +2,10 @@ import { __, sprintf } from '@wordpress/i18n';
 import { useEffect, useState, useMemo } from '@wordpress/element';
 // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 import { Notice, __experimentalText as Text } from '@wordpress/components';
-import { FarcasterManifest, FarcasterManifestSchema } from '../utils/manifest';
+import {
+	FarcasterManifest,
+	FarcasterManifestSchema,
+} from '../admin-utils/manifest';
 import { CopyableCode } from './CopyableCode';
 import { ManifestControl } from './Controls';
 

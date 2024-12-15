@@ -3,6 +3,7 @@ interface ToastOptions {
 	duration?: number;
 	message: string;
 	onButtonClick?: () => void;
+	onDismiss?: () => void;
 	type?: 'success' | 'error';
 }
 
@@ -12,6 +13,7 @@ export const showToast = ( {
 	message,
 	onButtonClick,
 	type = 'success',
+	onDismiss,
 }: ToastOptions ) => {
 	const toast = document.createElement( 'div' );
 
@@ -61,9 +63,12 @@ export const showToast = ( {
 
 	document.body.appendChild( toast );
 
-	setTimeout( () => {
-		if ( document.body.contains( toast ) ) {
-			document.body.removeChild( toast );
-		}
-	}, duration );
+	if ( duration ) {
+		setTimeout( () => {
+			if ( document.body.contains( toast ) ) {
+				document.body.removeChild( toast );
+				onDismiss?.();
+			}
+		}, duration );
+	}
 };

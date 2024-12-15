@@ -1,11 +1,15 @@
 import sdk from '@farcaster/frame-sdk';
 import { showToast } from './utils/toast';
+import { renderTippingModal } from './components/TippingModal';
 
 declare global {
 	interface Window {
 		farcasterWP: {
 			debugEnabled: boolean;
 			notificationsEnabled: boolean;
+			castText: string;
+			tippingAddress: string;
+			tippingAmounts: number[];
 		};
 	}
 }
@@ -28,7 +32,10 @@ const addFrame = () => {
 				showToast( {
 					message: 'You are subscribed to notifications.',
 					duration: 3000,
+					onDismiss: () => renderTippingModal(),
 				} );
+			} else {
+				renderTippingModal();
 			}
 		} )
 		.catch( ( error ) => {
@@ -85,6 +92,7 @@ const loadSdk = async () => {
 		showToast( {
 			message: 'Thanks for being a subscriber!',
 			duration: 3000,
+			onDismiss: () => renderTippingModal(),
 		} );
 		return;
 	}
@@ -102,15 +110,25 @@ const loadSdk = async () => {
 		// @TODO: Right now, addFrame will immediately resolve if the
 		// user has added the frame but not subscribed. So we can leave
 		// this interaction out until the SDK is updated to handle this.
+		// For now, we will show the tipping modal.
 		// showToast( {
 		// 	message: 'Want to receive notifications?',
 		// 	duration: 10000,
 		// 	buttonText: 'Subscribe',
 		// 	onButtonClick: addFrame,
 		// } );
+		renderTippingModal();
 		return;
 	}
-	addFrame();
+
+	const handleScroll = () => {
+		if ( window.scrollY >= 200 ) {
+			window.removeEventListener( 'scroll', handleScroll );
+			addFrame();
+		}
+	};
+
+	window.addEventListener( 'scroll', handleScroll );
 };
 
 if ( window.farcasterWP.debugEnabled ) {

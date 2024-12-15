@@ -20,6 +20,7 @@ class Admin {
 	public static function init() {
 		add_action( 'admin_menu', array( __CLASS__, 'action_admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'action_admin_enqueue_scripts' ) );
+		add_action( 'enqueue_block_editor_assets', array( __CLASS__, 'action_enqueue_block_editor_assets' ) );
 		add_action( 'init', array( __CLASS__, 'action_init' ) );
 	}
 
@@ -65,6 +66,28 @@ class Admin {
 		);
 
 		wp_enqueue_media();
+	}
+
+	/**
+	 * Enqueue block editor assets.
+	 *
+	 * @return void
+	 */
+	public static function action_enqueue_block_editor_assets() {
+		wp_enqueue_script(
+			'farcaster-wp-editor',
+			plugins_url( '../build/editor.js', __FILE__ ),
+			array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-components', 'wp-i18n' ),
+			filemtime( FARCASTER_WP_PLUGIN_DIR . 'build/editor.js' ),
+			FARCASTER_WP_VERSION
+		);
+		wp_register_style(
+			'farcaster-wp-editor',
+			plugins_url( '../build/editor.css', __FILE__ ),
+			false,
+			FARCASTER_WP_VERSION
+		);
+		wp_enqueue_style( 'nativepack-editor' );
 	}
 
 	/**
@@ -116,6 +139,9 @@ class Admin {
 			'domain_manifest'          => '',
 			'notifications_enabled'    => false,
 			'debug_enabled'            => false,
+			'tipping_enabled'          => false,
+			'tipping_address'          => '',
+			'tipping_amounts'          => array(),
 		);
 		$schema  = array(
 			'type'       => 'object',
@@ -125,6 +151,18 @@ class Admin {
 				),
 				'notifications_enabled'    => array(
 					'type' => 'boolean',
+				),
+				'tipping_enabled'          => array(
+					'type' => 'boolean',
+				),
+				'tipping_amounts'          => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'integer',
+					),
+				),
+				'tipping_address'          => array(
+					'type' => 'string',
 				),
 				'debug_enabled'            => array(
 					'type' => 'boolean',
@@ -177,6 +215,16 @@ class Admin {
 					'schema' => $schema,
 				),
 			)
+		);
+
+		register_meta(
+			'post',
+			'farcaster_wp_suppress_notifications',
+			array(
+				'type'         => 'boolean',
+				'single'       => true,
+				'show_in_rest' => true,
+			) 
 		);
 	}
 }

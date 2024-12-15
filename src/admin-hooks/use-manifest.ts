@@ -1,6 +1,6 @@
 import apiFetch from '@wordpress/api-fetch';
 import { useCallback, useEffect, useState } from '@wordpress/element';
-import { FarcasterManifest } from '../utils/manifest';
+import { FarcasterManifest } from '../admin-utils/manifest';
 
 export const useManifest = () => {
 	const [ manifest, setManifest ] = useState< FarcasterManifest >();
