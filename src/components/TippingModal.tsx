@@ -365,6 +365,10 @@ export function FAB() {
 					>
 						{ __( '✧ is a new unit of Ethereum.', 'farcaster-wp' ) }{ ' ' }
 						<a
+							style={ {
+								color: 'white',
+								textDecoration: 'underline',
+							} }
 							href="https://zora.co/writings/sparks"
 							target="_blank"
 							rel="noopener noreferrer"
