@@ -308,15 +308,22 @@ const TippingAmountsControl = ( { value = [], onChange } ) => {
 	);
 };
 
-const ButtonTextControl = ( { value, onChange } ) => {
+const ButtonTextControl = ( { value, onChange, useTitleAsButtonText } ) => {
 	return (
 		<TextControl
 			label={ __( 'Button Text', 'farcaster-wp' ) }
 			value={ value }
-			help={ __(
-				'This text will be used as the button text for all posts. Limited to 32 characters.',
-				'farcaster-wp'
-			) }
+			help={
+				! useTitleAsButtonText
+					? __(
+							'This text will be used as the button text for all posts. Limited to 32 characters.',
+							'farcaster-wp'
+					  )
+					: __(
+							'This text will be used as the button text when frame is used outside of casts. Limited to 32 characters.',
+							'farcaster-wp'
+					  )
+			}
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 			maxLength={ 32 }
@@ -364,7 +371,7 @@ const UseTitleAsButtonTextControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
 			checked={ value }
-			label={ __( 'Use Title as Button Text', 'farcaster-wp' ) }
+			label={ __( 'Use Post Title as Button Text', 'farcaster-wp' ) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 		/>

@@ -29,6 +29,20 @@ const FrameConfigSchema = z.object( {
 			message: 'Splash image URL must be 512 characters or less',
 		} )
 		.optional(),
+	imageUrl: z
+		.string( {
+			invalid_type_error: 'Image URL must be a string',
+			required_error: 'Image URL is required',
+		} )
+		.max( 512, {
+			message: 'Splash image URL must be 512 characters or less',
+		} ),
+	buttonTitle: z
+		.string( {
+			invalid_type_error: 'Button title must be a string',
+			required_error: 'Button title is required',
+		} )
+		.max( 32, { message: 'Button title must be 32 characters or less' } ),
 	splashBackgroundColor: z
 		.string( {
 			invalid_type_error: 'Splash background color must be a string',
