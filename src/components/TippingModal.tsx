@@ -18,8 +18,8 @@ import {
 	useSwitchChain,
 	useWaitForTransactionReceipt,
 } from 'wagmi';
+import { getChains } from '@wagmi/core';
 import { parseEther } from 'viem';
-import { base, mainnet, optimism, zora } from 'wagmi/chains';
 
 import { truncateAddress } from '../utils/truncateAddress';
 import { FarcasterLogo } from './FarcasterLogo';
@@ -42,7 +42,14 @@ export function FAB() {
 		sendTransaction,
 	} = useSendTransaction();
 
-	const { switchChain } = useSwitchChain();
+	const chains = getChains( config );
+
+	const {
+		switchChain,
+		error: switchChainError,
+		isError: isSwitchChainError,
+		isPending: isSwitchChainPending,
+	} = useSwitchChain();
 
 	const { isLoading: isConfirming, isSuccess: isConfirmed } =
 		useWaitForTransactionReceipt( {
@@ -144,10 +151,9 @@ export function FAB() {
 					<h2
 						style={ {
 							color: 'white',
-							fontSize: '2rem',
+							fontSize: '1.75rem',
 							fontWeight: 'bold',
-							marginBottom: 0,
-							marginTop: '3rem',
+							margin: '3rem .5rem 0 .5rem',
 							textAlign: 'center',
 						} }
 					>
@@ -209,6 +215,12 @@ export function FAB() {
 											color: 'white',
 											cursor: 'pointer',
 											display: 'inline',
+											filter: isSwitchChainPending
+												? 'blur(1.1px)'
+												: 'none',
+											fontStyle: isSwitchChainPending
+												? 'italic'
+												: 'normal',
 											fontFamily: 'inherit',
 											fontSize: 'inherit',
 											margin: 0,
@@ -224,18 +236,14 @@ export function FAB() {
 											} );
 										} }
 									>
-										<option value={ base.id }>
-											{ base.name }
-										</option>
-										<option value={ mainnet.id }>
-											{ mainnet.name }
-										</option>
-										<option value={ optimism.id }>
-											{ optimism.name }
-										</option>
-										<option value={ zora.id }>
-											{ zora.name }
-										</option>
+										{ chains.map( ( chain ) => (
+											<option
+												value={ chain.id }
+												key={ chain.id }
+											>
+												{ chain.name }
+											</option>
+										) ) }
 									</select>{ ' ' }
 									{ __( 'with the address', 'farcaster-wp' ) }{ ' ' }
 									{ truncateAddress( address ) }
@@ -257,6 +265,28 @@ export function FAB() {
 									>
 										{ __( 'Disconnect.', 'farcaster-wp' ) }
 									</button>
+									{ isSwitchChainError && (
+										<div
+											style={ {
+												backgroundColor: 'white',
+												color: 'red',
+												display: 'flex',
+												flexDirection: 'column',
+												margin: '.25rem .5rem 1rem .5rem',
+												padding: '0.5rem',
+											} }
+										>
+											<p
+												style={ {
+													fontSize: '0.75rem',
+													margin: '0.5rem',
+													textAlign: 'center',
+												} }
+											>
+												{ switchChainError.message }
+											</p>
+										</div>
+									) }
 								</>
 							) }
 						{ ! isConfirmed && ! isConfirming && ! isConnected && (
@@ -386,6 +416,10 @@ export function FAB() {
 			) }
 			<Fab
 				mainButtonStyles={ {
+					backgroundColor: 'transparent',
+					borderRadius: 0,
+					boxShadow: 'none',
+					filter: 'drop-shadow( 0 0 4px rgba(0, 0, 0, .14))',
 					padding: 0,
 				} }
 				// event={ 'click' }

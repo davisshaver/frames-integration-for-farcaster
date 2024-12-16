@@ -282,16 +282,18 @@ class Notifications {
 	/**
 	 * Process the webhook.
 	 *
-	 * @param array $header The webhook header.
-	 * @param array $payload The webhook payload.
+	 * @param array  $header The webhook header.
+	 * @param array  $payload The webhook payload.
+	 * @param string $signature The webhook signature.
 	 * @return array The response.
 	 * @throws \Exception If the event is invalid.
 	 */
-	public static function process_webhook( $header, $payload ) {
+	public static function process_webhook( $header, $payload, $signature ) {
 		$event = $payload['event'];
 		self::log_error( 'Processing webhook event: ' . $event );
 		self::log_error( $header );
 		self::log_error( $payload );
+		self::log_error( $signature );
 		switch ( $event ) {
 			case 'frame_added':
 				return self::process_frame_added( $header, $payload );

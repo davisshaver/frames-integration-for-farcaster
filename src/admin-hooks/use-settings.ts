@@ -28,6 +28,7 @@ interface WPSettings {
 		tipping_enabled: boolean;
 		tipping_address: string;
 		tipping_amounts: number[];
+		tipping_chains: string[];
 	};
 }
 
@@ -40,6 +41,7 @@ export const useSettings = () => {
 	const [ tippingEnabled, setTippingEnabled ] = useState< boolean >( false );
 	const [ tippingAddress, setTippingAddress ] = useState< string >();
 	const [ tippingAmounts, setTippingAmounts ] = useState< number[] >( [] );
+	const [ tippingChains, setTippingChains ] = useState< string[] >( [] );
 	const [ splashBackgroundColor, setSplashBackgroundColor ] =
 		useState< string >();
 	const [ buttonText, setButtonText ] = useState< string >();
@@ -83,6 +85,7 @@ export const useSettings = () => {
 				setTippingEnabled( settings.farcaster_wp.tipping_enabled );
 				setTippingAddress( settings.farcaster_wp.tipping_address );
 				setTippingAmounts( settings.farcaster_wp.tipping_amounts );
+				setTippingChains( settings.farcaster_wp.tipping_chains );
 			}
 		);
 	}, [] );
@@ -130,6 +133,7 @@ export const useSettings = () => {
 					tipping_enabled: tippingEnabled,
 					tipping_address: tippingAddress,
 					tipping_amounts: tippingAmounts,
+					tipping_chains: tippingChains,
 				},
 			},
 		} )
@@ -188,5 +192,7 @@ export const useSettings = () => {
 		setTippingAddress,
 		tippingAmounts,
 		setTippingAmounts,
+		tippingChains,
+		setTippingChains,
 	};
 };

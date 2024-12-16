@@ -169,6 +169,7 @@ class Frames {
 					'castText'             => $cast_text,
 					'tippingAddress'       => $options['tipping_address'] ?? '',
 					'tippingAmounts'       => $options['tipping_amounts'] ?? array(),
+					'tippingChains'        => $options['tipping_chains'] ?? array(),
 				)
 			);
 
