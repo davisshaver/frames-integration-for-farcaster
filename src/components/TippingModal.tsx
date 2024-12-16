@@ -135,8 +135,8 @@ export function FAB() {
 							fontSize: '1rem',
 							fontWeight: 'bold',
 							position: 'absolute',
-							right: '0.5rem',
-							top: '0.5rem',
+							right: '0.25rem',
+							top: '0.25rem',
 						} }
 					>
 						x
@@ -144,6 +144,7 @@ export function FAB() {
 					<h2
 						style={ {
 							color: 'white',
+							fontSize: '2rem',
 							fontWeight: 'bold',
 							marginBottom: 0,
 							marginTop: '3rem',
@@ -157,6 +158,7 @@ export function FAB() {
 							color: 'white',
 							fontSize: '0.75em',
 							marginBottom: '1rem',
+							padding: '.5rem .5rem 0 .5rem',
 							textAlign: 'center',
 						} }
 					>
@@ -394,6 +396,7 @@ export function FAB() {
 				<Action
 					style={ {
 						backgroundColor: '#472A91',
+						color: 'white',
 					} }
 					text="Compose a cast with this link"
 					onClick={ openWarpcastUrl }
@@ -404,6 +407,7 @@ export function FAB() {
 					<Action
 						style={ {
 							backgroundColor: '#472A91',
+							color: 'white',
 						} }
 						text={ sendTipTitle }
 						onClick={ () => {

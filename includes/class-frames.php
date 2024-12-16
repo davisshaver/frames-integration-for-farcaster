@@ -157,8 +157,8 @@ class Frames {
 			);
 
 			$cast_text = is_singular() ?
-				sprintf( 'I just read %s on %s //', get_the_title(), get_bloginfo( 'name' ) ) :
-				sprintf( 'I just read %s //', get_bloginfo( 'name' ) );
+				sprintf( 'I\'m reading \'%s\' by %s //', get_the_title(), get_bloginfo( 'name' ) ) :
+				sprintf( 'I\'m reading \'%s\' //', get_bloginfo( 'name' ) );
 
 			wp_localize_script(
 				'farcaster-frame-sdk',
