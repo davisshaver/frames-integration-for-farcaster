@@ -50,6 +50,35 @@ class Frames {
 	}
 
 	/**
+	 * Get frame image URL from settings.
+	 *
+	 * @param array $options Plugin options.
+	 * @return string Frame image URL or empty string if not set.
+	 */
+	public static function get_frame_image_url( $options ) {
+		$frame_image = $options['fallback_image'] ?? '';
+		
+		if ( ! empty( $frame_image ) && ! empty( $frame_image['id'] ) ) {
+			$frame_image_src = wp_get_attachment_image_src( $frame_image['id'], 'farcaster-wp-frame-image' );
+			if ( ! empty( $frame_image_src ) ) {
+				return $frame_image_src[0];
+			}
+		}
+		
+		return '';
+	}
+
+	/**
+	 * Get button text from settings.
+	 *
+	 * @param array $options Plugin options.
+	 * @return string Button text.
+	 */
+	public static function get_button_text( $options ) {
+		return $options['button_text'] ?? __( 'Read More', 'farcaster-wp' );
+	}
+
+	/**
 	 * Get splash background color from settings.
 	 *
 	 * @param array $options Plugin options.
@@ -86,13 +115,7 @@ class Frames {
 
 		$frame_image = is_singular() ? get_the_post_thumbnail_url( null, 'farcaster-wp-frame-image' ) : '';
 		if ( empty( $frame_image ) ) {
-			$fallback_image = $options['fallback_image'] ?? '';
-			if ( ! empty( $fallback_image ) && ! empty( $fallback_image['id'] ) ) {
-				$frame_image_src = wp_get_attachment_image_src( $fallback_image['id'], 'farcaster-wp-frame-image' );
-				if ( ! empty( $frame_image_src ) ) {
-					$frame_image = $frame_image_src[0];
-				}
-			}
+			$frame_image = self::get_frame_image_url( $options );
 		}
 
 		$url = is_singular() ? get_permalink() : home_url( $wp->request );

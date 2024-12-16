@@ -15,6 +15,8 @@ interface ManifestMismatches {
 		name: boolean;
 		homeUrl: boolean;
 		iconUrl: boolean;
+		imageUrl: boolean;
+		buttonTitle: boolean;
 		splashImageUrl: boolean;
 		splashBackgroundColor: boolean;
 		webhookUrl?: boolean;
@@ -74,6 +76,11 @@ const ManifestViewer = ( {
 			splashBackgroundColor:
 				manifest?.frame?.splashBackgroundColor !==
 				currentManifest?.frame?.splashBackgroundColor,
+			buttonTitle:
+				manifest?.frame?.buttonTitle !==
+				currentManifest?.frame?.buttonTitle,
+			imageUrl:
+				manifest?.frame?.imageUrl !== currentManifest?.frame?.imageUrl,
 			...( currentManifest?.frame?.webhookUrl
 				? {
 						webhookUrl:
@@ -283,6 +290,28 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest icon URL does not match the current site icon URL.',
+										'farcaster-wp'
+									) }
+								</Notice>
+							) }
+							{ mismatches.details.imageUrl && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest image URL does not match the current site image URL.',
+										'farcaster-wp'
+									) }
+								</Notice>
+							) }
+							{ mismatches.details.buttonTitle && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest button title does not match the current site button title.',
 										'farcaster-wp'
 									) }
 								</Notice>

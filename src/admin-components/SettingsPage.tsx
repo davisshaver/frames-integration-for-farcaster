@@ -100,12 +100,11 @@ const SettingsPage = () => {
 								value={ useTitleAsButtonText }
 								onChange={ setUseTitleAsButtonText }
 							/>
-							{ useTitleAsButtonText !== true && (
-								<ButtonTextControl
-									value={ buttonText }
-									onChange={ setButtonText }
-								/>
-							) }
+							<ButtonTextControl
+								useTitleAsButtonText={ useTitleAsButtonText }
+								value={ buttonText }
+								onChange={ setButtonText }
+							/>
 						</VStack>
 					</PanelRow>
 				</PanelBody>

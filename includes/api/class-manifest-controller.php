@@ -65,8 +65,9 @@ class Manifest_Controller extends WP_REST_Controller {
 		$splash_background_color = Frames::get_splash_background_color( $options );
 		$splash_image_url        = Frames::get_splash_image_url( $options );
 		$domain_manifest         = json_decode( $options['domain_manifest'], true );
-
-		$header = '';
+		$frame_image_url         = Frames::get_frame_image_url( $options );
+		$button_title            = Frames::get_button_text( $options );
+		$header                  = '';
 		if ( ! empty( $domain_manifest['accountAssociation']['header'] ) ) {
 			$header = $domain_manifest['accountAssociation']['header'];
 		} elseif ( ! empty( $domain_manifest['header'] ) ) {
@@ -101,7 +102,8 @@ class Manifest_Controller extends WP_REST_Controller {
 				'iconUrl'               => get_site_icon_url(),
 				'splashImageUrl'        => $splash_image_url,
 				'splashBackgroundColor' => $splash_background_color,
-	
+				'imageUrl'              => $frame_image_url,
+				'buttonTitle'           => $button_title,
 			],
 		];
 
