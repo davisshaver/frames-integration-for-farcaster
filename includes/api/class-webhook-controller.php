@@ -61,11 +61,12 @@ class Webhook_Controller extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function process_webhook( $request ) {
-		$body     = $request->get_body();
-		$data     = json_decode( $body, true );
-		$header   = json_decode( base64_decode( $data['header'] ), true );
-		$payload  = json_decode( base64_decode( $data['payload'] ), true );
-		$response = Notifications::process_webhook( $header, $payload );
+		$body      = $request->get_body();
+		$data      = json_decode( $body, true );
+		$header    = json_decode( base64_decode( $data['header'] ), true );
+		$payload   = json_decode( base64_decode( $data['payload'] ), true );
+		$signature = base64_decode( $data['signature'] );
+		$response  = Notifications::process_webhook( $header, $payload, $signature );
 		return new WP_REST_Response( $response );
 	}
 

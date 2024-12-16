@@ -23,6 +23,7 @@ import {
 	TippingEnabledControl,
 	TippingAddressControl,
 	TippingAmountsControl,
+	ChainsControl,
 } from './Controls';
 import { ManifestViewer } from './ManifestViewer';
 import { SubscriptionsList } from './SubscriptionsList';
@@ -70,6 +71,8 @@ const SettingsPage = () => {
 		setTippingAddress,
 		tippingAmounts,
 		setTippingAmounts,
+		tippingChains,
+		setTippingChains,
 	} = useSettings();
 
 	const { manifest, fetchManifest } = useManifest();
@@ -162,6 +165,22 @@ const SettingsPage = () => {
 							onChange={ setTippingAddress }
 						/>
 					</PanelRow>
+				</PanelBody>
+				<PanelBody
+					title={ __( 'Tipping Chains', 'farcaster-wp' ) }
+					initialOpen={ tippingEnabled }
+				>
+					<PanelRow>
+						<ChainsControl
+							value={ tippingChains }
+							onChange={ setTippingChains }
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody
+					title={ __( 'Tipping Amounts', 'farcaster-wp' ) }
+					initialOpen={ tippingEnabled }
+				>
 					<PanelRow>
 						<TippingAmountsControl
 							value={ tippingAmounts }

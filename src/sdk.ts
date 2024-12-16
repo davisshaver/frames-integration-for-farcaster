@@ -10,6 +10,7 @@ declare global {
 			castText: string;
 			tippingAddress: string;
 			tippingAmounts: number[];
+			tippingChains: string[];
 		};
 	}
 }

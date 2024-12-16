@@ -142,6 +142,12 @@ class Admin {
 			'tipping_enabled'          => false,
 			'tipping_address'          => '',
 			'tipping_amounts'          => array(),
+			'tipping_chains'           => array(
+				'optimism',
+				'base',
+				'mainnet',
+				'zora',
+			),
 		);
 		$schema  = array(
 			'type'       => 'object',
@@ -159,6 +165,12 @@ class Admin {
 					'type'  => 'array',
 					'items' => array(
 						'type' => 'integer',
+					),
+				),
+				'tipping_chains'           => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
 					),
 				),
 				'tipping_address'          => array(

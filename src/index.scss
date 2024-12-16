@@ -27,4 +27,17 @@
   .components-panel {
     margin-block-end: 8px;
   }
+
+  .has-error {
+
+    // stylelint-disable-next-line selector-class-pattern
+    .components-text-control__input {
+      border-color: #cc1818;
+      
+      &:focus {
+        box-shadow: 0 0 0 1px #cc1818;
+        border-color: #cc1818;
+      }
+    }
+  }
 }

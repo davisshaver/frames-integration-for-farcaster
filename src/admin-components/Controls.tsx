@@ -6,8 +6,210 @@ import {
 	ColorPicker,
 	TextControl,
 	Button,
+	SelectControl,
 } from '@wordpress/components';
 import { MediaUpload } from '@wordpress/media-utils';
+import type { DragSourceMonitor } from 'react-dnd';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { isAddress } from 'viem';
+
+type Chain = {
+	id: string;
+	name: string;
+};
+
+const AVAILABLE_CHAINS: Chain[] = [
+	{ id: 'optimism', name: 'Optimism' },
+	{ id: 'base', name: 'Base' },
+	{ id: 'mainnet', name: 'Ethereum Mainnet' },
+	{ id: 'zora', name: 'Zora' },
+];
+
+type DraggableItemProps< T > = {
+	dragType: string;
+	index: number;
+	item: T;
+	moveItem: ( fromIndex: number, toIndex: number ) => void;
+	renderContent: ( item: T, index: number ) => React.ReactNode;
+};
+
+const DraggableItem = < T extends unknown >( {
+	dragType,
+	index,
+	item,
+	moveItem,
+	renderContent,
+}: DraggableItemProps< T > ) => {
+	const [ { isDragging }, drag ] = useDrag( {
+		type: dragType,
+		item: { index },
+		collect: ( monitor: DragSourceMonitor ) => ( {
+			isDragging: monitor.isDragging(),
+		} ),
+	} );
+
+	const [ , drop ] = useDrop( {
+		accept: dragType,
+		hover: ( draggedItem: { index: number } ) => {
+			if ( draggedItem.index !== index ) {
+				moveItem( draggedItem.index, index );
+				draggedItem.index = index;
+			}
+		},
+	} );
+
+	return (
+		<div
+			ref={ ( node ) => drag( drop( node ) ) }
+			style={ {
+				alignItems: 'center',
+				cursor: 'move',
+				display: 'flex',
+				gap: '8px',
+				marginBottom: '8px',
+				opacity: isDragging ? 0.5 : 1,
+			} }
+		>
+			<span className="dashicons dashicons-menu" />
+			<div
+				style={ {
+					alignItems: 'center',
+					display: 'flex',
+					flex: 1,
+					justifyContent: 'space-between',
+				} }
+			>
+				{ renderContent( item, index ) }
+			</div>
+		</div>
+	);
+};
+
+const DraggableChainItem = ( { chain, index, moveItem, removeChain } ) => {
+	return (
+		<DraggableItem
+			dragType="chain"
+			index={ index }
+			item={ chain }
+			moveItem={ moveItem }
+			renderContent={ ( chainItem, idx ) => (
+				<>
+					<span>{ chainItem.name }</span>
+					<Button
+						variant="secondary"
+						isDestructive
+						onClick={ () => removeChain( idx ) }
+						icon="trash"
+					/>
+				</>
+			) }
+		/>
+	);
+};
+
+const ChainsControl = ( { value = [], onChange } ) => {
+	const enabledChains = value
+		.map( ( chainId ) =>
+			AVAILABLE_CHAINS.find( ( chain ) => chain.id === chainId )
+		)
+		.filter( Boolean );
+
+	const addChain = ( chainId: string ) => {
+		if ( ! value.includes( chainId ) ) {
+			onChange( [ ...value, chainId ] );
+		}
+	};
+
+	const removeChain = ( index: number ) => {
+		const newChains = [ ...value ];
+		newChains.splice( index, 1 );
+		onChange( newChains );
+	};
+
+	const moveItem = ( fromIndex: number, toIndex: number ) => {
+		const newChains = [ ...value ];
+		const [ movedItem ] = newChains.splice( fromIndex, 1 );
+		newChains.splice( toIndex, 0, movedItem );
+		onChange( newChains );
+	};
+
+	const availableToAdd = AVAILABLE_CHAINS.filter(
+		( chain ) => ! value.includes( chain.id )
+	);
+
+	return (
+		<DndProvider backend={ HTML5Backend }>
+			<div style={ { width: '100%' } }>
+				<div className="components-base-control">
+					<div className="components-base-control__field">
+						<label
+							htmlFor="chains-control"
+							className="components-base-control__label"
+						>
+							{ __( 'Supported Chains', 'farcaster-wp' ) }
+						</label>
+						<div id="chains-control">
+							{ enabledChains.length > 0 ? (
+								enabledChains.map( ( chain, index ) => (
+									<DraggableChainItem
+										chain={ chain }
+										index={ index }
+										key={ chain.id }
+										moveItem={ moveItem }
+										removeChain={ removeChain }
+									/>
+								) )
+							) : (
+								<div
+									style={ {
+										background: '#f0f0f0',
+										borderRadius: '4px',
+										color: '#757575',
+										margin: '8px 0',
+										padding: '12px',
+										textAlign: 'center',
+									} }
+								>
+									{ __(
+										'No chains selected. Add a chain below to get started.',
+										'farcaster-wp'
+									) }
+								</div>
+							) }
+						</div>
+					</div>
+				</div>
+				{ availableToAdd.length > 0 && (
+					<div className="components-base-control">
+						<SelectControl
+							label={ __( 'Add Chain', 'farcaster-wp' ) }
+							value=""
+							options={ [
+								{
+									value: '',
+									label: __(
+										'Select a chain to add…',
+										'farcaster-wp'
+									),
+								},
+								...availableToAdd.map( ( chain ) => ( {
+									value: chain.id,
+									label: chain.name,
+								} ) ),
+							] }
+							onChange={ ( chainId ) => {
+								if ( chainId ) {
+									addChain( chainId );
+								}
+							} }
+						/>
+					</div>
+				) }
+			</div>
+		</DndProvider>
+	);
+};
 
 const SplashBackgroundColorControl = ( { value, onChange } ) => {
 	return <ColorPicker color={ value } onChange={ onChange } />;
@@ -36,57 +238,73 @@ const TippingAmountsControl = ( { value = [], onChange } ) => {
 
 	const updateAmount = ( index, newValue ) => {
 		const newAmounts = [ ...value ];
-		// Convert to integer and ensure positive
 		newAmounts[ index ] = Math.max( 0, parseInt( newValue ) || 0 );
 		onChange( newAmounts );
 	};
 
+	const moveItem = ( fromIndex, toIndex ) => {
+		const newAmounts = [ ...value ];
+		const [ movedItem ] = newAmounts.splice( fromIndex, 1 );
+		newAmounts.splice( toIndex, 0, movedItem );
+		onChange( newAmounts );
+	};
+
 	return (
-		<div>
-			{ /* eslint-disable-next-line jsx-a11y/label-has-associated-control */ }
-			<label
-				className="components-base-control__label"
-				style={ {
-					display: 'block',
-					fontSize: '11px',
-					fontWeight: '500',
-					lineHeight: '1.4',
-					marginBottom: '8px',
-					padding: '0px',
-					textTransform: 'uppercase',
-				} }
-			>
-				{ __( 'Tipping Amounts (in Sparks)', 'farcaster-wp' ) }
-			</label>
-			{ value.map( ( amount, index ) => (
-				<div
-					key={ index }
-					style={ {
-						display: 'flex',
-						gap: '8px',
-						marginBottom: '8px',
-					} }
-				>
-					<TextControl
-						type="number"
-						value={ amount }
-						onChange={ ( newValue ) =>
-							updateAmount( index, newValue )
-						}
-						min={ 0 }
-					/>
-					<Button
-						variant="secondary"
-						isDestructive
-						onClick={ () => removeAmount( index ) }
-						icon="trash"
-					/>
+		<DndProvider backend={ HTML5Backend }>
+			<div style={ { width: '100%' } }>
+				<div className="components-base-control">
+					<div className="components-base-control__field">
+						<label
+							htmlFor="tipping-amounts-control"
+							className="components-base-control__label"
+						>
+							{ __( 'Tipping Amounts (in', 'farcaster-wp' ) }{ ' ' }
+							<a
+								href="https://zora.co/writings/sparks"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{ __( 'Sparks', 'farcaster-wp' ) }
+							</a>
+							{ __( ')', 'farcaster-wp' ) }
+						</label>
+						<div id="tipping-amounts-control">
+							{ value.length > 0 ? (
+								value.map( ( amount, index ) => (
+									<DraggableAmountItem
+										key={ index }
+										amount={ amount }
+										index={ index }
+										moveItem={ moveItem }
+										updateAmount={ updateAmount }
+										removeAmount={ removeAmount }
+									/>
+								) )
+							) : (
+								<div
+									style={ {
+										padding: '12px',
+										background: '#f0f0f0',
+										borderRadius: '4px',
+										textAlign: 'center',
+										color: '#757575',
+										margin: '8px 0',
+									} }
+								>
+									{ __(
+										'No tipping amounts configured. Add an amount below to get started.',
+										'farcaster-wp'
+									) }
+								</div>
+							) }
+						</div>
+					</div>
 				</div>
-			) ) }
-			<Button variant="secondary" onClick={ addAmount } icon="plus">
-				{ __( 'Add Amount', 'farcaster-wp' ) }
-			</Button>
-		</div>
+				<Button variant="secondary" onClick={ addAmount } icon="plus">
+					{ __( 'Add Amount', 'farcaster-wp' ) }
+				</Button>
+			</div>
+		</DndProvider>
 	);
 };
 
@@ -107,17 +325,27 @@ const ButtonTextControl = ( { value, onChange } ) => {
 };
 
 const TippingAddressControl = ( { value, onChange } ) => {
+	const isInvalid = value && value !== '' && ! isAddress( value );
 	return (
-		<TextControl
-			label={ __( 'Tipping Address', 'farcaster-wp' ) }
-			value={ value }
-			help={ __(
-				'This address will be used to tip the site creator when a user clicks the button.',
-				'farcaster-wp'
-			) }
-			onChange={ onChange }
-			__nextHasNoMarginBottom
-		/>
+		<div style={ { width: '100%' } }>
+			<TextControl
+				label={ __( 'Tipping Address', 'farcaster-wp' ) }
+				value={ value }
+				onChange={ onChange }
+				help={
+					isInvalid
+						? __(
+								'Please enter a valid Ethereum address',
+								'farcaster-wp'
+						  )
+						: __(
+								'Enter the Ethereum address that will receive tips',
+								'farcaster-wp'
+						  )
+				}
+				className={ isInvalid ? 'has-error' : '' }
+			/>
+		</div>
 	);
 };
 
@@ -304,6 +532,41 @@ const ImageUploadControl = ( {
 	);
 };
 
+const DraggableAmountItem = ( {
+	amount,
+	index,
+	moveItem,
+	removeAmount,
+	updateAmount,
+} ) => {
+	return (
+		<DraggableItem
+			dragType="amount"
+			index={ index }
+			item={ amount }
+			moveItem={ moveItem }
+			renderContent={ ( amountValue, idx ) => (
+				<>
+					<TextControl
+						type="number"
+						value={ amountValue }
+						onChange={ ( newValue ) =>
+							updateAmount( idx, newValue )
+						}
+						min={ 0 }
+					/>
+					<Button
+						icon="trash"
+						isDestructive
+						onClick={ () => removeAmount( idx ) }
+						variant="secondary"
+					/>
+				</>
+			) }
+		/>
+	);
+};
+
 export {
 	MessageControl,
 	DisplayControl,
@@ -319,4 +582,5 @@ export {
 	TippingEnabledControl,
 	TippingAddressControl,
 	TippingAmountsControl,
+	ChainsControl,
 };
