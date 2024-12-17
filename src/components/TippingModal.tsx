@@ -119,6 +119,7 @@ export function FAB() {
 						height: '100%',
 						left: 0,
 						overflow: 'scroll',
+						paddingBottom: '1rem',
 						position: 'fixed',
 						top: 0,
 						width: '100%',
