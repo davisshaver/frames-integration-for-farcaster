@@ -26,7 +26,7 @@ Farcaster WP makes it easy to setup [Farcaster frames](https://docs.farcaster.xy
 
 == Changelog ==
 
-= 0.0.32 =
+= 0.0.33 =
 * Initial plugin release to WordPress.org
 
 == Screenshots =

@@ -10,12 +10,9 @@ const chainMap = {
 	zora,
 } as { [ key: string ]: Chain };
 
-const chainList = window.farcasterWP?.tippingChains || [
-	'optimism',
-	'base',
-	'mainnet',
-	'zora',
-];
+const chainList = window.farcasterWP?.tippingChains.length
+	? window.farcasterWP?.tippingChains
+	: [ 'optimism', 'base', 'mainnet', 'zora' ];
 
 const [ firstChain, ...otherChains ] = chainList.reduce( ( acc, chain ) => {
 	if ( chainMap[ chain ] ) {
