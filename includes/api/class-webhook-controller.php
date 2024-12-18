@@ -12,6 +12,8 @@ use WP_Error;
 use WP_REST_Response;
 use WP_REST_Request;
 use Farcaster_WP\Notifications;
+use Farcaster_WP\Signature_Verifier;
+use Exception;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -61,11 +63,12 @@ class Webhook_Controller extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function process_webhook( $request ) {
-		$body      = $request->get_body();
-		$data      = json_decode( $body, true );
-		$header    = json_decode( base64_decode( $data['header'] ), true );
-		$payload   = json_decode( base64_decode( $data['payload'] ), true );
-		$signature = base64_decode( $data['signature'] );
+		$body    = $request->get_body();
+		$data    = json_decode( $body, true );
+		$header  = json_decode( base64_decode( $data['header'] ), true );
+		$payload = json_decode( base64_decode( $data['payload'] ), true );
+		// Don't decode the signature.
+		$signature = $data['signature'];
 		$response  = Notifications::process_webhook( $header, $payload, $signature );
 		return new WP_REST_Response( $response );
 	}
@@ -103,7 +106,18 @@ class Webhook_Controller extends WP_REST_Controller {
 			return new WP_Error( 'invalid_notification_details', 'Invalid notification details', [ 'status' => 400 ] );
 		}
 
-		// @TODO We should process the signature here.
+		try {
+			$is_valid = Signature_Verifier::verify( $body );
+			if ( ! $is_valid ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log( 'Farcaster signature verification failed: ' . $body );
+				return new WP_Error( 'signature_verification_failed', 'Signature verification failed', [ 'status' => 400 ] );
+			}
+		} catch ( Exception $e ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( 'Farcaster signature verification error: ' . $e->getMessage() );
+			return new WP_Error( 'signature_verification_error', 'Signature verification error', [ 'status' => 400 ] );
+		}
 
 		return true;
 	}

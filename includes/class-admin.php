@@ -34,7 +34,6 @@ class Admin {
 		if ( 'settings_page_farcaster-wp' !== $admin_page ) {
 			return;
 		}
-	
 		$asset_file = dirname( plugin_dir_path( __FILE__ ) ) . '/build/index.asset.php';
 
 		if ( ! file_exists( $asset_file ) ) {
