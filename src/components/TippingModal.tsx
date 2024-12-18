@@ -1,4 +1,4 @@
-import sdk from '@farcaster/frame-sdk';
+import sdk, { type FrameContext } from '@farcaster/frame-sdk';
 import {
 	createRoot,
 	useCallback,
@@ -28,7 +28,20 @@ import Provider, { config } from './WagmiProvider';
 const tippingAddress = window.farcasterWP?.tippingAddress;
 const tippingAmounts = window.farcasterWP?.tippingAmounts;
 
-export function FAB() {
+export function FAB( { context }: { context: FrameContext } ) {
+	const [ isAdded, setIsAdded ] = useState< boolean >( false );
+	const [ isSubscribed, setIsSubscribed ] = useState< boolean >( false );
+	useEffect( () => {
+		if ( context.client.added ) {
+			setIsAdded( true );
+		}
+		if (
+			context?.client?.notificationDetails ||
+			context?.location?.type === 'notification'
+		) {
+			setIsSubscribed( true );
+		}
+	}, [ context ] );
 	const [ isTipping, setIsTipping ] = useState< boolean >( false );
 	const { address, isConnected, chainId } = useAccount();
 	const { disconnect } = useDisconnect();
@@ -416,6 +429,8 @@ export function FAB() {
 				</div>
 			) }
 			<Fab
+				data-is-added={ isAdded }
+				data-is-subscribed={ isSubscribed }
 				mainButtonStyles={ {
 					backgroundColor: 'transparent',
 					borderRadius: 0,
@@ -464,7 +479,7 @@ export function FAB() {
 	);
 }
 
-export const renderTippingModal = () => {
+export const renderTippingModal = ( context ) => {
 	const tippingModalElement = document.getElementById(
 		'farcaster-wp-tipping-modal'
 	);
@@ -474,7 +489,7 @@ export const renderTippingModal = () => {
 	const root = createRoot( tippingModalElement );
 	root.render(
 		<Provider>
-			<FAB />
+			<FAB context={ context } />
 		</Provider>
 	);
 };

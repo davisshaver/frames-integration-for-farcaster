@@ -1,4 +1,4 @@
-import sdk from '@farcaster/frame-sdk';
+import sdk, { type FrameContext } from '@farcaster/frame-sdk';
 import { showToast } from './utils/toast';
 import { renderTippingModal } from './components/TippingModal';
 
@@ -15,7 +15,7 @@ declare global {
 	}
 }
 
-const addFrame = () => {
+const addFrame = ( context: FrameContext ) => {
 	sdk.actions
 		.addFrame()
 		.then( ( result ) => {
@@ -33,10 +33,10 @@ const addFrame = () => {
 				showToast( {
 					message: 'You are subscribed to notifications.',
 					duration: 3000,
-					onDismiss: () => renderTippingModal(),
+					onDismiss: () => renderTippingModal( context ),
 				} );
 			} else {
-				renderTippingModal();
+				renderTippingModal( context );
 			}
 		} )
 		.catch( ( error ) => {
@@ -93,7 +93,7 @@ const loadSdk = async () => {
 		showToast( {
 			message: 'Thanks for being a subscriber!',
 			duration: 3000,
-			onDismiss: () => renderTippingModal(),
+			onDismiss: () => renderTippingModal( context ),
 		} );
 		return;
 	}
@@ -108,24 +108,17 @@ const loadSdk = async () => {
 			// eslint-disable-next-line no-console
 			console.log( 'FWP: Already added frame, skipping prompt' );
 		}
-		// @TODO: Right now, addFrame will immediately resolve if the
-		// user has added the frame but not subscribed. So we can leave
-		// this interaction out until the SDK is updated to handle this.
-		// For now, we will show the tipping modal.
-		// showToast( {
-		// 	message: 'Want to receive notifications?',
-		// 	duration: 10000,
-		// 	buttonText: 'Subscribe',
-		// 	onButtonClick: addFrame,
-		// } );
-		renderTippingModal();
+		// User has added the frame but not subscribed.
+		// We do not have a way to prompt them to subscribe.
+		// So we will just show the tipping modal.
+		renderTippingModal( context );
 		return;
 	}
 
 	const handleScroll = () => {
 		if ( window.scrollY >= 200 ) {
 			window.removeEventListener( 'scroll', handleScroll );
-			addFrame();
+			addFrame( context );
 		}
 	};
 
