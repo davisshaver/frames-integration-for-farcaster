@@ -179,7 +179,7 @@ class Frames {
 				)
 			);
 
-			$cast_text = is_singular() ?
+			$cast_text = ! is_front_page() && is_singular() ?
 				sprintf( 'I\'m reading \'%s\' by %s', get_the_title(), get_bloginfo( 'name' ) ) :
 				sprintf( 'I\'m reading \'%s\'', get_bloginfo( 'name' ) );
 
