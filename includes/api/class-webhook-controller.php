@@ -107,7 +107,7 @@ class Webhook_Controller extends WP_REST_Controller {
 		}
 
 		try {
-			$is_valid = Signature_Verifier::verify( $body );
+			$is_valid = Signature_Verifier::verify( $data );
 			if ( ! $is_valid ) {
 				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( 'Farcaster signature verification failed: ' . $body );
