@@ -29,11 +29,13 @@ interface WPSettings {
 		tipping_address: string;
 		tipping_amounts: number[];
 		tipping_chains: string[];
+		rpc_url: string;
 	};
 }
 
 export const useSettings = () => {
 	const [ domainManifest, setDomainManifest ] = useState< string >();
+	const [ rpcURL, setRpcURL ] = useState< string >();
 	const [ framesEnabled, setFramesEnabled ] = useState< boolean >();
 	const [ notificationsEnabled, setNotificationsEnabled ] =
 		useState< boolean >( false );
@@ -61,7 +63,7 @@ export const useSettings = () => {
 	} );
 	const [ useTitleAsButtonText, setUseTitleAsButtonText ] =
 		useState< boolean >( false );
-	const { createSuccessNotice, createErrorNotice } =
+	const { createSuccessNotice, createErrorNotice, removeNotice } =
 		useDispatch( noticesStore );
 
 	useEffect( () => {
@@ -86,9 +88,37 @@ export const useSettings = () => {
 				setTippingAddress( settings.farcaster_wp.tipping_address );
 				setTippingAmounts( settings.farcaster_wp.tipping_amounts );
 				setTippingChains( settings.farcaster_wp.tipping_chains );
+				setRpcURL( settings.farcaster_wp.rpc_url );
 			}
 		);
 	}, [] );
+
+	useEffect( () => {
+		let noticeId: string | undefined;
+
+		async function showRpcNotice() {
+			if ( rpcURL !== undefined && rpcURL === '' && ! noticeId ) {
+				const actionObject = ( await createErrorNotice(
+					__(
+						'RPC URL is required for key validation. Currently, signatures will be validated, but keys will not be verified using contract.',
+						'farcaster-wp'
+					)
+				) ) as any;
+				noticeId = actionObject?.notice?.id;
+			} else if ( rpcURL !== undefined && rpcURL !== '' && noticeId ) {
+				removeNotice( noticeId );
+				noticeId = undefined;
+			}
+		}
+
+		showRpcNotice();
+
+		return () => {
+			if ( noticeId ) {
+				removeNotice( noticeId );
+			}
+		};
+	}, [ createErrorNotice, removeNotice, rpcURL ] );
 
 	const saveSettings = ( callback?: () => void ) => {
 		// Hacky validation here to prevent saving invalid manifest.
@@ -105,6 +135,23 @@ export const useSettings = () => {
 						'Did not save settings, domain manifest is invalid.',
 						'farcaster-wp'
 					)
+				).then(
+					() =>
+						document.scrollingElement?.scrollTo( {
+							top: 0,
+							behavior: 'smooth',
+						} )
+				);
+				return;
+			}
+		}
+
+		if ( rpcURL ) {
+			try {
+				new URL( rpcURL );
+			} catch {
+				createErrorNotice(
+					__( 'RPC URL is invalid.', 'farcaster-wp' )
 				).then(
 					() =>
 						document.scrollingElement?.scrollTo( {
@@ -134,6 +181,7 @@ export const useSettings = () => {
 					tipping_address: tippingAddress,
 					tipping_amounts: tippingAmounts,
 					tipping_chains: tippingChains,
+					rpc_url: rpcURL,
 				},
 			},
 		} )
@@ -194,5 +242,7 @@ export const useSettings = () => {
 		setTippingAmounts,
 		tippingChains,
 		setTippingChains,
+		rpcURL,
+		setRpcURL,
 	};
 };

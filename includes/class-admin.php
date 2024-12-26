@@ -34,6 +34,7 @@ class Admin {
 		if ( 'settings_page_farcaster-wp' !== $admin_page ) {
 			return;
 		}
+
 		$asset_file = dirname( plugin_dir_path( __FILE__ ) ) . '/build/index.asset.php';
 
 		if ( ! file_exists( $asset_file ) ) {
@@ -136,6 +137,7 @@ class Admin {
 				'url' => '',
 			),
 			'domain_manifest'          => '',
+			'rpc_url'                  => '',
 			'notifications_enabled'    => false,
 			'debug_enabled'            => false,
 			'tipping_enabled'          => false,
@@ -211,6 +213,9 @@ class Admin {
 					'maxLength' => 32,
 				),
 				'domain_manifest'          => array(
+					'type' => 'string',
+				),
+				'rpc_url'                  => array(
 					'type' => 'string',
 				),
 			),

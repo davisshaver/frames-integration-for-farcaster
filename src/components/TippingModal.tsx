@@ -17,13 +17,14 @@ import {
 	useSendTransaction,
 	useSwitchChain,
 	useWaitForTransactionReceipt,
+	useConfig,
 } from 'wagmi';
 import { getChains } from '@wagmi/core';
 import { parseEther } from 'viem';
 
 import { truncateAddress } from '../utils/truncateAddress';
 import { FarcasterLogo } from './FarcasterLogo';
-import Provider, { config } from './WagmiProvider';
+import Provider from './WagmiProvider';
 
 const tippingAddress = window.farcasterWP?.tippingAddress;
 const tippingAmounts = window.farcasterWP?.tippingAmounts;
@@ -32,7 +33,7 @@ export function FAB( { context }: { context: FrameContext } ) {
 	const [ isAdded, setIsAdded ] = useState< boolean >( false );
 	const [ isSubscribed, setIsSubscribed ] = useState< boolean >( false );
 	useEffect( () => {
-		if ( context.client.added ) {
+		if ( context?.client?.added ) {
 			setIsAdded( true );
 		}
 		if (
@@ -55,6 +56,7 @@ export function FAB( { context }: { context: FrameContext } ) {
 		sendTransaction,
 	} = useSendTransaction();
 
+	const config = useConfig();
 	const chains = getChains( config );
 
 	const {

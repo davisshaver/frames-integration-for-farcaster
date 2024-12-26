@@ -115,6 +115,8 @@ class Webhook_Controller extends WP_REST_Controller {
 			}
 		} catch ( Exception $e ) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( 'Farcaster signature verification failed: ' . $body );
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( 'Farcaster signature verification error: ' . $e->getMessage() );
 			return new WP_Error( 'signature_verification_error', 'Signature verification error', [ 'status' => 400 ] );
 		}

@@ -6,6 +6,10 @@
 	<rule ref="WordPress-Docs" />
 	<rule ref="WordPress-VIP-Go" />
 
+	<rule ref="PHPCompatibility">
+		<exclude name="PHPCompatibility.Miscellaneous.ValidIntegers.HexNumericStringFound" />
+	</rule>
+
 	<rule ref="WordPress">
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
 		<exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />

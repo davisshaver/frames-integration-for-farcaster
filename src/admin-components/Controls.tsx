@@ -574,6 +574,32 @@ const DraggableAmountItem = ( {
 	);
 };
 
+const RPCURLControl = ( { value, onChange } ) => {
+	return (
+		<div style={ { width: '100%' } }>
+			<TextControl
+				label={ __( 'RPC URL for Optimism', 'farcaster-wp' ) }
+				value={ value }
+				onChange={ onChange }
+				help={
+					! value || value === ''
+						? __(
+								'Enter the URL of your Ethereum RPC for the Optimism chain. Required for complete key verification.',
+								'farcaster-wp'
+						  )
+						: __(
+								'Enter the URL of your Ethereum RPC for the Optimism chain.',
+								'farcaster-wp'
+						  )
+				}
+				className={ ! value || value === '' ? 'has-error' : '' }
+				type="url"
+				__nextHasNoMarginBottom
+			/>
+		</div>
+	);
+};
+
 export {
 	MessageControl,
 	DisplayControl,
@@ -590,4 +616,5 @@ export {
 	TippingAddressControl,
 	TippingAmountsControl,
 	ChainsControl,
+	RPCURLControl,
 };
