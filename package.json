@@ -1,6 +1,6 @@
 {
 	"name": "farcaster-wp",
-	"version": "0.0.36",
+	"version": "0.0.37",
 	"description": "Farcaster WP connects your WordPress site to Farcaster.",
 	"author": "Davis Shaver",
 	"license": "GPL-2.0-or-later",
@@ -50,6 +50,7 @@
 	},
 	"scripts": {
 		"build": "wp-scripts build src/index src/sdk src/editor/editor",
+		"debugger": "bunx @frames.js/debugger@latest",
 		"check-licenses": "wp-scripts check-licenses",
 		"fix:php": "./vendor/bin/phpcbf",
 		"format": "wp-scripts format",

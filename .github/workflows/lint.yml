@@ -7,7 +7,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout repository
+            - name: Checkout Repository
               uses: actions/checkout@v4
 
             - name: Build PHP
@@ -17,7 +17,7 @@ jobs:
               with:
                   bun-version: latest
 
-            - name: Install packages w/ Bun
+            - name: Install Packages w/ Bun
               run: bun install
 
             - name: Lint PHP
@@ -26,7 +26,7 @@ jobs:
             - name: Lint JS
               run: bun run lint:js
 
-            - name: Validate types
+            - name: Validate Types
               run: bun run lint:ts
 
             - name: Lint CSS
@@ -35,5 +35,5 @@ jobs:
             - name: Lint package.json
               run: bun run lint:pkg-json
 
-            - name: Lint Markdown docs
+            - name: Lint Markdown Docs
               run: bun run lint:md:docs

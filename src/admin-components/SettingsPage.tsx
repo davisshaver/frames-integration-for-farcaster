@@ -24,6 +24,7 @@ import {
 	TippingAddressControl,
 	TippingAmountsControl,
 	ChainsControl,
+	RPCURLControl,
 } from './Controls';
 import { ManifestViewer } from './ManifestViewer';
 import { SubscriptionsList } from './SubscriptionsList';
@@ -73,6 +74,8 @@ const SettingsPage = () => {
 		setTippingAmounts,
 		tippingChains,
 		setTippingChains,
+		rpcURL,
+		setRpcURL,
 	} = useSettings();
 
 	const { manifest, fetchManifest } = useManifest();
@@ -194,6 +197,12 @@ const SettingsPage = () => {
 						<NotificationsEnabledControl
 							value={ notificationsEnabled }
 							onChange={ setNotificationsEnabled }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<RPCURLControl
+							value={ rpcURL }
+							onChange={ setRpcURL }
 						/>
 					</PanelRow>
 					<PanelRow>

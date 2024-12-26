@@ -16,7 +16,7 @@ jobs:
         timeout-minutes: 70
 
         steps:
-            - name: Checkout code
+            - name: Checkout Code
               uses: actions/checkout@v4
 
             - name: Build PHP
@@ -26,36 +26,36 @@ jobs:
               with:
                   bun-version: latest
 
-            - name: Install packages w/ Bun
+            - name: Install Packages w/ Bun
               run: bun install
 
             - name: Build with Bun
               run: bun run build
 
-            - name: Create release ZIP
+            - name: Create Release ZIP
               uses: thedoctor0/zip-release@master
               with:
                   type: 'zip'
                   filename: 'farcaster-wp.zip'
                   exclusions: '/*node_modules/* composer.* readme.md package.json .gitignore .eslintrc.js .nvmrc .stylelintrc.json phpcs.xml tsconfig.json bun.lockb .vscode/ .vscode/* .wordpress-org/ .wordpress-org/* src/ src/* src/components/ src/components/* src/hooks/ src/hooks/* src/utils/ src/utils/* /*.git/* /*.github/*'
 
-            - name: Upload artifact
+            - name: Upload Artifact
               uses: actions/upload-artifact@v4
               with:
                   name: farcaster-wp
                   path: farcaster-wp.zip
 
-            - name: Upload to release
+            - name: Upload to Release
               run: gh release upload ${{ github.event.release.tag_name }} farcaster-wp.zip
               env:
                 GITHUB_TOKEN: ${{ github.TOKEN }}
 
-            - name: Unzip folder for WP.org
+            - name: Unzip Folder for WP.org
               uses: montudor/action-zip@v1
               with:
                   args: unzip -qq farcaster-wp.zip -d farcaster-wp
 
-            - name: Upload plugin to WP.org
+            - name: Upload Plugin to WP.org
               id: deploy
               uses: 10up/action-wordpress-plugin-deploy@2.1.0
               env:
@@ -64,7 +64,7 @@ jobs:
                   SLUG: farcaster-wp
                   BUILD_DIR: ./farcaster-wp
 
-            - name: Attest build provenance
+            - name: Attest Build Provenance
               uses: johnbillion/action-wordpress-plugin-attestation@0.5.1
               with:
                 zip-path: ${{ steps.deploy.outputs.zip-path }}

@@ -28,12 +28,6 @@ const transports = chains.reduce( ( acc, chain ) => {
 	return acc;
 }, {} );
 
-export const config = createConfig( {
-	chains,
-	transports,
-	connectors: [ farcasterFrame() ],
-} );
-
 const queryClient = new QueryClient();
 
 export default function Provider( {
@@ -41,6 +35,11 @@ export default function Provider( {
 }: {
 	children: React.ReactNode;
 } ) {
+	const config = createConfig( {
+		chains,
+		transports,
+		connectors: [ farcasterFrame() ],
+	} );
 	return (
 		<WagmiProvider config={ config }>
 			<QueryClientProvider client={ queryClient }>

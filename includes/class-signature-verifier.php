@@ -9,6 +9,9 @@ namespace Farcaster_WP;
 
 use Exception;
 use SodiumException;
+use SWeb3\SWeb3;
+use SWeb3\SWeb3_Contract;
+use StdClass;
 
 /**
  * Class to handle Farcaster signature verification
@@ -16,6 +19,28 @@ use SodiumException;
  * See reference implementation: https://github.com/farcasterxyz/frames/blob/main/packages/frame-node/src/jfs.ts
  */
 class Signature_Verifier {
+
+	private const KEY_REGISTRY_ADDRESS = '0x00000000fc1237824fb747abde0ff18990e59b7e';
+
+	/**
+	 * Get the Key Registry ABI.
+	 *
+	 * @return array The Key Registry ABI.
+	 */
+	private static function get_key_registry_abi() {
+		return json_decode( file_get_contents( FARCASTER_WP_PLUGIN_DIR . '/includes/contracts/abi/key_registry.json' ), true );
+	}
+
+	/**
+	 * Get the RPC URL from the options.
+	 *
+	 * @return string The RPC URL.
+	 */
+	public static function get_rpc_url() {
+		$options = get_option( 'farcaster_wp', array() );
+		return $options['rpc_url'] ?? '';
+	}
+
 	/**
 	 * Verifies a Farcaster signature
 	 *
@@ -47,7 +72,11 @@ class Signature_Verifier {
 		}
 
 		// Convert hex key to binary.
-		$app_key = hex2bin( ltrim( $header['key'], '0x' ) );
+		if ( strpos( $header['key'], '0x' ) !== 0 ) {
+			throw new Exception( 'Invalid app key format - must start with 0x' );
+		}
+
+		$app_key = hex2bin( substr( $header['key'], 2 ) );
 		if ( ! $app_key ) {
 			throw new Exception( 'Invalid app key format' );
 		}
@@ -55,7 +84,6 @@ class Signature_Verifier {
 		// Create signed input.
 		$signed_input = $data['header'] . '.' . $data['payload'];
 
-		$verified = false;
 		try {
 			$verified = sodium_crypto_sign_verify_detached(
 				$signature,
@@ -65,8 +93,43 @@ class Signature_Verifier {
 		} catch ( SodiumException $e ) {
 			throw new Exception( 'Error checking signature: ' . esc_html( $e->getMessage() ) );
 		}
-		// @TODO We need to verify the key and FID relationship is valid.
-		return $verified;
+
+		if ( ! $verified ) {
+			throw new Exception( 'Signature verification failed' );
+		}
+
+		$rpc_url = self::get_rpc_url();
+		if ( ! $rpc_url ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( 'Farcaster signature verification passed with condition: RPC URL is not set' );
+			return true;
+		}
+
+		$key_data = new StdClass();
+
+		try {
+			$sweb3    = new SWeb3( self::get_rpc_url() );
+			$contract = new SWeb3_Contract( $sweb3, self::KEY_REGISTRY_ADDRESS, wp_json_encode( self::get_key_registry_abi() ) );
+			$key_data = $contract->call(
+				'keyDataOf',
+				[
+					$header['fid'],
+					$header['key'],
+				]
+			);
+		} catch ( Exception $e ) {
+			throw new Exception( 'Error fetching key data: ' . esc_html( $e->getMessage() ) );
+		}
+
+		if ( ! isset( $key_data->tuple_1 ) || ! isset( $key_data->tuple_1->state ) || ! isset( $key_data->tuple_1->keyType ) ) {
+			throw new Exception( 'Contract response is not valid' );
+		}
+
+		if ( '1' !== $key_data->tuple_1->state->toString() || '1' !== $key_data->tuple_1->keyType->toString() ) {
+			throw new Exception( 'Key not found in signer events' );
+		}
+
+		return true;
 	}
 
 	/**
