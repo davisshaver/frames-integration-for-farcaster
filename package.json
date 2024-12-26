@@ -50,6 +50,7 @@
 	},
 	"scripts": {
 		"build": "wp-scripts build src/index src/sdk src/editor/editor",
+		"debugger": "bunx @frames.js/debugger@latest",
 		"check-licenses": "wp-scripts check-licenses",
 		"fix:php": "./vendor/bin/phpcbf",
 		"format": "wp-scripts format",

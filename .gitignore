@@ -19,3 +19,9 @@ build
 ehthumbs.db
 Thumbs.db
 .thumbsdb
+
+# Internal notes
+notes.md
+
+# Frames.js debugger
+notifications.db
