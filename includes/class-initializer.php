@@ -1,6 +1,6 @@
 <?php
 /**
- * Farcaster WP plugin initialization.
+ * Frames Integration for Farcaster plugin initialization.
  *
  * @package Farcaster_WP
  */

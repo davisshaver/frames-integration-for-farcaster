@@ -54,18 +54,18 @@ export const useSettings = () => {
 	useEffect( () => {
 		apiFetch< WPSettings >( { path: '/wp/v2/settings' } ).then(
 			( settings ) => {
-				setMessage( settings.farcaster_wp.message );
-				setDisplay( settings.farcaster_wp.display );
-				setSize( settings.farcaster_wp.size );
-				setFramesEnabled( settings.farcaster_wp.frames_enabled );
+				setMessage( settings.farcaster_wp?.message );
+				setDisplay( settings.farcaster_wp?.display );
+				setSize( settings.farcaster_wp?.size );
+				setFramesEnabled( settings.farcaster_wp?.frames_enabled );
 				setSplashBackgroundColor(
-					settings.farcaster_wp.splash_background_color
+					settings.farcaster_wp?.splash_background_color
 				);
-				setButtonText( settings.farcaster_wp.button_text );
-				setSplashImage( settings.farcaster_wp.splash_image );
-				setFallbackImage( settings.farcaster_wp.fallback_image );
+				setButtonText( settings.farcaster_wp?.button_text );
+				setSplashImage( settings.farcaster_wp?.splash_image );
+				setFallbackImage( settings.farcaster_wp?.fallback_image );
 				setUseTitleAsButtonText(
-					settings.farcaster_wp.use_title_as_button_text
+					settings.farcaster_wp?.use_title_as_button_text
 				);
 			}
 		);
@@ -91,7 +91,7 @@ export const useSettings = () => {
 		} )
 			.then( () => {
 				createSuccessNotice(
-					__( 'Settings saved.', 'farcaster-wp' )
+					__( 'Settings saved.', 'frames-integration-for-farcaster' )
 				).then(
 					() =>
 						document.scrollingElement?.scrollTo( {
@@ -105,7 +105,10 @@ export const useSettings = () => {
 				console.error( error );
 				// @TODO: This doesn't seem to be styled as an error notice.
 				createErrorNotice(
-					__( 'Failed to save settings.', 'farcaster-wp' )
+					__(
+						'Failed to save settings.',
+						'frames-integration-for-farcaster'
+					)
 				).then(
 					() =>
 						document.scrollingElement?.scrollTo( {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Farcaster WP plugin administration screen handling.
+ * Frames Integration for Farcaster plugin administration screen handling.
  *
  * @package Farcaster_WP
  */
@@ -68,14 +68,14 @@ class Admin {
 	}
 
 	/**
-	 * Add the Farcaster WP settings page to the admin menu.
+	 * Add the Frames Integration for Farcaster settings page to the admin menu.
 	 * 
 	 * @return void
 	 */
 	public static function action_admin_menu() {
 		add_options_page(
-			__( 'Farcaster', 'farcaster-wp' ),
-			__( 'Farcaster', 'farcaster-wp' ),
+			__( 'Farcaster', 'frames-integration-for-farcaster' ),
+			__( 'Farcaster', 'frames-integration-for-farcaster' ),
 			'manage_options',
 			self::FARCASTER_WP_PAGE_SLUG,
 			[ __CLASS__, 'render_options_page' ]
@@ -83,14 +83,14 @@ class Admin {
 	}
 
 	/**
-	 * Render the Farcaster WP settings page.
+	 * Render the Frames Integration for Farcaster settings page.
 	 * 
 	 * @return void
 	 */
 	public static function render_options_page() {
 		printf(
 			'<div class="wrap" id="farcaster-wp-settings">%s</div>',
-			esc_html__( 'Loading…', 'farcaster-wp' )
+			esc_html__( 'Loading…', 'frames-integration-for-farcaster' )
 		);
 	}
 
@@ -101,12 +101,12 @@ class Admin {
 	 */
 	public static function action_init() {
 		$default = array(
-			'message'                 => __( 'Hello, World!', 'farcaster-wp' ),
+			'message'                 => __( 'Hello, World!', 'frames-integration-for-farcaster' ),
 			'display'                 => true,
 			'size'                    => 'medium',
 			'frames_enabled'          => false,
 			'splash_background_color' => '#ffffff',
-			'button_text'             => __( 'Read More', 'farcaster-wp' ),
+			'button_text'             => __( 'Read More', 'frames-integration-for-farcaster' ),
 			'splash_image'            => array(
 				'id'  => 0,
 				'url' => '',
@@ -176,12 +176,38 @@ class Admin {
 			'options',
 			'farcaster_wp',
 			array(
-				'type'         => 'object',
-				'default'      => $default,
-				'show_in_rest' => array(
+				'type'              => 'object',
+				'default'           => $default,
+				'show_in_rest'      => array(
 					'schema' => $schema,
 				),
+				'sanitize_callback' => array( __CLASS__, 'sanitize_settings' ),
 			)
 		);
+	}
+
+	/**
+	 * Sanitize settings array recursively.
+	 *
+	 * Handles nested arrays, strings, numbers, and booleans.
+	 * 
+	 * @param array $settings Array of settings to be sanitized.
+	 * @return array The sanitized settings.
+	 */
+	public static function sanitize_settings( $settings ) {
+		foreach ( $settings as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$value = self::sanitize_settings( $value );
+			} elseif ( is_string( $value ) ) {
+					$value = sanitize_text_field( $value );
+			} elseif ( is_numeric( $value ) ) {
+				$value = intval( $value );
+			} else {
+				$value = boolval( $value );
+			}
+
+			$settings[ $key ] = $value;
+		}
+		return $settings;
 	}
 }

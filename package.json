@@ -1,20 +1,20 @@
 {
-	"name": "farcaster-wp",
+	"name": "frames-integration-for-farcaster",
 	"version": "0.0.10",
-	"description": "Farcaster WP connects your WordPress site to Farcaster.",
+	"description": "Frames Integration for Farcaster connects your WordPress site to Farcaster.",
 	"author": "Davis Shaver",
 	"license": "GPL-2.0-or-later",
 	"keywords": [
 		"wordpress",
 		"farcaster"
 	],
-	"homepage": "https://github.com/davisshaver/farcaster-wp#readme",
+	"homepage": "https://github.com/davisshaver/frames-integration-for-farcaster#readme",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/davisshaver/farcaster-wp.git"
+		"url": "git+https://github.com/davisshaver/frames-integration-for-farcaster.git"
 	},
 	"bugs": {
-		"url": "https://github.com/davisshaver/farcaster-wp/issues"
+		"url": "https://github.com/davisshaver/frames-integration-for-farcaster/issues"
 	},
 	"dependencies": {
 		"@farcaster/frame-sdk": "^0.0.16",

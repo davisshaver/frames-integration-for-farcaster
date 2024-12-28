@@ -1,6 +1,6 @@
 <?php
 /**
- * Farcaster WP plugin frames handling.
+ * Frames Integration for Farcaster plugin frames handling.
  *
  * @package Farcaster_WP
  */
@@ -74,7 +74,7 @@ class Frames {
 		
 		$use_title_as_button_text = $options['use_title_as_button_text'] ?? false;
 		if ( empty( $use_title_as_button_text ) ) {
-			$button_text = $options['button_text'] ?? __( 'Read More', 'farcaster-wp' );
+			$button_text = $options['button_text'] ?? __( 'Read More', 'frames-integration-for-farcaster' );
 		} else {
 			$button_text = mb_strimwidth( wp_get_document_title(), 0, 32, '...' );
 		}
