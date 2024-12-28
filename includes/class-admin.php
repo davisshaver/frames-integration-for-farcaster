@@ -106,7 +106,7 @@ class Admin {
 	}
 
 	/**
-	 * Render the Frames Integration for Farcaster settings page.
+	 * Render the Farcaster settings page.
 	 * 
 	 * @return void
 	 */
