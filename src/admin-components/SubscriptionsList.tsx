@@ -10,9 +10,12 @@ export const SubscriptionsList = () => {
 		<div>
 			<div style={ { marginTop: '16px' } }>
 				<Text>
-					{ __( 'You have', 'farcaster-wp' ) }{ ' ' }
+					{ __( 'You have', 'frames-integration-for-farcaster' ) }{ ' ' }
 					{ subscriptions?.length }{ ' ' }
-					{ __( 'subscriptions on your site:', 'farcaster-wp' ) }
+					{ __(
+						'subscriptions on your site:',
+						'frames-integration-for-farcaster'
+					) }
 				</Text>
 			</div>
 			<div style={ { marginTop: '8px' } } />

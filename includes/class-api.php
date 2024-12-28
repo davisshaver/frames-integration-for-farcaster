@@ -1,6 +1,6 @@
 <?php
 /**
- * Farcaster WP API setup.
+ * Frames Integration for Farcaster API setup.
  *
  * @package Farcaster_WP
  */

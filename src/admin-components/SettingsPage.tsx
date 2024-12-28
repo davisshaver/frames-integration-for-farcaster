@@ -32,7 +32,7 @@ import { SubscriptionsList } from './SubscriptionsList';
 const SettingsTitle = () => {
 	return (
 		<Heading level={ 1 }>
-			{ __( 'Farcaster Settings', 'farcaster-wp' ) }
+			{ __( 'Farcaster Settings', 'frames-integration-for-farcaster' ) }
 		</Heading>
 	);
 };
@@ -40,7 +40,7 @@ const SettingsTitle = () => {
 const SaveButton = ( { onClick } ) => {
 	return (
 		<Button variant="primary" onClick={ onClick } __next40pxDefaultSize>
-			{ __( 'Save', 'farcaster-wp' ) }
+			{ __( 'Save', 'frames-integration-for-farcaster' ) }
 		</Button>
 	);
 };
@@ -94,7 +94,10 @@ const SettingsPage = () => {
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Frame Button', 'farcaster-wp' ) }
+					title={ __(
+						'Frame Button',
+						'frames-integration-for-farcaster'
+					) }
 					initialOpen={ framesEnabled }
 				>
 					<PanelRow>
@@ -112,7 +115,10 @@ const SettingsPage = () => {
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Splash Background Color', 'farcaster-wp' ) }
+					title={ __(
+						'Splash Background Color',
+						'frames-integration-for-farcaster'
+					) }
 					initialOpen={ framesEnabled }
 				>
 					<PanelRow>
@@ -123,7 +129,10 @@ const SettingsPage = () => {
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Frame Splash Image', 'farcaster-wp' ) }
+					title={ __(
+						'Frame Splash Image',
+						'frames-integration-for-farcaster'
+					) }
 					initialOpen={ framesEnabled }
 				>
 					<PanelRow>
@@ -132,20 +141,23 @@ const SettingsPage = () => {
 							onChange={ setSplashImage }
 							labelText={ __(
 								'Image will be displayed as 200x200px.',
-								'farcaster-wp'
+								'frames-integration-for-farcaster'
 							) }
 						/>
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Fallback Frame Image', 'farcaster-wp' ) }
+					title={ __(
+						'Fallback Frame Image',
+						'frames-integration-for-farcaster'
+					) }
 					initialOpen={ framesEnabled }
 				>
 					<PanelRow>
 						<ImageUploadControl
 							labelText={ __(
 								'Image will be displayed in 3:2 aspect ratio.',
-								'farcaster-wp'
+								'frames-integration-for-farcaster'
 							) }
 							value={ fallbackImage }
 							onChange={ setFallbackImage }
@@ -169,7 +181,10 @@ const SettingsPage = () => {
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Tipping Chains', 'farcaster-wp' ) }
+					title={ __(
+						'Tipping Chains',
+						'frames-integration-for-farcaster'
+					) }
 					initialOpen={ tippingEnabled }
 				>
 					<PanelRow>
@@ -180,7 +195,10 @@ const SettingsPage = () => {
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
-					title={ __( 'Tipping Amounts', 'farcaster-wp' ) }
+					title={ __(
+						'Tipping Amounts',
+						'frames-integration-for-farcaster'
+					) }
 					initialOpen={ tippingEnabled }
 				>
 					<PanelRow>
@@ -218,7 +236,10 @@ const SettingsPage = () => {
 			</Panel>
 			<Panel header="Manifest">
 				<PanelBody
-					title={ __( 'Manifest Validation', 'farcaster-wp' ) }
+					title={ __(
+						'Manifest Validation',
+						'frames-integration-for-farcaster'
+					) }
 				>
 					<PanelRow>
 						<ManifestViewer
