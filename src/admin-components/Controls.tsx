@@ -147,7 +147,10 @@ const ChainsControl = ( { value = [], onChange } ) => {
 							htmlFor="chains-control"
 							className="components-base-control__label"
 						>
-							{ __( 'Supported Chains', 'farcaster-wp' ) }
+							{ __(
+								'Supported Chains',
+								'frames-integration-for-farcaster'
+							) }
 						</label>
 						<div id="chains-control">
 							{ enabledChains.length > 0 ? (
@@ -173,7 +176,7 @@ const ChainsControl = ( { value = [], onChange } ) => {
 								>
 									{ __(
 										'No chains selected. Add a chain below to get started.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</div>
 							) }
@@ -183,14 +186,17 @@ const ChainsControl = ( { value = [], onChange } ) => {
 				{ availableToAdd.length > 0 && (
 					<div className="components-base-control">
 						<SelectControl
-							label={ __( 'Add Chain', 'farcaster-wp' ) }
+							label={ __(
+								'Add Chain',
+								'frames-integration-for-farcaster'
+							) }
 							value=""
 							options={ [
 								{
 									value: '',
 									label: __(
 										'Select a chain to add…',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									),
 								},
 								...availableToAdd.map( ( chain ) => ( {
@@ -218,7 +224,10 @@ const SplashBackgroundColorControl = ( { value, onChange } ) => {
 const ManifestControl = ( { value, onChange } ) => {
 	return (
 		<TextareaControl
-			label={ __( 'Domain Manifest', 'farcaster-wp' ) }
+			label={ __(
+				'Domain Manifest',
+				'frames-integration-for-farcaster'
+			) }
 			value={ value }
 			onChange={ onChange }
 		/>
@@ -258,15 +267,21 @@ const TippingAmountsControl = ( { value = [], onChange } ) => {
 							htmlFor="tipping-amounts-control"
 							className="components-base-control__label"
 						>
-							{ __( 'Tipping Amounts (in', 'farcaster-wp' ) }{ ' ' }
+							{ __(
+								'Tipping Amounts (in',
+								'frames-integration-for-farcaster'
+							) }{ ' ' }
 							<a
 								href="https://zora.co/writings/sparks"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								{ __( 'Sparks', 'farcaster-wp' ) }
+								{ __(
+									'Sparks',
+									'frames-integration-for-farcaster'
+								) }
 							</a>
-							{ __( ')', 'farcaster-wp' ) }
+							{ __( ')', 'frames-integration-for-farcaster' ) }
 						</label>
 						<div id="tipping-amounts-control">
 							{ value.length > 0 ? (
@@ -293,7 +308,7 @@ const TippingAmountsControl = ( { value = [], onChange } ) => {
 								>
 									{ __(
 										'No tipping amounts configured. Add an amount below to get started.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</div>
 							) }
@@ -301,7 +316,7 @@ const TippingAmountsControl = ( { value = [], onChange } ) => {
 					</div>
 				</div>
 				<Button variant="secondary" onClick={ addAmount } icon="plus">
-					{ __( 'Add Amount', 'farcaster-wp' ) }
+					{ __( 'Add Amount', 'frames-integration-for-farcaster' ) }
 				</Button>
 			</div>
 		</DndProvider>
@@ -311,17 +326,17 @@ const TippingAmountsControl = ( { value = [], onChange } ) => {
 const ButtonTextControl = ( { value, onChange, useTitleAsButtonText } ) => {
 	return (
 		<TextControl
-			label={ __( 'Button Text', 'farcaster-wp' ) }
+			label={ __( 'Button Text', 'frames-integration-for-farcaster' ) }
 			value={ value }
 			help={
 				! useTitleAsButtonText
 					? __(
 							'This text will be used as the button text for all posts. Limited to 32 characters.',
-							'farcaster-wp'
+							'frames-integration-for-farcaster'
 					  )
 					: __(
 							'This text will be used as the button text when frame is used outside of casts. Limited to 32 characters.',
-							'farcaster-wp'
+							'frames-integration-for-farcaster'
 					  )
 			}
 			onChange={ onChange }
@@ -336,18 +351,21 @@ const TippingAddressControl = ( { value, onChange } ) => {
 	return (
 		<div style={ { width: '100%' } }>
 			<TextControl
-				label={ __( 'Tipping Address', 'farcaster-wp' ) }
+				label={ __(
+					'Tipping Address',
+					'frames-integration-for-farcaster'
+				) }
 				value={ value }
 				onChange={ onChange }
 				help={
 					isInvalid
 						? __(
 								'Please enter a valid Ethereum address',
-								'farcaster-wp'
+								'frames-integration-for-farcaster'
 						  )
 						: __(
 								'Enter the Ethereum address that will receive tips',
-								'farcaster-wp'
+								'frames-integration-for-farcaster'
 						  )
 				}
 				className={ isInvalid ? 'has-error' : '' }
@@ -359,7 +377,7 @@ const TippingAddressControl = ( { value, onChange } ) => {
 const MessageControl = ( { value, onChange } ) => {
 	return (
 		<TextareaControl
-			label={ __( 'Message', 'farcaster-wp' ) }
+			label={ __( 'Message', 'frames-integration-for-farcaster' ) }
 			value={ value }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
@@ -371,7 +389,10 @@ const UseTitleAsButtonTextControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
 			checked={ value }
-			label={ __( 'Use Post Title as Button Text', 'farcaster-wp' ) }
+			label={ __(
+				'Use Post Title as Button Text',
+				'frames-integration-for-farcaster'
+			) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 		/>
@@ -382,7 +403,10 @@ const NotificationsEnabledControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
 			checked={ value }
-			label={ __( 'Enable Notifications', 'farcaster-wp' ) }
+			label={ __(
+				'Enable Notifications',
+				'frames-integration-for-farcaster'
+			) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 		/>
@@ -393,7 +417,10 @@ const DebugEnabledControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
 			checked={ value }
-			label={ __( 'Enable SDK Logging', 'farcaster-wp' ) }
+			label={ __(
+				'Enable SDK Logging',
+				'frames-integration-for-farcaster'
+			) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 		/>
@@ -404,7 +431,10 @@ const FramesEnabledControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
 			checked={ value }
-			label={ __( 'Enable Farcaster Frames', 'farcaster-wp' ) }
+			label={ __(
+				'Enable Farcaster Frames',
+				'frames-integration-for-farcaster'
+			) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 		/>
@@ -415,7 +445,7 @@ const TippingEnabledControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
 			checked={ value }
-			label={ __( 'Enable Tipping', 'farcaster-wp' ) }
+			label={ __( 'Enable Tipping', 'frames-integration-for-farcaster' ) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 		/>
@@ -426,7 +456,7 @@ const DisplayControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
 			checked={ value }
-			label={ __( 'Display', 'farcaster-wp' ) }
+			label={ __( 'Display', 'frames-integration-for-farcaster' ) }
 			onChange={ onChange }
 			__nextHasNoMarginBottom
 		/>
@@ -438,22 +468,25 @@ const SizeControl = ( { value, onChange } ) => {
 		<FontSizePicker
 			fontSizes={ [
 				{
-					name: __( 'Small', 'farcaster-wp' ),
+					name: __( 'Small', 'frames-integration-for-farcaster' ),
 					size: 'small',
 					slug: 'small',
 				},
 				{
-					name: __( 'Medium', 'farcaster-wp' ),
+					name: __( 'Medium', 'frames-integration-for-farcaster' ),
 					size: 'medium',
 					slug: 'medium',
 				},
 				{
-					name: __( 'Large', 'farcaster-wp' ),
+					name: __( 'Large', 'frames-integration-for-farcaster' ),
 					size: 'large',
 					slug: 'large',
 				},
 				{
-					name: __( 'Extra Large', 'farcaster-wp' ),
+					name: __(
+						'Extra Large',
+						'frames-integration-for-farcaster'
+					),
 					size: 'x-large',
 					slug: 'x-large',
 				},
@@ -483,7 +516,7 @@ const ImageUploadControl = ( {
 			}
 			help={ __(
 				'This image will be used as the splash image for all posts.',
-				'farcaster-wp'
+				'frames-integration-for-farcaster'
 			) }
 			allowedTypes={ [ 'image' ] }
 			value={ value }
@@ -578,18 +611,21 @@ const RPCURLControl = ( { value, onChange } ) => {
 	return (
 		<div style={ { width: '100%' } }>
 			<TextControl
-				label={ __( 'RPC URL for Optimism', 'farcaster-wp' ) }
+				label={ __(
+					'RPC URL for Optimism',
+					'frames-integration-for-farcaster'
+				) }
 				value={ value }
 				onChange={ onChange }
 				help={
 					! value || value === ''
 						? __(
 								'Enter the URL of your Ethereum RPC for the Optimism chain. Required for complete key verification.',
-								'farcaster-wp'
+								'frames-integration-for-farcaster'
 						  )
 						: __(
 								'Enter the URL of your Ethereum RPC for the Optimism chain.',
-								'farcaster-wp'
+								'frames-integration-for-farcaster'
 						  )
 				}
 				className={ ! value || value === '' ? 'has-error' : '' }

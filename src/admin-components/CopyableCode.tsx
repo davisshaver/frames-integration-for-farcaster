@@ -63,8 +63,8 @@ const CopyableCode = ( {
 					} }
 				>
 					{ isCopied
-						? __( 'Copied!', 'farcaster-wp' )
-						: __( 'Copy', 'farcaster-wp' ) }
+						? __( 'Copied!', 'frames-integration-for-farcaster' )
+						: __( 'Copy', 'frames-integration-for-farcaster' ) }
 				</Button>
 			) }
 			{ showDownloadButton && (
@@ -79,7 +79,7 @@ const CopyableCode = ( {
 						border: '1px solid #ccc',
 					} }
 				>
-					{ __( 'Download', 'farcaster-wp' ) }
+					{ __( 'Download', 'frames-integration-for-farcaster' ) }
 				</Button>
 			) }
 		</div>

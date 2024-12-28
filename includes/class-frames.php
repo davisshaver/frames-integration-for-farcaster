@@ -1,6 +1,6 @@
 <?php
 /**
- * Farcaster WP plugin frames handling.
+ * Frames Integration for Farcaster plugin frames handling.
  *
  * @package Farcaster_WP
  */
@@ -75,7 +75,7 @@ class Frames {
 	 * @return string Button text.
 	 */
 	public static function get_button_text( $options ) {
-		return $options['button_text'] ?? __( 'Read More', 'farcaster-wp' );
+		return $options['button_text'] ?? __( 'Read More', 'frames-integration-for-farcaster' );
 	}
 
 	/**
@@ -104,7 +104,7 @@ class Frames {
 		
 		$use_title_as_button_text = $options['use_title_as_button_text'] ?? false;
 		if ( empty( $use_title_as_button_text ) ) {
-			$button_text = $options['button_text'] ?? __( 'Read More', 'farcaster-wp' );
+			$button_text = $options['button_text'] ?? __( 'Read More', 'frames-integration-for-farcaster' );
 		} else {
 			$title       = ! is_front_page() && is_singular() ? get_the_title() : get_bloginfo( 'name' );
 			$button_text = strlen( $title ) > 29 ? substr( $title, 0, 29 ) . '...' : $title;

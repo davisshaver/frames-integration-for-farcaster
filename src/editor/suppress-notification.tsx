@@ -23,10 +23,10 @@ interface SuppressNotificationsProps {
 }
 
 /**
- * Farcaster WP suppress notifications
+ * Frames Integration for Farcaster suppress notifications
  *
  * @param {SuppressNotificationsProps} props - Props
- * @return {JSX.Element} The Farcaster WP suppress notifications component
+ * @return {JSX.Element} The Frames Integration for Farcaster suppress notifications component
  */
 const FarcasterWpSuppressNotifications = ( {
 	meta,
@@ -46,7 +46,7 @@ const FarcasterWpSuppressNotifications = ( {
 					<label htmlFor="farcaster_wp_suppress_notifications">
 						{ __(
 							'Suppress Farcaster notifications',
-							'farcaster-wp'
+							'frames-integration-for-farcaster'
 						) }
 					</label>
 					<FormToggle

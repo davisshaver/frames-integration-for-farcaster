@@ -83,21 +83,30 @@ export function FAB( { context }: { context: FrameContext } ) {
 
 	const sendTipTitle = useMemo( () => {
 		if ( isConfirming ) {
-			return __( 'Confirming tip…', 'farcaster-wp' );
+			return __( 'Confirming tip…', 'frames-integration-for-farcaster' );
 		}
 		if ( isConfirmed ) {
-			return __( 'Tip sent!', 'farcaster-wp' );
+			return __( 'Tip sent!', 'frames-integration-for-farcaster' );
 		}
 		if ( isSendTxError && isTipping ) {
-			return __( 'Tipping error, try again', 'farcaster-wp' );
+			return __(
+				'Tipping error, try again',
+				'frames-integration-for-farcaster'
+			);
 		}
 		if ( isTipping ) {
-			return __( 'Cancel tipping', 'farcaster-wp' );
+			return __( 'Cancel tipping', 'frames-integration-for-farcaster' );
 		}
 		if ( ! isConnected ) {
-			return __( 'Connect your wallet to tip', 'farcaster-wp' );
+			return __(
+				'Connect your wallet to tip',
+				'frames-integration-for-farcaster'
+			);
 		}
-		return __( 'Tip the creator of this site', 'farcaster-wp' );
+		return __(
+			'Tip the creator of this site',
+			'frames-integration-for-farcaster'
+		);
 	}, [ isConfirming, isConfirmed, isSendTxError, isConnected, isTipping ] );
 
 	useEffect( () => {
@@ -173,7 +182,10 @@ export function FAB( { context }: { context: FrameContext } ) {
 							textAlign: 'center',
 						} }
 					>
-						{ __( 'Tip the creator of this site', 'farcaster-wp' ) }
+						{ __(
+							'Tip the creator of this site',
+							'frames-integration-for-farcaster'
+						) }
 					</h2>
 					<p
 						style={ {
@@ -186,7 +198,10 @@ export function FAB( { context }: { context: FrameContext } ) {
 					>
 						{ isConfirmed && (
 							<>
-								{ __( 'Tip sent!', 'farcaster-wp' ) }{ ' ' }
+								{ __(
+									'Tip sent!',
+									'frames-integration-for-farcaster'
+								) }{ ' ' }
 								<button
 									style={ {
 										backgroundColor: 'transparent',
@@ -204,7 +219,7 @@ export function FAB( { context }: { context: FrameContext } ) {
 								>
 									{ __(
 										'Click here to keep reading.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</button>
 							</>
@@ -213,7 +228,12 @@ export function FAB( { context }: { context: FrameContext } ) {
 						{ ! isConfirming &&
 							! isConfirmed &&
 							isSendTxPending && (
-								<>{ __( 'Tip is pending…', 'farcaster-wp' ) }</>
+								<>
+									{ __(
+										'Tip is pending…',
+										'frames-integration-for-farcaster'
+									) }
+								</>
 							) }
 						{ ! isConfirmed &&
 							! isConfirming &&
@@ -222,7 +242,7 @@ export function FAB( { context }: { context: FrameContext } ) {
 								<>
 									{ __(
 										'You are connected on',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }{ ' ' }
 									<select
 										style={ {
@@ -261,7 +281,10 @@ export function FAB( { context }: { context: FrameContext } ) {
 											</option>
 										) ) }
 									</select>{ ' ' }
-									{ __( 'with the address', 'farcaster-wp' ) }{ ' ' }
+									{ __(
+										'with the address',
+										'frames-integration-for-farcaster'
+									) }{ ' ' }
 									{ truncateAddress( address ) }
 									{ '.' }{ ' ' }
 									<button
@@ -279,7 +302,10 @@ export function FAB( { context }: { context: FrameContext } ) {
 										} }
 										onClick={ () => disconnect() }
 									>
-										{ __( 'Disconnect.', 'farcaster-wp' ) }
+										{ __(
+											'Disconnect.',
+											'frames-integration-for-farcaster'
+										) }
 									</button>
 									{ isSwitchChainError && (
 										<div
@@ -309,7 +335,7 @@ export function FAB( { context }: { context: FrameContext } ) {
 							<>
 								{ __(
 									'You are not connected to a wallet.',
-									'farcaster-wp'
+									'frames-integration-for-farcaster'
 								) }{ ' ' }
 								<button
 									style={ {
@@ -332,7 +358,7 @@ export function FAB( { context }: { context: FrameContext } ) {
 								>
 									{ __(
 										'Connect your wallet to tip.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</button>
 							</>
@@ -398,7 +424,10 @@ export function FAB( { context }: { context: FrameContext } ) {
 									padding: '1rem',
 								} }
 							>
-								{ __( 'Try again', 'farcaster-wp' ) }
+								{ __(
+									'Try again',
+									'frames-integration-for-farcaster'
+								) }
 							</button>
 						</div>
 					) }
@@ -409,7 +438,10 @@ export function FAB( { context }: { context: FrameContext } ) {
 							textAlign: 'center',
 						} }
 					>
-						{ __( '✧ is a new unit of Ethereum.', 'farcaster-wp' ) }{ ' ' }
+						{ __(
+							'✧ is a new unit of Ethereum.',
+							'frames-integration-for-farcaster'
+						) }{ ' ' }
 						<a
 							style={ {
 								color: 'white',
@@ -425,7 +457,10 @@ export function FAB( { context }: { context: FrameContext } ) {
 								);
 							} }
 						>
-							{ __( 'Learn more.', 'farcaster-wp' ) }
+							{ __(
+								'Learn more.',
+								'frames-integration-for-farcaster'
+							) }
 						</a>
 					</p>
 				</div>

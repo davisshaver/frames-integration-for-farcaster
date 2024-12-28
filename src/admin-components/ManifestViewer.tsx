@@ -144,10 +144,13 @@ const ManifestViewer = ( {
 			} catch ( err ) {
 				setFetchError(
 					err instanceof Error
-						? `${ __( 'Error:', 'farcaster-wp' ) } ${ err.message }`
+						? `${ __(
+								'Error:',
+								'frames-integration-for-farcaster'
+						  ) } ${ err.message }`
 						: __(
 								'Farcaster manifest file not found or request timed out at /.well-known/farcaster.json',
-								'farcaster-wp'
+								'frames-integration-for-farcaster'
 						  )
 				);
 			} finally {
@@ -158,7 +161,14 @@ const ManifestViewer = ( {
 	}, [] );
 
 	if ( isLoading ) {
-		return <Text>{ __( 'Loading manifest…', 'farcaster-wp' ) }</Text>;
+		return (
+			<Text>
+				{ __(
+					'Loading manifest…',
+					'frames-integration-for-farcaster'
+				) }
+			</Text>
+		);
 	}
 
 	return (
@@ -174,7 +184,7 @@ const ManifestViewer = ( {
 			<Text>
 				{ __(
 					'The Farcaster manifest file declares metadata for your frame application and defines supported triggers.',
-					'farcaster-wp'
+					'frames-integration-for-farcaster'
 				) }{ ' ' }
 				<a
 					href="https://docs.farcaster.xyz/developers/frames/v2/spec#frame-manifest"
@@ -183,12 +193,12 @@ const ManifestViewer = ( {
 				>
 					{ __(
 						'Learn more about the manifest specification.',
-						'farcaster-wp'
+						'frames-integration-for-farcaster'
 					) }
 				</a>{ ' ' }
 				{ __(
-					'Farcaster WP can help you manage your manifest file. To start, enter the domain manifest obtained from the Warpcast app.',
-					'farcaster-wp'
+					'Frames Integration for Farcaster can help you manage your manifest file. To start, enter the domain manifest obtained from the Warpcast app.',
+					'frames-integration-for-farcaster'
 				) }{ ' ' }
 				<a
 					href="https://docs.farcaster.xyz/developers/frames/v2/notifications_webhooks#create-a-farcaster-domain-manifest"
@@ -197,7 +207,7 @@ const ManifestViewer = ( {
 				>
 					{ __(
 						'Follow the instructions here to create a domain manifest.',
-						'farcaster-wp'
+						'frames-integration-for-farcaster'
 					) }
 				</a>
 			</Text>
@@ -213,7 +223,7 @@ const ManifestViewer = ( {
 						<Text>
 							{ __(
 								'Here is the current manifest on your site:',
-								'farcaster-wp'
+								'frames-integration-for-farcaster'
 							) }
 						</Text>
 					</div>
@@ -226,7 +236,7 @@ const ManifestViewer = ( {
 						<Notice status="error" isDismissible={ false }>
 							{ __(
 								'Validation complete, manifest is not valid. Errors:',
-								'farcaster-wp'
+								'frames-integration-for-farcaster'
 							) }{ ' ' }
 							<ul style={ { margin: 0, paddingLeft: '1rem' } }>
 								{ JSON.parse( validationError ).map(
@@ -249,13 +259,13 @@ const ManifestViewer = ( {
 										/* translators: %d: number of mismatches */
 										__(
 											'Validation complete, manifest is valid. %d mismatches found with current settings.',
-											'farcaster-wp'
+											'frames-integration-for-farcaster'
 										),
 										mismatches.count
 								  )
 								: __(
 										'Validation complete, manifest is valid.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 								  ) }
 						</Notice>
 					) }
@@ -268,7 +278,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest name does not match the current site name.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</Notice>
 							) }
@@ -279,7 +289,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest home URL does not match the current site home URL.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</Notice>
 							) }
@@ -290,7 +300,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest icon URL does not match the current site icon URL.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</Notice>
 							) }
@@ -301,7 +311,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest image URL does not match the current site image URL.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</Notice>
 							) }
@@ -312,7 +322,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest button title does not match the current site button title.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</Notice>
 							) }
@@ -323,7 +333,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest splash image URL does not match the current site splash image URL.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</Notice>
 							) }
@@ -334,7 +344,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest splash background color does not match the current site splash background color.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</Notice>
 							) }
@@ -345,7 +355,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest webhook URL does not match the current site webhook URL.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</Notice>
 							) }
@@ -356,7 +366,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest header does not match the domain manifest header.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</Notice>
 							) }
@@ -367,7 +377,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest payload does not match the domain manifest payload.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</Notice>
 							) }
@@ -378,7 +388,7 @@ const ManifestViewer = ( {
 								>
 									{ __(
 										'The manifest signature does not match the domain manifest signature.',
-										'farcaster-wp'
+										'frames-integration-for-farcaster'
 									) }
 								</Notice>
 							) }
@@ -391,7 +401,7 @@ const ManifestViewer = ( {
 					<Text>
 						{ __(
 							'Are you going to update the manifest to match current settings? Here is the manifest data to reference. This should be available at /.well-known/farcaster.json on your site.',
-							'farcaster-wp'
+							'frames-integration-for-farcaster'
 						) }
 					</Text>
 				</div>

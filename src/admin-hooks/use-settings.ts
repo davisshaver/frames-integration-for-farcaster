@@ -69,26 +69,26 @@ export const useSettings = () => {
 	useEffect( () => {
 		apiFetch< WPSettings >( { path: '/wp/v2/settings' } ).then(
 			( settings ) => {
-				setFramesEnabled( settings.farcaster_wp.frames_enabled );
+				setFramesEnabled( settings.farcaster_wp?.frames_enabled );
 				setSplashBackgroundColor(
-					settings.farcaster_wp.splash_background_color
+					settings.farcaster_wp?.splash_background_color
 				);
-				setButtonText( settings.farcaster_wp.button_text );
-				setSplashImage( settings.farcaster_wp.splash_image );
-				setFallbackImage( settings.farcaster_wp.fallback_image );
+				setButtonText( settings.farcaster_wp?.button_text );
+				setSplashImage( settings.farcaster_wp?.splash_image );
+				setFallbackImage( settings.farcaster_wp?.fallback_image );
 				setUseTitleAsButtonText(
-					settings.farcaster_wp.use_title_as_button_text
+					settings.farcaster_wp?.use_title_as_button_text
 				);
-				setDomainManifest( settings.farcaster_wp.domain_manifest );
+				setDomainManifest( settings.farcaster_wp?.domain_manifest );
 				setNotificationsEnabled(
-					settings.farcaster_wp.notifications_enabled
+					settings.farcaster_wp?.notifications_enabled
 				);
-				setDebugEnabled( settings.farcaster_wp.debug_enabled );
-				setTippingEnabled( settings.farcaster_wp.tipping_enabled );
-				setTippingAddress( settings.farcaster_wp.tipping_address );
-				setTippingAmounts( settings.farcaster_wp.tipping_amounts );
-				setTippingChains( settings.farcaster_wp.tipping_chains );
-				setRpcURL( settings.farcaster_wp.rpc_url );
+				setDebugEnabled( settings.farcaster_wp?.debug_enabled );
+				setTippingEnabled( settings.farcaster_wp?.tipping_enabled );
+				setTippingAddress( settings.farcaster_wp?.tipping_address );
+				setTippingAmounts( settings.farcaster_wp?.tipping_amounts );
+				setTippingChains( settings.farcaster_wp?.tipping_chains );
+				setRpcURL( settings.farcaster_wp?.rpc_url );
 			}
 		);
 	}, [] );
@@ -101,7 +101,7 @@ export const useSettings = () => {
 				const actionObject = ( await createErrorNotice(
 					__(
 						'RPC URL is required for key validation. Currently, signatures will be validated, but keys will not be verified using contract.',
-						'farcaster-wp'
+						'frames-integration-for-farcaster'
 					)
 				) ) as any;
 				noticeId = actionObject?.notice?.id;
@@ -133,7 +133,7 @@ export const useSettings = () => {
 				createErrorNotice(
 					__(
 						'Did not save settings, domain manifest is invalid.',
-						'farcaster-wp'
+						'frames-integration-for-farcaster'
 					)
 				).then(
 					() =>
@@ -151,7 +151,10 @@ export const useSettings = () => {
 				new URL( rpcURL );
 			} catch {
 				createErrorNotice(
-					__( 'RPC URL is invalid.', 'farcaster-wp' )
+					__(
+						'RPC URL is invalid.',
+						'frames-integration-for-farcaster'
+					)
 				).then(
 					() =>
 						document.scrollingElement?.scrollTo( {
@@ -187,7 +190,7 @@ export const useSettings = () => {
 		} )
 			.then( () => {
 				createSuccessNotice(
-					__( 'Settings saved.', 'farcaster-wp' )
+					__( 'Settings saved.', 'frames-integration-for-farcaster' )
 				).then( () => {
 					if ( callback ) {
 						callback();
@@ -203,7 +206,10 @@ export const useSettings = () => {
 				console.error( error );
 				// @TODO: This doesn't seem to be styled as an error notice.
 				createErrorNotice(
-					__( 'Failed to save settings.', 'farcaster-wp' )
+					__(
+						'Failed to save settings.',
+						'frames-integration-for-farcaster'
+					)
 				).then(
 					() =>
 						document.scrollingElement?.scrollTo( {

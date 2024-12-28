@@ -1,6 +1,6 @@
 <?php
 /**
- * Farcaster WP plugin notifications handling.
+ * Frames Integration for Farcaster plugin notifications handling.
  *
  * @package Farcaster_WP
  */
@@ -162,7 +162,7 @@ class Notifications {
 	}
 
 	/**
-	 * Log Farcaster WP notifications errors.
+	 * Log Frames Integration for Farcaster notifications errors.
 	 *
 	 * @param mixed $data The data to log.
 	 */
