@@ -4,7 +4,7 @@ Tags: WordPress, web3, Farcaster, Ethereum
 Tested up to: 6.7.1
 Requires at least: 6.7.0
 Requires PHP: 7.0
-Stable tag: 0.0.41
+Stable tag: 0.0.42
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,8 +30,11 @@ This plugin is developed in public on [Github](https://github.com/davisshaver/fr
 
 == Changelog ==
 
-= 0.0.41 =
+= 0.0.42 =
 * Upload .org zip to Github
+
+= 0.0.41 =
+* Remove unnecessary phpunit.xml file
 
 = 0.0.40 =
 * Add attestations on Github
