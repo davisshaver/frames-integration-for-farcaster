@@ -993,6 +993,7 @@ class Notifications_Test extends WP_UnitTestCase {
 	public function test_add_subscription_failure() {
 		global $wpdb;
 		$wpdb->hide_errors();
+		$wpdb->suppress_errors( true );
 
 		// First, add a valid subscription.
 		$test_data = array(
@@ -1016,6 +1017,7 @@ class Notifications_Test extends WP_UnitTestCase {
 		// Verify that the insert failed.
 		$this->assertFalse( $result );
 		$wpdb->show_errors();
+		$wpdb->suppress_errors( false );
 	}
 
 	/**
@@ -1024,6 +1026,7 @@ class Notifications_Test extends WP_UnitTestCase {
 	public function test_record_event_failure() {
 		global $wpdb;
 		$wpdb->hide_errors();
+		$wpdb->suppress_errors( true );
 		// Try to insert with an invalid column name.
 		$test_data = array(
 			'event_type'        => 'test_event',
@@ -1045,6 +1048,7 @@ class Notifications_Test extends WP_UnitTestCase {
 		// Verify that the insert failed.
 		$this->assertFalse( $result );
 		$wpdb->show_errors();
+		$wpdb->suppress_errors( false );
 	}
 
 	/**

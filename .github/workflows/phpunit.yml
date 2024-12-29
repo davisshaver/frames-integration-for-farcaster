@@ -53,17 +53,17 @@ jobs:
                 workflow: .github/workflows/phpunit.yml
                 branch: main
                 name: coverage-report
-                path: tests/base
+                path: base
 
             - if: ${{ github.event_name != 'pull_request' }}
               uses: actions/upload-artifact@v4
               with:
                 name: coverage-report
-                path: tests/coverage.xml
+                path: coverage.xml
         
             - if: ${{ github.event_name == 'pull_request' }}
               name: Coverage Report as Comment (Clover)
               uses: lucassabreu/comment-coverage-clover@main
               with:
                 file: coverage.xml
-                base-file: tests/base/coverage.xml
+                base-file: base/coverage.xml
