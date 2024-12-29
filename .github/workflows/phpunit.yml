@@ -1,6 +1,10 @@
 name: PHPUnit Tests
 
-on: [push]
+on:
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
     test:
@@ -61,6 +65,13 @@ jobs:
                 name: coverage-report
                 path: coverage.xml
         
+
+            - if: ${{ github.event_name == 'pull_request' }}
+              name: Coverage Report as Comment (Clover)
+              uses: lucassabreu/comment-coverage-clover@main
+              with:
+                file: coverage.xml
+
             - if: ${{ github.event_name == 'pull_request' }}
               name: Coverage Report as Comment (Clover)
               uses: lucassabreu/comment-coverage-clover@main
