@@ -19,6 +19,8 @@ class Initializer {
 		Admin::init();
 		API::init();
 		Frames::init();
+		Storage::init();
 		Notifications::init();
+		Migration::init();
 	}
 }

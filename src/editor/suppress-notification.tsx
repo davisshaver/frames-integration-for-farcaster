@@ -41,7 +41,7 @@ const FarcasterWpSuppressNotifications = ( {
 
 	return (
 		<PluginPostStatusInfo className="farcaster_wp__post-meta-toggles">
-			{ [ 'post', 'page' ].includes( postType ) && (
+			{ [ 'post' ].includes( postType ) && (
 				<div>
 					<label htmlFor="farcaster_wp_suppress_notifications">
 						{ __(

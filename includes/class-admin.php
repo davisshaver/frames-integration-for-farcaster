@@ -97,7 +97,7 @@ class Admin {
 	 */
 	public static function action_admin_menu() {
 		add_options_page(
-			__( 'Farcaster', 'frames-integration-for-farcaster' ),
+			__( 'Frames Integration for Farcaster Settings', 'frames-integration-for-farcaster' ),
 			__( 'Farcaster', 'frames-integration-for-farcaster' ),
 			'manage_options',
 			self::FARCASTER_WP_PAGE_SLUG,

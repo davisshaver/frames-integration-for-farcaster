@@ -1,6 +1,10 @@
 name: PHPUnit Tests
 
-on: [push]
+on:
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
     test:
@@ -24,7 +28,7 @@ jobs:
             - name: Set Up PHP
               uses: shivammathur/setup-php@v2
               with:
-                coverage: none
+                coverage: xdebug
                 php-version: "8.2"
       
             - name: Install PHP Dependencies
@@ -42,5 +46,34 @@ jobs:
                 done
               timeout-minutes: 1
 
-            - name: Run PHPUnit Tests
-              run: composer test
+            - name: Run PHPUnit Tests with Coverage
+              run: composer run coverage
+
+            - if: ${{ github.event_name == 'pull_request' }}
+              name: Download artifact
+              uses: dawidd6/action-download-artifact@v2.14.1
+              continue-on-error: true
+              with:
+                workflow: .github/workflows/phpunit.yml
+                branch: main
+                name: coverage-report
+                path: base
+
+            - if: ${{ github.event_name != 'pull_request' }}
+              uses: actions/upload-artifact@v4
+              with:
+                name: coverage-report
+                path: coverage.xml
+
+            - if: ${{ github.event_name == 'pull_request' }}
+              name: Coverage Report as Comment (Clover)
+              uses: lucassabreu/comment-coverage-clover@main
+              with:
+                file: coverage.xml
+
+            - if: ${{ github.event_name == 'pull_request' }}
+              name: Coverage Report as Comment (Clover)
+              uses: lucassabreu/comment-coverage-clover@main
+              with:
+                file: coverage.xml
+                base-file: base/coverage.xml

@@ -8,7 +8,16 @@
 >
     <testsuites>
         <testsuite name="unit">
-            <directory prefix="class-" suffix=".php">./tests</directory>
+            <directory prefix="class-" suffix=".php">./tests/unit</directory>
         </testsuite>
     </testsuites>
+    <coverage>
+        <include>
+            <directory suffix=".php">./includes</directory>
+        </include>
+        <report>
+            <html outputDirectory="coverage-report" />
+            <clover outputFile="coverage.xml" />
+        </report>
+    </coverage>
 </phpunit>

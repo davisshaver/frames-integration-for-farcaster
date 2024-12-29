@@ -7,17 +7,12 @@
 
 namespace Farcaster_WP;
 
+use Farcaster_WP\Storage;
+
 /**
  * Class to handle Farcaster notifications integration.
  */
 class Notifications {
-
-	/**
-	 * The option name for the notification subscriptions.
-	 *
-	 * @var string
-	 */
-	public static $notifications_option_name = 'farcaster_wp_subscriptions';
 
 	/**
 	 * Runs the initialization.
@@ -74,7 +69,7 @@ class Notifications {
 		$post = get_post( $post_id );
 		if ( ! empty( $post ) ) {
 			$suppress_notifications = get_post_meta( $post_id, 'farcaster_wp_suppress_notifications', true );
-			if ( empty( $suppress_notifications ) ) {
+			if ( ! empty( $suppress_notifications ) ) {
 				self::log_error( 'Notifications suppressed for post ' . $post_id );
 				return;
 			}
@@ -94,17 +89,15 @@ class Notifications {
 	}
 
 	/**
-	 * Get the tokens by url.
+	 * Get the tokens by app url.
 	 *
-	 * @return array The tokens by url.
+	 * @return array The tokens by app url.
 	 */
-	public static function get_tokens_by_url() {
-		$subscriptions = get_option( self::$notifications_option_name, array() );
+	public static function get_tokens_by_app_url() {
+		$subscriptions = Storage::get_active_subscriptions();
 		$tokens_by_url = array();
-		foreach ( $subscriptions as $fid => $apps ) {
-			foreach ( $apps as $app_key => $app ) {
-				$tokens_by_url[ $app['url'] ][] = $app['token'];
-			}
+		foreach ( $subscriptions as $subscription ) {
+			$tokens_by_url[ $subscription['app_url'] ][] = $subscription['token'];
 		}
 		return $tokens_by_url;
 	}
@@ -112,13 +105,13 @@ class Notifications {
 	/**
 	 * Retry notifications.
 	 *
-	 * @param string $url The URL.
+	 * @param string $app_url The URL.
 	 * @param array  $tokens The tokens.
 	 * @param int    $post_id The post ID.
 	 */
-	public static function retry_notifications( $url, $tokens, $post_id ) {
+	public static function retry_notifications( $app_url, $tokens, $post_id ) {
 		$notification_body = self::get_notification_body( $post_id );
-		self::chunk_and_send_notifications( $tokens, $notification_body, $url, $post_id );
+		self::chunk_and_send_notifications( $tokens, $notification_body, $app_url, $post_id );
 	}
 
 	/**
@@ -127,7 +120,7 @@ class Notifications {
 	 * @param object $post The post object.
 	 */
 	public static function initiate_notifications( $post ) {
-		$tokens_by_app = self::get_tokens_by_url();
+		$tokens_by_app = self::get_tokens_by_app_url();
 		self::send_notifications_by_app( $tokens_by_app, $post->ID );
 	}
 
@@ -156,8 +149,8 @@ class Notifications {
 	 */
 	public static function send_notifications_by_app( $tokens_by_app, $post_id ) {
 		$notification_body = self::get_notification_body( $post_id );
-		foreach ( $tokens_by_app as $url => $tokens ) {
-			self::chunk_and_send_notifications( $tokens, $notification_body, $url, $post_id );
+		foreach ( $tokens_by_app as $app_url => $tokens ) {
+			self::chunk_and_send_notifications( $tokens, $notification_body, $app_url, $post_id );
 		}
 	}
 
@@ -167,7 +160,7 @@ class Notifications {
 	 * @param mixed $data The data to log.
 	 */
 	private static function log_error( $data ) {
-		if ( ! apply_filters( 'farcaster_wp_log_notification_info_as_errors', '__return_false' ) ) {
+		if ( ! apply_filters( 'farcaster_wp_log_notification_info_as_errors', false ) ) {
 			return;
 		}
 		if ( is_array( $data ) || is_object( $data ) ) {
@@ -182,16 +175,16 @@ class Notifications {
 	/**
 	 * Send the notification.
 	 *
-	 * @param string $url The URL.
+	 * @param string $app_url The URL.
 	 * @param array  $notification_body The notification body.
 	 * @param int    $post_id The post ID.
 	 * @return array The response.
 	 */
-	public static function send_notification( $url, $notification_body, $post_id ) {
-		self::log_error( 'Sending notification to ' . $url );
+	public static function send_notification( $app_url, $notification_body, $post_id ) {
+		self::log_error( 'Sending notification to ' . $app_url );
 		self::log_error( $notification_body );
 		$response = wp_safe_remote_post(
-			$url,
+			$app_url,
 			array(
 				'body'    => wp_json_encode( $notification_body ),
 				'headers' => array(
@@ -220,7 +213,7 @@ class Notifications {
 				time() + 300,
 				'farcaster_wp_retry_notifications',
 				array(
-					$url,
+					$app_url,
 					$unsent_tokens,
 					$post_id,
 				)
@@ -237,14 +230,14 @@ class Notifications {
 	 *
 	 * @param array  $tokens The tokens.
 	 * @param array  $notification_body The notification body.
-	 * @param string $url The URL.
+	 * @param string $app_url The URL.
 	 * @param int    $post_id The post ID.
 	 */
-	public static function chunk_and_send_notifications( $tokens, $notification_body, $url, $post_id ) {
+	public static function chunk_and_send_notifications( $tokens, $notification_body, $app_url, $post_id ) {
 		$chunks = array_chunk( $tokens, 100 );
 		foreach ( $chunks as $chunk ) {
 			$notification_body['tokens'] = $chunk;
-			$webhook_response            = self::send_notification( $url, $notification_body, $post_id );
+			$webhook_response            = self::send_notification( $app_url, $notification_body, $post_id );
 
 			if ( ! empty( $webhook_response['result'] ) ) {
 				// Add succesful tokens to post meta.
@@ -258,7 +251,7 @@ class Notifications {
 				// Process invalid tokens and remove them from the subscription.
 				if ( ! empty( $webhook_response['result']['invalidTokens'] ) ) {
 					foreach ( $webhook_response['result']['invalidTokens'] as $invalid_token ) {
-						self::remove_subscription_by_token( $invalid_token, $url );
+						self::remove_subscription_by_token( $invalid_token );
 					}
 				}
 
@@ -269,7 +262,7 @@ class Notifications {
 						time() + 300,
 						'farcaster_wp_retry_notifications',
 						array(
-							$url,
+							$app_url,
 							$rate_limited_tokens,
 							$post_id,
 						)
@@ -294,6 +287,21 @@ class Notifications {
 		self::log_error( $header );
 		self::log_error( $payload );
 		self::log_error( $signature );
+		Storage::record_event(
+			[
+				'event_type' => $event,
+				'fid'        => $header['fid'],
+				'timestamp'  => time(),
+				'full_event' => wp_json_encode(
+					array(
+						'header'    => $header,
+						'payload'   => $payload,
+						'signature' => $signature,
+					)
+				),
+			],
+			[ '%s', '%d', '%s', '%s' ]
+		);
 		switch ( $event ) {
 			case 'frame_added':
 				return self::process_frame_added( $header, $payload );
@@ -313,52 +321,83 @@ class Notifications {
 	 * Note: This data structure means that each FID + app key combo can only have one subscription.
 	 *
 	 * @param int    $fid The Farcaster ID.
-	 * @param string $key The app key (onchainer signer) public key.
-	 * @param string $url The URL for notifications.
+	 * @param string $app_key The app key (onchainer signer) public key.
+	 * @param string $app_url The URL for notifications.
 	 * @param string $token The token for notifications.
-	 * @return array The response.
 	 */
-	public static function add_subscription( $fid, $key, $url, $token ) {
-		$current_subscriptions                 = get_option( self::$notifications_option_name, array() );
-		$current_subscriptions[ $fid ][ $key ] = [
-			'url'       => $url,
-			'token'     => $token,
-			'timestamp' => time(),
-		];
-		update_option( self::$notifications_option_name, $current_subscriptions );
-		return [ 'success' => true ];
+	public static function add_subscription( $fid, $app_key, $app_url, $token ) {
+		// Look up the FID and the app key in the custom table.
+		$subscription = Storage::get_subscription_by_fid_and_app_key( $fid, $app_key );
+		if ( ! empty( $subscription ) ) {
+			// If the subscription exists and is not active, update the URL, token, and status.
+			if ( 'active' !== $subscription['status'] ) {
+				Storage::update_subscription(
+					$subscription['id'],
+					[
+						'status'            => 'active',
+						'token'             => $token,
+						'updated_timestamp' => time(),
+						'app_url'           => $app_url,
+					] 
+				);
+			}
+			return;
+		}
+
+		// If the fid and key don't exist, add a new subscription.
+		Storage::add_subscription(
+			[
+				'created_timestamp' => time(),
+				'fid'               => $fid,
+				'app_key'           => $app_key,
+				'status'            => 'active',
+				'token'             => $token,
+				'app_url'           => $app_url,
+			],
+			[ '%s', '%d', '%s', '%s', '%s', '%s' ]
+		);
 	}
 
 	/**
 	 * Remove a subscription by token.
 	 *
 	 * @param string $token The token.
-	 * @param string $url The URL.
 	 */
-	public static function remove_subscription_by_token( $token, $url ) {
-		$current_subscriptions = get_option( self::$notifications_option_name, array() );
-		foreach ( $current_subscriptions as $fid => $apps ) {
-			foreach ( $apps as $app_key => $app ) {
-				if ( $app['url'] === $url && $app['token'] === $token ) {
-					self::remove_subscription( $fid, $app_key );
-				}
-			}
+	public static function remove_subscription_by_token( $token ) {
+		$subscription = Storage::get_subscription_by_token( $token );
+		if ( empty( $subscription ) ) {
+			return;
 		}
+		Storage::update_subscription(
+			$subscription['id'],
+			[
+				'status'            => 'inactive',
+				'updated_timestamp' => time(),
+			],
+			[ '%s', '%s' ]
+		);
 	}
 
 	/**
 	 * Remove a subscription.
 	 *
 	 * @param int    $fid The Farcaster ID.
-	 * @param string $key The app key (onchainer signer) public key.
+	 * @param string $app_key The app key (onchainer signer) public key.
 	 * @return array The response.
 	 */
-	private static function remove_subscription( $fid, $key ) {
-		$current_subscriptions = get_option( self::$notifications_option_name, array() );
-		if ( ! empty( $current_subscriptions[ $fid ] ) && ! empty( $current_subscriptions[ $fid ][ $key ] ) ) {
-			unset( $current_subscriptions[ $fid ][ $key ] );
-			update_option( self::$notifications_option_name, $current_subscriptions );
+	private static function remove_subscription( $fid, $app_key ) {
+		$subscription = Storage::get_subscription_by_fid_and_app_key( $fid, $app_key );
+		if ( empty( $subscription ) ) {
+			return [ 'success' => true ];
 		}
+		Storage::update_subscription(
+			$subscription['id'],
+			[
+				'status'            => 'inactive',
+				'updated_timestamp' => time(),
+			],
+			[ '%s', '%s' ]
+		);
 		return [ 'success' => true ];
 	}
 
@@ -370,11 +409,12 @@ class Notifications {
 	 * @return array The response.
 	 */
 	public static function process_frame_added( $header, $payload ) {
-		$fid   = $header['fid'];
-		$key   = $header['key'];
-		$url   = $payload['notificationDetails']['url'];
-		$token = $payload['notificationDetails']['token'];
-		return self::add_subscription( $fid, $key, $url, $token );
+		$fid     = $header['fid'];
+		$app_key = $header['key'];
+		$app_url = $payload['notificationDetails']['url'];
+		$token   = $payload['notificationDetails']['token'];
+		self::add_subscription( $fid, $app_key, $app_url, $token );
+		return [ 'success' => true ];
 	}
 
 	/**
@@ -384,9 +424,10 @@ class Notifications {
 	 * @return array The response.
 	 */
 	public static function process_frame_removed( $header ) {
-		$fid = $header['fid'];
-		$key = $header['key'];
-		return self::remove_subscription( $fid, $key );
+		$fid     = $header['fid'];
+		$app_key = $header['key'];
+		self::remove_subscription( $fid, $app_key );
+		return [ 'success' => true ];
 	}
 
 	/**
@@ -396,13 +437,9 @@ class Notifications {
 	 * @return array The response.
 	 */
 	public static function process_notifications_disabled( $header ) {
-		$fid                   = $header['fid'];
-		$key                   = $header['key'];
-		$current_subscriptions = get_option( self::$notifications_option_name, array() );
-		if ( ! empty( $current_subscriptions[ $fid ] ) && ! empty( $current_subscriptions[ $fid ][ $key ] ) ) {
-			unset( $current_subscriptions[ $fid ][ $key ] );
-			update_option( self::$notifications_option_name, $current_subscriptions );
-		}
+		$fid     = $header['fid'];
+		$app_key = $header['key'];
+		self::remove_subscription( $fid, $app_key );
 		return [ 'success' => true ];
 	}
 
@@ -414,10 +451,11 @@ class Notifications {
 	 * @return array The response.
 	 */
 	public static function process_notifications_enabled( $header, $payload ) {
-		$fid   = $header['fid'];
-		$key   = $header['key'];
-		$url   = $payload['notificationDetails']['url'];
-		$token = $payload['notificationDetails']['token'];
-		return self::add_subscription( $fid, $key, $url, $token );
+		$fid     = $header['fid'];
+		$app_key = $header['key'];
+		$app_url = $payload['notificationDetails']['url'];
+		$token   = $payload['notificationDetails']['token'];
+		self::add_subscription( $fid, $app_key, $app_url, $token );
+		return [ 'success' => true ];
 	}
 }

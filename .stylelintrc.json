@@ -1,4 +1,4 @@
 {
 	"extends": [ "@wordpress/stylelint-config/scss" ],
-	"ignoreFiles": [ "build/**" ]
+	"ignoreFiles": [ "build/**", "coverage-report/**" ]
 }

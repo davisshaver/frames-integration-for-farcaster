@@ -9,11 +9,15 @@
 		"dealerdirect/phpcodesniffer-composer-installer": "*",
 		"phpcompatibility/phpcompatibility-wp": "*",
 		"yoast/phpunit-polyfills": "^3.0",
-		"phpunit/phpunit": "^7.0 || ^9.5"
+		"phpunit/phpunit": "^7.0 || ^9.5",
+		"php-stubs/wp-cli-stubs": "^2.11",
+		"wp-cli/wp-cli": "^2.11",
+		"php-stubs/wordpress-tests-stubs": "^6.7"
 	},
 	"autoload": {
 		"classmap": [
-			"./includes"
+			"./includes",
+			"./tests/helpers"
 		]
 	},
 	"config": {
@@ -30,6 +34,7 @@
 	},
 	"scripts": {
 		"phpunit": "phpunit --config=phpunit.xml",
-		"test": "@phpunit"
+		"test": "@phpunit",
+		"coverage": "XDEBUG_MODE=coverage phpunit --coverage-html coverage-report"
 	}
 }

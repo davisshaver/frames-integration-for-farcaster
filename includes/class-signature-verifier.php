@@ -28,7 +28,7 @@ class Signature_Verifier {
 	 * @return array The Key Registry ABI.
 	 */
 	private static function get_key_registry_abi() {
-		return json_decode( file_get_contents( FARCASTER_WP_PLUGIN_DIR . '/includes/contracts/abi/key_registry.json' ), true );
+		return wp_json_file_decode( FARCASTER_WP_PLUGIN_DIR . '/includes/contracts/abi/key_registry.json', true );
 	}
 
 	/**
@@ -76,8 +76,12 @@ class Signature_Verifier {
 			throw new Exception( 'Invalid app key format - must start with 0x' );
 		}
 
-		$app_key = hex2bin( substr( $header['key'], 2 ) );
-		if ( ! $app_key ) {
+		try {
+			$app_key = hex2bin( substr( $header['key'], 2 ) );
+			if ( ! $app_key ) {
+				throw new Exception( 'Invalid app key format' );
+			}
+		} catch ( \Exception $e ) {
 			throw new Exception( 'Invalid app key format' );
 		}
 

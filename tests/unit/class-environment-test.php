@@ -7,14 +7,14 @@
 
 namespace Farcaster_WP\Tests;
 
-use PHPUnit\Framework\TestCase;
+use WP_UnitTestCase;
 
 /**
  * These tests prove test setup works.
  *
  * They are useful for debugging.
  */
-class Environment_Test extends TestCase {
+class Environment_Test extends WP_UnitTestCase {
 
 	/**
 	 * Most basic test possible.

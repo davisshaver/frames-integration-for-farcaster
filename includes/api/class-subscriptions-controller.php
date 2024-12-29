@@ -10,7 +10,7 @@ namespace Farcaster_WP\API;
 use WP_REST_Controller;
 use WP_Error;
 use WP_REST_Response;
-use Farcaster_WP\Notifications;
+use Farcaster_WP\Storage;
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -59,19 +59,16 @@ class Subscriptions_Controller extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_subscriptions() {
-		$subscriptions      = get_option( Notifications::$notifications_option_name, array() );
+		$subscriptions      = Storage::get_active_subscriptions();
 		$subscriptions_list = array();
-		
-		foreach ( $subscriptions as $fid => $subscription ) {
-			foreach ( $subscription as $key => $data ) {
-				$subscriptions_list[] = array(
-					'fid'       => (int) $fid,
-					'key'       => $key,
-					'url'       => $data['url'],
-					'token'     => $data['token'],
-					'timestamp' => $data['timestamp'] ?? 'not set',
-				);
-			}
+		foreach ( $subscriptions as $subscription ) {
+			$subscriptions_list[] = array(
+				'fid'       => $subscription['fid'],
+				'app_key'   => $subscription['app_key'],
+				'app_url'   => $subscription['app_url'],
+				'token'     => $subscription['token'],
+				'timestamp' => $subscription['created_timestamp'] ?? 'not set',
+			);
 		}
 		
 		return new WP_REST_Response( $subscriptions_list );
