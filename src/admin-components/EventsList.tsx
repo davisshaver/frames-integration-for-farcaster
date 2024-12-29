@@ -1,24 +1,25 @@
 // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 import { __experimentalText as Text } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useSubscriptions } from '../admin-hooks/use-subscriptions';
+import { useEvents } from '../admin-hooks/use-events';
 
-export const SubscriptionsList = () => {
-	const { subscriptions } = useSubscriptions();
+export const EventsList = () => {
+	const { events } = useEvents();
 
 	return (
 		<div style={ { width: '100%' } }>
 			<div style={ { marginTop: '16px' } }>
 				<Text>
 					{ __( 'You have', 'frames-integration-for-farcaster' ) }{ ' ' }
-					{ subscriptions?.length }{ ' ' }
+					{ events?.length }{ ' ' }
 					{ __(
-						'subscriptions on your site:',
+						'events on your site:',
 						'frames-integration-for-farcaster'
 					) }
 				</Text>
 			</div>
 			<div style={ { marginTop: '8px' } } />
+
 			<pre
 				style={ {
 					maxHeight: '500px',
@@ -29,7 +30,7 @@ export const SubscriptionsList = () => {
 					backgroundColor: '#f9f9f9',
 				} }
 			>
-				{ JSON.stringify( subscriptions, null, 2 ) }
+				{ JSON.stringify( events, null, 2 ) }
 			</pre>
 		</div>
 	);

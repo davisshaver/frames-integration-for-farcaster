@@ -177,6 +177,18 @@ class Storage {
 	}
 
 	/**
+	 * Get events.
+	 *
+	 * @return array The events.
+	 */
+	public static function get_events() {
+		global $wpdb;
+		$table_name = self::get_events_table_name();
+		$results    = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1$s', [ $table_name ] ), ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		return $results ? $results : [];
+	}
+
+	/**
 	 * Get active subscriptions.
 	 *
 	 * @return array The subscriptions.
@@ -185,7 +197,7 @@ class Storage {
 		global $wpdb;
 		$table_name = self::get_fids_table_name();
 
-		$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1$s WHERE status = \'active\'', [ $table_name ] ), ARRAY_A );  // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1$s WHERE status = \'active\'', [ $table_name ] ), ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder, WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 		return $results ? $results : [];
 	}

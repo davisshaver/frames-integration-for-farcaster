@@ -268,6 +268,68 @@ class Storage_Test extends TestCase {
 	}
 
 	/**
+	 * Test get_events method
+	 */
+	public function test_get_events() {
+		// Ensure tables exist.
+		Storage::action_init();
+
+		// Add multiple test events.
+		$test_events = [
+			[
+				'event_type' => 'frame_added',
+				'fid'        => 12345,
+				'timestamp'  => time(),
+				'full_event' => wp_json_encode( [ 'test' => 'data1' ] ),
+			],
+			[
+				'event_type' => 'frame_removed',
+				'fid'        => 67890,
+				'timestamp'  => time() + 1,
+				'full_event' => wp_json_encode( [ 'test' => 'data2' ] ),
+			],
+			[
+				'event_type' => 'notifications_enabled',
+				'fid'        => 12345,
+				'timestamp'  => time() + 2,
+				'full_event' => wp_json_encode( [ 'test' => 'data3' ] ),
+			],
+		];
+
+		$format = [
+			'%s',
+			'%d',
+			'%d',
+			'%s',
+		];
+
+		foreach ( $test_events as $event ) {
+			$event_id = Storage::record_event( $event, $format );
+			$this->assertNotFalse( $event_id );
+		}
+
+		// Test get_events retrieves all events.
+		$stored_events = Storage::get_events();
+		$this->assertIsArray( $stored_events );
+		$this->assertCount( 3, $stored_events, 'Should retrieve all three events' );
+
+		// Verify the events are stored with correct data.
+		foreach ( $stored_events as $index => $stored_event ) {
+			$this->assertEquals( $test_events[ $index ]['event_type'], $stored_event['event_type'], 'Event type should match' );
+			$this->assertEquals( $test_events[ $index ]['fid'], $stored_event['fid'], 'FID should match' );
+			$this->assertEquals( $test_events[ $index ]['timestamp'], $stored_event['timestamp'], 'Timestamp should match' );
+			$this->assertEquals( $test_events[ $index ]['full_event'], $stored_event['full_event'], 'Full event data should match' );
+		}
+
+		// Test get_events returns empty array when no events exist.
+		$this->drop_tables();
+		Storage::action_init();
+		$empty_events = Storage::get_events();
+		$this->assertIsArray( $empty_events );
+		$this->assertEmpty( $empty_events, 'Should return empty array when no events exist' );
+	}
+
+	/**
 	 * Test table creation
 	 */
 	public function test_table_creation() {

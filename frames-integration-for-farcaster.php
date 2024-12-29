@@ -10,7 +10,7 @@
  * Plugin Name:       Frames Integration for Farcaster
  * Plugin URI:        https://davisshaver.com/frames-integration-for-farcaster/
  * Description:       Frames Integration for Farcaster connects your WordPress site to Farcaster.
- * Version:           0.0.42
+ * Version:           0.0.43
  * Author:            Davis Shaver
  * Author URI:        https://davisshaver.com/
  * License:           GPL v2 or later
@@ -22,7 +22,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'FARCASTER_WP_VERSION', '0.0.42' );
+define( 'FARCASTER_WP_VERSION', '0.0.43' );
 
 define( 'FARCASTER_WP_API_NAMESPACE', 'farcaster-wp/v1' );
 define( 'FARCASTER_WP_API_URL', get_site_url() . '/wp-json/' . FARCASTER_WP_API_NAMESPACE );

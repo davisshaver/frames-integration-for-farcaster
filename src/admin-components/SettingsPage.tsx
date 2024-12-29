@@ -28,6 +28,7 @@ import {
 } from './Controls';
 import { ManifestViewer } from './ManifestViewer';
 import { SubscriptionsList } from './SubscriptionsList';
+import { EventsList } from './EventsList';
 
 const SettingsTitle = () => {
 	return (
@@ -234,6 +235,9 @@ const SettingsPage = () => {
 					</PanelRow>
 					<PanelRow>
 						<SubscriptionsList />
+					</PanelRow>
+					<PanelRow>
+						<EventsList />
 					</PanelRow>
 				</PanelBody>
 			</Panel>
