@@ -57,14 +57,70 @@ jobs:
 
             - name: Upload Plugin to WP.org
               id: deploy
-              uses: 10up/action-wordpress-plugin-deploy@2.1.0
+              uses: 10up/action-wordpress-plugin-deploy@2.2.2
               env:
                   SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
                   SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
                   SLUG: frames-integration-for-farcaster
                   BUILD_DIR: ./frames-integration-for-farcaster
 
-            - name: Attest Build Provenance
-              uses: johnbillion/action-wordpress-plugin-attestation@0.5.1
+
+            # This fetches the zipped plugin from w.org. The zip might not exist yet if the plugin uses release confirmation
+            # and the release hasn't been confirmed. This will retry until the zip is available or the timeout is reached.
+            # Based on action by John Billion.
+            - name: Fetch ZIP from WordPress.org
+              run: | #shell
+                zipurl="https://downloads.wordpress.org/plugin/frames-integration-for-farcaster.${{ github.ref_name }}.zip"
+                echo "Fetching plugin ZIP from $zipurl ..."
+                elapsed=0
+                sleep=20
+                per_minute=$((60 / $sleep))
+                max_retries=$(( 60 * $per_minute ))
+
+                while [ $elapsed -lt $max_retries ]; do
+                  # Perform a HEAD request to check if the ZIP is available
+                  status_code=$(curl -s -o /dev/null -w "%{http_code}" -I "$zipurl")
+                  if [ "$status_code" -eq 200 ]; then
+                    curl -s -o frames-integration-for-farcaster.${{ github.ref_name }}.zip "$zipurl"
+                    break
+                  else
+                    echo "Plugin ZIP not available yet (HTTP status $status_code), retrying in $sleep seconds..."
+                    sleep $sleep
+                    elapsed=$((elapsed + 1))
+                  fi
+                done
+
+                if [ $elapsed -ge $max_retries ]; then
+                  echo "Error: 60 minute timeout reached. Plugin ZIP not available."
+                  exit 1
+                fi
+              shell: bash
+
+            # Now compare the contents of the generated zip and the w.org zip to ensure they match. Only then can we attest the w.org zip.
+            - name: Unzip frames-integration-for-farcaster.${{ github.ref_name }}.zip from WordPress.org
+              run: | #shell
+                unzip -q -d zip-org frames-integration-for-farcaster.${{ github.ref_name }}.zip
+              shell: bash
+
+            - name: Unzip the generated zip
+              run: | #shell
+                unzip -q -d zip-generated "frames-integration-for-farcaster.zip"
+              shell: bash
+
+            - name: Ensure the directories are identical
+              run: | #shell
+                diff -r zip-generated zip-org
+              shell: bash
+
+            - name: Generate attestation for the plugin
+              uses: actions/attest-build-provenance@v1
               with:
-                zip-path: ${{ steps.deploy.outputs.zip-path }}
+                subject-path: "${{ github.workspace }}/frames-integration-for-farcaster.zip"
+                subject-name: "wordpress.org-frames-integration-for-farcaster-${{ github.ref_name }}"
+
+            - name: Check the attestation
+              run: | #shell
+                gh attestation verify frames-integration-for-farcaster.zip --repo "${{ github.repository }}"
+              shell: bash
+              env:
+                GH_TOKEN: ${{ github.token }}
