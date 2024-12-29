@@ -41,18 +41,18 @@ class Storage_Test extends TestCase {
 	 */
 	private function drop_tables(): void {
 		global $wpdb;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->query( 
 			$wpdb->prepare( 
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
 				'DROP TABLE IF EXISTS %i', 
 				Storage::get_events_table_name() 
 			) 
 		); 
-	        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->query( 
 				$wpdb->prepare( 
-                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+ 					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
 					'DROP TABLE IF EXISTS %i', 
 					Storage::get_fids_table_name() 
 				) 
@@ -168,7 +168,7 @@ class Storage_Test extends TestCase {
 
 		// Verify the event was stored correctly in the database.
 		$table_name = Storage::get_events_table_name();
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$stored_event = $wpdb->get_row( 
 			$wpdb->prepare( 
 				'SELECT * FROM %i WHERE id = %d', 
@@ -196,7 +196,7 @@ class Storage_Test extends TestCase {
 		$this->assertNotFalse( $event_id_2 );
 
 		// Verify both events exist and have correct values.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$stored_events = $wpdb->get_results( 
 			$wpdb->prepare( 
 				'SELECT * FROM %i WHERE id IN (%d, %d) ORDER BY id', 
@@ -222,7 +222,7 @@ class Storage_Test extends TestCase {
 		$this->assertEquals( $test_event_2['full_event'], $stored_events[1]['full_event'], 'Second full event data should match' );
 
 		// Test querying events by FID.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$fid_events = $wpdb->get_results( 
 			$wpdb->prepare( 
 				'SELECT * FROM %i WHERE fid = %d', 
@@ -236,7 +236,7 @@ class Storage_Test extends TestCase {
 		$this->assertEquals( $test_event['event_type'], $fid_events[0]['event_type'], 'Event type should match for FID query' );
 
 		// Test querying events by event_type.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$type_events = $wpdb->get_results( 
 			$wpdb->prepare( 
 				'SELECT * FROM %i WHERE event_type = %s', 
@@ -278,12 +278,12 @@ class Storage_Test extends TestCase {
 		$fids_table   = Storage::get_fids_table_name();
 
 		$this->assertNull(
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $events_table ) ),
 			'Events table should not exist before initialization'
 		);
 		$this->assertNull(
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $fids_table ) ),
 			'FIDs table should not exist before initialization'
 		);
@@ -294,13 +294,13 @@ class Storage_Test extends TestCase {
 		// Verify tables exist after initialization.
 		$this->assertEquals( 
 			$events_table, 
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $events_table ) ),
 			'Events table should exist after initialization'
 		);
 		$this->assertEquals( 
 			$fids_table, 
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $fids_table ) ),
 			'FIDs table should exist after initialization'
 		);
