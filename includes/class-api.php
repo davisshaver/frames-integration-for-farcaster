@@ -10,6 +10,7 @@ namespace Farcaster_WP;
 use Farcaster_WP\API\Manifest_Controller;
 use Farcaster_WP\API\Webhook_Controller;
 use Farcaster_WP\API\Subscriptions_Controller;
+use Farcaster_WP\API\Events_Controller;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -34,6 +35,10 @@ class API {
 			include_once 'api/class-subscriptions-controller.php';
 			$subscriptions_api = new Subscriptions_Controller();
 			add_action( 'rest_api_init', [ $subscriptions_api, 'register_routes' ] );
+
+			include_once 'api/class-events-controller.php';
+			$events_api = new Events_Controller();
+			add_action( 'rest_api_init', [ $events_api, 'register_routes' ] );
 		}
 	}
 }

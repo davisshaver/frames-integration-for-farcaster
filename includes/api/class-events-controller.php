@@ -1,6 +1,6 @@
 <?php
 /**
- * Subscriptions API endpoint
+ * Events API endpoint
  *
  * @package Farcaster_WP\API
  */
@@ -15,9 +15,9 @@ use Farcaster_WP\Storage;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * REST API endpoints for Farcaster subscriptions.
+ * REST API endpoints for Farcaster events.
  */
-class Subscriptions_Controller extends WP_REST_Controller {
+class Events_Controller extends WP_REST_Controller {
 
 	/**
 	 * Endpoint namespace.
@@ -31,48 +31,47 @@ class Subscriptions_Controller extends WP_REST_Controller {
 	 *
 	 * @var string
 	 */
-	protected $resource_name = 'subscriptions';
+	protected $resource_name = 'events';
 
 	/**
 	 * Register the routes.
 	 */
 	public function register_routes() {
-		// Register farcaster-wp/v1/subscriptions endpoint.
+		// Register farcaster-wp/v1/events endpoint.
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->resource_name,
 			[
 				[
 					'methods'             => 'GET',
-					'callback'            => [ $this, 'get_subscriptions' ],
+					'callback'            => [ $this, 'get_events' ],
 					'permission_callback' => function() {
 						return current_user_can( 'manage_options' );
 					},
 				],
-				'schema' => [ $this, 'get_subscriptions_schema' ],
+				'schema' => [ $this, 'get_events_schema' ],
 			]
 		);
 	}
 
 	/**
-	 * Get the subscribers.
+	 * Get the events.
 	 *
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
-	public function get_subscriptions() {
-		$subscriptions      = Storage::get_active_subscriptions();
-		$subscriptions_list = array();
-		foreach ( $subscriptions as $subscription ) {
-			$subscriptions_list[] = array(
-				'fid'       => $subscription['fid'],
-				'app_key'   => $subscription['app_key'],
-				'app_url'   => $subscription['app_url'],
-				'token'     => $subscription['token'],
-				'timestamp' => $subscription['created_timestamp'] ?? 'not set',
+	public function get_events() {
+		$events      = Storage::get_events();
+		$events_list = array();
+		foreach ( $events as $event ) {
+			$events_list[] = array(
+				'fid'        => $event['fid'],
+				'event_type' => $event['event_type'],
+				'timestamp'  => $event['timestamp'],
+				'full_event' => $event['full_event'],
 			);
 		}
 		
-		return new WP_REST_Response( $subscriptions_list );
+		return new WP_REST_Response( $events_list );
 	}
 
 	/**
@@ -80,27 +79,29 @@ class Subscriptions_Controller extends WP_REST_Controller {
 	 *
 	 * @return array
 	 */
-	public function get_subscriptions_schema() {
+	public function get_events_schema() {
 		return [
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
 			'title'      => $this->resource_name,
 			'type'       => 'object',
 			'properties' => [
-				'subscriptions' => [
+				'events' => [
 					'type'  => 'array',
 					'items' => [
 						'type'       => 'object',
-						'required'   => [ 'fid', 'token', 'url' ],
+						'required'   => [ 'fid', 'event_type', 'timestamp', 'full_event' ],
 						'properties' => [
-							'fid'   => [
+							'fid'        => [
 								'type' => 'integer',
 							],
-							'token' => [
+							'event_type' => [
 								'type' => 'string',
 							],
-							'url'   => [
-								'type'   => 'string',
-								'format' => 'uri',
+							'timestamp'  => [
+								'type' => 'integer',
+							],
+							'full_event' => [
+								'type' => 'string',
 							],
 						],
 					],
