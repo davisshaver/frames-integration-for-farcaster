@@ -37,7 +37,7 @@ jobs:
               with:
                   type: 'zip'
                   filename: 'frames-integration-for-farcaster.zip'
-                  exclusions: '/*node_modules/* readme.md package.json .gitignore .eslintrc.js .nvmrc .stylelintrc.json phpcs.xml tsconfig.json bun.lockb .vscode/ .vscode/* .wordpress-org/ .wordpress-org/* src/ src/* src/components/ src/components/* src/hooks/ src/hooks/* src/utils/ src/utils/* /*.git/* /*.github/*'
+                  exclusions: '/*node_modules/* readme.md package.json bin/ bin/* tests/ tests/* .gitignore .eslintrc.js .nvmrc .stylelintrc.json phpcs.xml tsconfig.json bun.lockb .vscode/ .vscode/* .wordpress-org/ .wordpress-org/* src/ src/* src/components/ src/components/* src/hooks/ src/hooks/* src/utils/ src/utils/* /*.git/* /*.github/*'
 
             - name: Upload Artifact
               uses: actions/upload-artifact@v4

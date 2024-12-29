@@ -25,3 +25,7 @@ notes.md
 
 # Frames.js debugger
 notifications.db
+
+# Coverage reports
+coverage-report
+coverage.xml

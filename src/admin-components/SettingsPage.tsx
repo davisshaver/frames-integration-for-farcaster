@@ -32,7 +32,10 @@ import { SubscriptionsList } from './SubscriptionsList';
 const SettingsTitle = () => {
 	return (
 		<Heading level={ 1 }>
-			{ __( 'Farcaster Settings', 'frames-integration-for-farcaster' ) }
+			{ __(
+				'Frames Integration for Farcaster Settings',
+				'frames-integration-for-farcaster'
+			) }
 		</Heading>
 	);
 };
