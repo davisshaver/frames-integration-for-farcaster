@@ -8,6 +8,9 @@
 >
     <php>
         <ini name="error_reporting" value="E_ALL &amp; ~E_DEPRECATED &amp; ~E_USER_DEPRECATED"/>
+        <ini name="display_errors" value="On"/>
+        <ini name="log_errors" value="On"/>
+        <ini name="error_log" value="php://stderr"/>
     </php>
     <testsuites>
         <testsuite name="unit">

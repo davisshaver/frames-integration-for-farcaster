@@ -48,19 +48,19 @@ jobs:
             - name: Run PHPUnit Tests with Coverage
               run: composer run coverage
 
+            - if: ${{ github.event_name != 'pull_request' }}
+              uses: actions/upload-artifact@v4
+              with:
+                name: coverage-xml
+                path: coverage.xml
+
             - if: ${{ github.event_name == 'pull_request' }}
               name: Download artifact
               uses: dawidd6/action-download-artifact@v7
               continue-on-error: true
               with:
                 branch: main
-                name: coverage-report
-
-            - if: ${{ github.event_name != 'pull_request' }}
-              uses: actions/upload-artifact@v4
-              with:
-                name: coverage-report
-                path: coverage.xml
+                name: coverage-xml
 
             - if: ${{ github.event_name == 'pull_request' }}
               name: Coverage Report as Comment (Clover)

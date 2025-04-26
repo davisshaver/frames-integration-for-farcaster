@@ -191,7 +191,7 @@ class Storage {
 		
 		if ( ! $table_exists ) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			error_log( 'Farcaster: Table does not exist: ' . $table_name );
+			error_log( 'Farcaster table does not exist: ' . $table_name );
 			return [];
 		}
 		
