@@ -6,6 +6,9 @@
         convertNoticesToExceptions="true"
         convertWarningsToExceptions="true"
 >
+    <php>
+        <ini name="error_reporting" value="E_ALL &amp; ~E_DEPRECATED &amp; ~E_USER_DEPRECATED"/>
+    </php>
     <testsuites>
         <testsuite name="unit">
             <directory prefix="class-" suffix=".php">./tests/unit</directory>

@@ -36,7 +36,7 @@ jobs:
 
             - name: Install WP
               shell: bash
-              run: tests/bin/install-wp-tests.sh wordpress_tests root '' 127.0.0.1:3306 latest
+              run: bin/install-wp-tests.sh wordpress_tests root '' 127.0.0.1:3306 latest
 
             - name: Verify MariaDB Connection
               run: |
