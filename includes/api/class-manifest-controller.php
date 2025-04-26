@@ -77,6 +77,9 @@ class Manifest_Controller extends WP_REST_Controller {
 		$og_description          = Frames::get_og_description( $options );
 		$og_image_url            = Frames::get_og_image_url( $options );
 
+		$subtitle = get_bloginfo( 'description' );
+		$subtitle = strlen( $subtitle ) > 27 ? substr( $subtitle, 0, 27 ) . '...' : $subtitle;
+
 		$header = '';
 		if ( ! empty( $domain_manifest['accountAssociation']['header'] ) ) {
 			$header = $domain_manifest['accountAssociation']['header'];
@@ -114,7 +117,7 @@ class Manifest_Controller extends WP_REST_Controller {
 				'splashBackgroundColor' => $splash_background_color,
 				'imageUrl'              => $frame_image_url, // Deprecated.
 				'buttonTitle'           => $button_title, // Deprecated.
-				'subtitle'              => get_bloginfo( 'description' ),
+				'subtitle'              => $subtitle,
 				'description'           => $description,
 				'primaryCategory'       => $category,
 				'tags'                  => $tags,
