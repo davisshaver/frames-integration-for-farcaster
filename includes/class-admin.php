@@ -150,6 +150,20 @@ class Admin {
 				'zora',
 			),
 			'no_index'                 => false,
+			'tagline'                  => '',
+			'description'              => '',
+			'category'                 => '',
+			'hero_image'               => array(
+				'id'  => 0,
+				'url' => '',
+			),
+			'tags'                     => array(),
+			'og_title'                 => '',
+			'og_description'           => '',
+			'og_image'                 => array(
+				'id'  => 0,
+				'url' => '',
+			),
 		);
 		$schema  = array(
 			'type'       => 'object',
