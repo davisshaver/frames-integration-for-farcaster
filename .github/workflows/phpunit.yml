@@ -20,7 +20,7 @@ jobs:
                 MYSQL_ROOT_PASSWORD: wordpress
                 MARIADB_INITDB_SKIP_TZINFO: 1
                 MYSQL_USER: wordpress
-                MYSQL_PASSWORD: wordpress
+                MYSQL_PASSWORD:
                 MYSQL_DATABASE: wordpress_test
 
         steps:
