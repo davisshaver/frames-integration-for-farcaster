@@ -14,19 +14,19 @@ const FrameConfigSchema = z.object( {
 			invalid_type_error: 'Home URL must be a string',
 			required_error: 'Home URL is required',
 		} )
-		.max( 512, { message: 'Home URL must be 512 characters or less' } ),
+		.max( 1024, { message: 'Home URL must be 1024 characters or less' } ),
 	iconUrl: z
 		.string( {
 			invalid_type_error: 'Icon URL must be a string',
 			required_error: 'Icon URL is required',
 		} )
-		.max( 512, { message: 'Icon URL must be 512 characters or less' } ),
+		.max( 1024, { message: 'Icon URL must be 1024 characters or less' } ),
 	splashImageUrl: z
 		.string( {
 			invalid_type_error: 'Splash image URL must be a string',
 		} )
-		.max( 512, {
-			message: 'Splash image URL must be 512 characters or less',
+		.max( 1024, {
+			message: 'Splash image URL must be 1024 characters or less',
 		} )
 		.optional(),
 	imageUrl: z
@@ -34,8 +34,8 @@ const FrameConfigSchema = z.object( {
 			invalid_type_error: 'Image URL must be a string',
 			required_error: 'Image URL is required',
 		} )
-		.max( 512, {
-			message: 'Splash image URL must be 512 characters or less',
+		.max( 1024, {
+			message: 'Splash image URL must be 1024 characters or less',
 		} ),
 	buttonTitle: z
 		.string( {
@@ -55,8 +55,78 @@ const FrameConfigSchema = z.object( {
 		.string( {
 			invalid_type_error: 'Webhook URL must be a string',
 		} )
-		.max( 512, {
-			message: 'Webhook URL must be 512 characters or less',
+		.max( 1024, {
+			message: 'Webhook URL must be 1024 characters or less',
+		} )
+		.optional(),
+	tagline: z
+		.string( {
+			invalid_type_error: 'Tagline must be a string',
+		} )
+		.max( 30, { message: 'Tagline must be 30 characters or less' } )
+		.optional(),
+	description: z
+		.string( {
+			invalid_type_error: 'Description must be a string',
+		} )
+		.max( 170, { message: 'Description must be 170 characters or less' } )
+		.optional(),
+	primaryCategory: z
+		.enum(
+			[
+				'games',
+				'social',
+				'finance',
+				'utility',
+				'productivity',
+				'health-fitness',
+				'news-media',
+				'music',
+				'shopping',
+				'education',
+				'art-creativity',
+			],
+			{
+				message: 'Primary category must be a valid category',
+			}
+		)
+		.optional(),
+	noindex: z
+		.boolean( {
+			invalid_type_error: 'Noindex must be a boolean',
+		} )
+		.optional(),
+	heroImageUrl: z
+		.string( {
+			invalid_type_error: 'Hero image URL must be a string',
+		} )
+		.max( 1024, {
+			message: 'Hero image URL must be 1024 characters or less',
+		} )
+		.optional(),
+	tags: z
+		.array(
+			z
+				.string()
+				.max( 20, { message: 'Tag must be 20 characters or less' } ),
+			{
+				invalid_type_error: 'Tags must be an array',
+			}
+		)
+		.max( 5, { message: 'Tags must be 5 or less' } )
+		.optional(),
+	ogTitle: z
+		.string( {
+			invalid_type_error: 'OG title must be a string',
+		} )
+		.max( 30, { message: 'OG title must be 30 characters or less' } )
+		.optional(),
+	ogDescription: z
+		.string( {
+			invalid_type_error: 'OG description must be a string',
+		} )
+		.max( 100, {
+			message: 'OG description must be 100 characters or less',
 		} )
 		.optional(),
 } );

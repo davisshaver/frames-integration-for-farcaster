@@ -105,7 +105,7 @@ class Signature_Verifier {
 		$rpc_url = self::get_rpc_url();
 		if ( ! $rpc_url ) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			error_log( 'Farcaster signature verification passed with condition: RPC URL is not set' );
+			error_log( 'Farcaster signature verification passed with condition that RPC URL is not set' );
 			return true;
 		}
 

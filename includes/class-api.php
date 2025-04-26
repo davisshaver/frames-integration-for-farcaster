@@ -27,18 +27,16 @@ class API {
 		$manifest_api = new Manifest_Controller();
 		add_action( 'rest_api_init', [ $manifest_api, 'register_routes' ] );
 
-		if ( Notifications::are_enabled() ) {
-			include_once 'api/class-webhook-controller.php';
-			$webhook_api = new Webhook_Controller();
-			add_action( 'rest_api_init', [ $webhook_api, 'register_routes' ] );
+		include_once 'api/class-webhook-controller.php';
+		$webhook_api = new Webhook_Controller();
+		add_action( 'rest_api_init', [ $webhook_api, 'register_routes' ] );
 
-			include_once 'api/class-subscriptions-controller.php';
-			$subscriptions_api = new Subscriptions_Controller();
-			add_action( 'rest_api_init', [ $subscriptions_api, 'register_routes' ] );
+		include_once 'api/class-subscriptions-controller.php';
+		$subscriptions_api = new Subscriptions_Controller();
+		add_action( 'rest_api_init', [ $subscriptions_api, 'register_routes' ] );
 
-			include_once 'api/class-events-controller.php';
-			$events_api = new Events_Controller();
-			add_action( 'rest_api_init', [ $events_api, 'register_routes' ] );
-		}
+		include_once 'api/class-events-controller.php';
+		$events_api = new Events_Controller();
+		add_action( 'rest_api_init', [ $events_api, 'register_routes' ] );
 	}
 }

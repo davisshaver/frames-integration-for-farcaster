@@ -17,11 +17,9 @@ jobs:
               ports:
                 - '3306:3306'
               env:
-                MYSQL_ROOT_PASSWORD: wordpress
+                MYSQL_ROOT_PASSWORD:
                 MARIADB_INITDB_SKIP_TZINFO: 1
-                MYSQL_USER: wordpress
-                MYSQL_PASSWORD: wordpress
-                MYSQL_DATABASE: wordpress_test
+                MYSQL_ALLOW_EMPTY_PASSWORD: 1
 
         steps:
             - name: Checkout Repository
@@ -36,10 +34,9 @@ jobs:
             - name: Install PHP Dependencies
               uses: ramsey/composer-install@v3
 
-            - name: Set Up WordPress and WordPress Test Library
-              uses: sjinks/setup-wordpress-test-library@master
-              with:
-                version: latest
+            - name: Install WP
+              shell: bash
+              run: bin/install-wp-tests.sh wordpress_tests root '' 127.0.0.1:3306 latest
 
             - name: Verify MariaDB Connection
               run: |

@@ -184,7 +184,18 @@ class Storage {
 	public static function get_events() {
 		global $wpdb;
 		$table_name = self::get_events_table_name();
-		$results    = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1$s', [ $table_name ] ), ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		
+		// Check if the table exists before querying.
+		 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) === $table_name;
+		
+		if ( ! $table_exists ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( 'Farcaster table does not exist: ' . $table_name );
+			return [];
+		}
+		
+		$results = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %1$s', [ $table_name ] ), ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder, WordPress.DB.DirectDatabaseQuery.DirectQuery
 		return $results ? $results : [];
 	}
 

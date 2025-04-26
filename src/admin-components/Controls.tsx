@@ -323,21 +323,19 @@ const TippingAmountsControl = ( { value = [], onChange } ) => {
 	);
 };
 
-const ButtonTextControl = ( { value, onChange, useTitleAsButtonText } ) => {
+const ButtonTextControl = ( { disabled = false, value, onChange } ) => {
 	return (
 		<TextControl
+			disabled={ disabled }
 			label={ __( 'Button Text', 'frames-integration-for-farcaster' ) }
 			value={ value }
 			help={
-				! useTitleAsButtonText
+				! disabled
 					? __(
 							'This text will be used as the button text for all posts. Limited to 32 characters.',
 							'frames-integration-for-farcaster'
 					  )
-					: __(
-							'This text will be used as the button text when frame is used outside of casts. Limited to 32 characters.',
-							'frames-integration-for-farcaster'
-					  )
+					: ''
 			}
 			onChange={ onChange }
 			__nextHasNoMarginBottom
@@ -413,6 +411,207 @@ const NotificationsEnabledControl = ( { value, onChange } ) => {
 	);
 };
 
+const NoIndexControl = ( { value, onChange } ) => {
+	return (
+		<div style={ { width: '100%' } }>
+			<ToggleControl
+				checked={ value }
+				label={ __(
+					'Exclude from Search Results',
+					'frames-integration-for-farcaster'
+				) }
+				onChange={ onChange }
+				__nextHasNoMarginBottom
+			/>
+		</div>
+	);
+};
+
+const TaglineControl = ( { value, onChange } ) => {
+	return (
+		<div style={ { width: '100%' } }>
+			<TextControl
+				label={ __(
+					'Marketing Tagline',
+					'frames-integration-for-farcaster'
+				) }
+				value={ value }
+				onChange={ onChange }
+				maxLength={ 30 }
+				help={ __(
+					'Use for time-sensitive promos or CTAs. Keep copy active (e.g., “Grow, Raid & Rise in Stoke Fire”).',
+					'frames-integration-for-farcaster'
+				) }
+			/>
+		</div>
+	);
+};
+
+const OGTitleControl = ( { value, onChange } ) => {
+	return (
+		<div style={ { width: '100%' } }>
+			<TextControl
+				label={ __( 'OG Title', 'frames-integration-for-farcaster' ) }
+				value={ value }
+				onChange={ onChange }
+				maxLength={ 30 }
+				help={ __(
+					'Use your app name + short tag (e.g., “AppName – Local News Fast”). Title case, no emojis.',
+					'frames-integration-for-farcaster'
+				) }
+			/>
+		</div>
+	);
+};
+
+const OGDescriptionControl = ( { value, onChange } ) => {
+	return (
+		<div style={ { width: '100%' } }>
+			<TextControl
+				label={ __(
+					'OG Description',
+					'frames-integration-for-farcaster'
+				) }
+				value={ value }
+				onChange={ onChange }
+				maxLength={ 100 }
+				help={ __(
+					'Summarize core benefit in 1–2 lines. Avoid repeating OG title.',
+					'frames-integration-for-farcaster'
+				) }
+			/>
+		</div>
+	);
+};
+
+const DescriptionControl = ( { value, onChange } ) => {
+	return (
+		<div style={ { width: '100%' } }>
+			<TextControl
+				label={ __(
+					'Description',
+					'frames-integration-for-farcaster'
+				) }
+				value={ value }
+				onChange={ onChange }
+				maxLength={ 170 }
+				help={ __(
+					'Use short paragraphs, headings, and bullet points. Focus on value, not features. Include social proof if possible. Avoid jargon.',
+					'frames-integration-for-farcaster'
+				) }
+			/>
+		</div>
+	);
+};
+
+const CategoryControl = ( { value, onChange } ) => {
+	return (
+		<div style={ { width: '100%' } }>
+			<SelectControl
+				label={ __(
+					'Primary Category',
+					'frames-integration-for-farcaster'
+				) }
+				value={ value }
+				options={ [
+					{
+						value: 'games',
+						label: __(
+							'Games',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'social',
+						label: __(
+							'Social',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'finance',
+						label: __(
+							'Finance',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'utility',
+						label: __(
+							'Utility',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'productivity',
+						label: __(
+							'Productivity',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'health-fitness',
+						label: __(
+							'Health & Fitness',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'news-media',
+						label: __(
+							'News & Media',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'music',
+						label: __(
+							'Music',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'shopping',
+						label: __(
+							'Shopping',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'education',
+						label: __(
+							'Education',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'developer-tools',
+						label: __(
+							'Developer Tools',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'entertainment',
+						label: __(
+							'Entertainment',
+							'frames-integration-for-farcaster'
+						),
+					},
+					{
+						value: 'art-creativity',
+						label: __(
+							'Art & Creativity',
+							'frames-integration-for-farcaster'
+						),
+					},
+				] }
+				onChange={ onChange }
+			/>
+		</div>
+	);
+};
+
 const DebugEnabledControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
@@ -432,7 +631,7 @@ const FramesEnabledControl = ( { value, onChange } ) => {
 		<ToggleControl
 			checked={ value }
 			label={ __(
-				'Enable Farcaster Frames',
+				'Enable Mini App',
 				'frames-integration-for-farcaster'
 			) }
 			onChange={ onChange }
@@ -505,70 +704,78 @@ const ImageUploadControl = ( {
 	onChange,
 	buttonText = 'Select Image',
 	labelText = '',
+	helpText = '',
 } ) => {
 	return (
-		<MediaUpload
-			onSelect={ ( media ) =>
-				onChange( {
-					id: media.id,
-					url: media.url,
-				} )
-			}
-			help={ __(
-				'This image will be used as the splash image for all posts.',
-				'frames-integration-for-farcaster'
-			) }
-			allowedTypes={ [ 'image' ] }
-			value={ value }
-			render={ ( { open } ) => (
-				<div>
-					{ value && value.url ? (
-						<div style={ { marginBottom: '10px' } }>
-							<img
-								src={ value.url }
-								alt="Selected"
-								style={ {
-									maxWidth: '200px',
-									height: 'auto',
-									display: 'block',
-									marginBottom: '8px',
-								} }
-							/>
-							<div>
-								<Button
-									onClick={ open }
-									variant="secondary"
-									style={ { marginRight: '8px' } }
-								>
-									Replace Image
-								</Button>
-								<Button
-									onClick={ () =>
-										onChange( {
-											id: null,
-											url: '',
-										} )
-									}
-									variant="link"
-									isDestructive
-								>
-									Remove Image
-								</Button>
+		<div>
+			<MediaUpload
+				onSelect={ ( media ) =>
+					onChange( {
+						id: media.id,
+						url: media.url,
+					} )
+				}
+				allowedTypes={ [ 'image' ] }
+				value={ value }
+				render={ ( { open } ) => (
+					<div>
+						{ value && value.url ? (
+							<div style={ { marginBottom: '10px' } }>
+								<img
+									src={ value.url }
+									alt="Selected"
+									style={ {
+										maxWidth: '200px',
+										height: 'auto',
+										display: 'block',
+										marginBottom: '8px',
+									} }
+								/>
+								<div>
+									<Button
+										onClick={ open }
+										variant="secondary"
+										style={ { marginRight: '8px' } }
+									>
+										Replace Image
+									</Button>
+									<Button
+										onClick={ () =>
+											onChange( {
+												id: null,
+												url: '',
+											} )
+										}
+										variant="link"
+										isDestructive
+									>
+										Remove Image
+									</Button>
+								</div>
 							</div>
-						</div>
-					) : (
-						<Button
-							label={ labelText }
-							showTooltip={ true }
-							onClick={ open }
-							variant="secondary"
-						>
-							{ buttonText }
-						</Button>
-					) }
-				</div>
-			) }
-		/>
+						) : (
+							<Button
+								label={ labelText }
+								showTooltip={ true }
+								onClick={ open }
+								variant="secondary"
+							>
+								{ buttonText }
+							</Button>
+						) }
+					</div>
+				) }
+			/>
+			<p
+				style={ {
+					marginTop: '8px',
+					fontSize: '12px',
+					color: 'rgb(117, 117, 117)',
+				} }
+			>
+				{ helpText }
+			</p>
+		</div>
 	);
 };
 
@@ -653,4 +860,10 @@ export {
 	TippingAmountsControl,
 	ChainsControl,
 	RPCURLControl,
+	NoIndexControl,
+	TaglineControl,
+	DescriptionControl,
+	CategoryControl,
+	OGTitleControl,
+	OGDescriptionControl,
 };
