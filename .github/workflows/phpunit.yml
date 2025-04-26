@@ -17,11 +17,9 @@ jobs:
               ports:
                 - '3306:3306'
               env:
-                MYSQL_ROOT_PASSWORD: wordpress
+                MYSQL_ROOT_PASSWORD:
                 MARIADB_INITDB_SKIP_TZINFO: 1
-                MYSQL_USER: wordpress
-                MYSQL_PASSWORD:
-                MYSQL_DATABASE: wordpress_test
+                MYSQL_ALLOW_EMPTY_PASSWORD: 1
 
         steps:
             - name: Checkout Repository
