@@ -88,6 +88,18 @@ class Admin {
 			FARCASTER_WP_VERSION
 		);
 		wp_enqueue_style( 'nativepack-editor' );
+
+		// $settings = get_option( 'farcaster_wp' );
+
+		// wp_localize_script(
+		// 'farcaster-wp-editor',
+		// 'farcaster_wp_editor',
+		// array(
+		// 'auto_casting'          => $settings['auto_casting'] ?? false,
+		// 'auto_casting_default'  => $settings['auto_casting_default'] ?? false,
+		// 'auto_casting_template' => $settings['auto_casting_template'] ?? '#title#',
+		// )
+		// );
 	}
 
 	/**
@@ -97,7 +109,7 @@ class Admin {
 	 */
 	public static function action_admin_menu() {
 		add_options_page(
-			__( 'Frames Integration for Farcaster Settings', 'frames-integration-for-farcaster' ),
+			__( 'Mini App Integration for Farcaster Settings', 'frames-integration-for-farcaster' ),
 			__( 'Farcaster', 'frames-integration-for-farcaster' ),
 			'manage_options',
 			self::FARCASTER_WP_PAGE_SLUG,
@@ -149,8 +161,12 @@ class Admin {
 				'mainnet',
 				'zora',
 			),
+			'no_index'                 => false,
+			// 'auto_casting'             => false,
+			// 'auto_casting_default'     => false,
+			// 'auto_casting_template'    => '',
 		);
-		$schema  = array(
+		$schema = array(
 			'type'       => 'object',
 			'properties' => array(
 				'frames_enabled'           => array(
@@ -218,6 +234,53 @@ class Admin {
 				'rpc_url'                  => array(
 					'type' => 'string',
 				),
+				'no_index'                 => array(
+					'type' => 'boolean',
+				),
+				'tagline'                  => array(
+					'type' => 'string',
+					'maxLength' => 30,
+				),
+				'description'              => array(
+					'type' => 'string',
+					'maxLength' => 170,
+				),
+				'category'         => array(
+					'type' => 'string',
+					'enum' => array(
+						'games',
+						'social',
+						'finance',
+						'utility',
+						'productivity',
+						'health-fitness',
+						'news-media',
+						'music',
+						'shopping',
+						'education',
+						'art-creativity',
+					),
+				),
+				'hero_image'           => array(
+					'type'       => 'object',
+					'properties' => array(
+						'id'  => array(
+							'type' => 'integer',
+						),
+						'url' => array(
+							'type' => 'string',
+						),
+					),
+				),
+				// 'auto_casting'             => array(
+				// 'type' => 'boolean',
+				// ),
+				// 'auto_casting_default'     => array(
+				// 'type' => 'boolean',
+				// ),
+				// 'auto_casting_template'    => array(
+				// 'type' => 'string',
+				// ),
 			),
 		);
 	

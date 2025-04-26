@@ -25,16 +25,24 @@ import {
 	TippingAmountsControl,
 	ChainsControl,
 	RPCURLControl,
+	NoIndexControl,
+	TaglineControl,
+	DescriptionControl,
+	CategoryControl,
+	// AutoCastingControl,
+	// AutoCastingDefaultControl,
+	// AutoCastingTemplateControl,
 } from './Controls';
 import { ManifestViewer } from './ManifestViewer';
 import { SubscriptionsList } from './SubscriptionsList';
 import { EventsList } from './EventsList';
+// import { TemplateVariablesModal } from './TemplateVariablesModal';
 
 const SettingsTitle = () => {
 	return (
 		<Heading level={ 1 }>
 			{ __(
-				'Frames Integration for Farcaster Settings',
+				'Mini App Integration for Farcaster Settings',
 				'frames-integration-for-farcaster'
 			) }
 		</Heading>
@@ -80,6 +88,24 @@ const SettingsPage = () => {
 		setTippingChains,
 		rpcURL,
 		setRpcURL,
+		// autoCasting,
+		// setAutoCasting,
+		// autoCastingDefault,
+		// setAutoCastingDefault,
+		// autoCastingTemplate,
+		// setAutoCastingTemplate,
+		noIndex,
+		setNoIndex,
+		tagline,
+		setTagline,
+		description,
+		setDescription,
+		category,
+		setCategory,
+		// tags,
+		// setTags,
+		heroImage,
+		setHeroImage,
 	} = useSettings();
 
 	const { manifest, fetchManifest } = useManifest();
@@ -88,7 +114,7 @@ const SettingsPage = () => {
 		<>
 			<SettingsTitle />
 			<Notices />
-			<Panel header="Frames">
+			<Panel header="Mini App">
 				<PanelBody>
 					<PanelRow>
 						<FramesEnabledControl
@@ -99,7 +125,7 @@ const SettingsPage = () => {
 				</PanelBody>
 				<PanelBody
 					title={ __(
-						'Frame Button',
+						'Mini App Button',
 						'frames-integration-for-farcaster'
 					) }
 					initialOpen={ framesEnabled }
@@ -134,7 +160,7 @@ const SettingsPage = () => {
 				</PanelBody>
 				<PanelBody
 					title={ __(
-						'Frame Splash Image',
+						'Mini App Splash Image',
 						'frames-integration-for-farcaster'
 					) }
 					initialOpen={ framesEnabled }
@@ -152,7 +178,7 @@ const SettingsPage = () => {
 				</PanelBody>
 				<PanelBody
 					title={ __(
-						'Fallback Frame Image',
+						'Fallback Mini App Image',
 						'frames-integration-for-farcaster'
 					) }
 					initialOpen={ framesEnabled }
@@ -166,6 +192,93 @@ const SettingsPage = () => {
 							value={ fallbackImage }
 							onChange={ setFallbackImage }
 						/>
+					</PanelRow>
+				</PanelBody>
+			</Panel>
+			<Panel header="Search">
+				<PanelBody
+					title={ __(
+						'No Index',
+						'frames-integration-for-farcaster'
+					) }
+					initialOpen={ framesEnabled }
+				>
+					<PanelRow>
+						<NoIndexControl
+							value={ noIndex }
+							onChange={ setNoIndex }
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody
+					title={ __(
+						'Promotional Hero Image',
+						'frames-integration-for-farcaster'
+					) }
+					initialOpen={ framesEnabled }
+				>
+					<PanelRow>
+						<ImageUploadControl
+							labelText={ __(
+								'Image will be displayed in 1.91:1 aspect ratio.',
+								'frames-integration-for-farcaster'
+							) }
+							value={ heroImage }
+							onChange={ setHeroImage }
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody
+					title={ __(
+						'Marketing Tagline',
+						'frames-integration-for-farcaster'
+					) }
+					initialOpen={ framesEnabled }
+				>
+					<PanelRow>
+						<TaglineControl
+							value={ tagline }
+							onChange={ setTagline }
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody
+					title={ __(
+						'Promotional Description',
+						'frames-integration-for-farcaster'
+					) }
+					initialOpen={ framesEnabled }
+				>
+					<PanelRow>
+						<DescriptionControl
+							value={ description }
+							onChange={ setDescription }
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody
+					title={ __(
+						'Primary Category',
+						'frames-integration-for-farcaster'
+					) }
+					initialOpen={ framesEnabled }
+				>
+					<PanelRow>
+						<CategoryControl
+							value={ category }
+							onChange={ setCategory }
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody
+					title={ __( 'Tags', 'frames-integration-for-farcaster' ) }
+					initialOpen={ framesEnabled }
+				>
+					<PanelRow>
+						{ /* <TagsControl
+							value={ tags }
+							onChange={ setTags }
+						/> */ }
 					</PanelRow>
 				</PanelBody>
 			</Panel>
@@ -257,6 +370,31 @@ const SettingsPage = () => {
 					</PanelRow>
 				</PanelBody>
 			</Panel>
+			{ /* <Panel header="Auto-Casting">
+				<PanelBody>
+					<PanelRow>
+						<VStack spacing={ 4 } style={ { width: '100%' } }>
+							<AutoCastingControl
+								value={ autoCasting }
+								onChange={ setAutoCasting }
+							/>
+							{ autoCasting && (
+								<>
+									<AutoCastingDefaultControl
+										value={ autoCastingDefault }
+										onChange={ setAutoCastingDefault }
+									/>
+									<AutoCastingTemplateControl
+										value={ autoCastingTemplate }
+										onChange={ setAutoCastingTemplate }
+									/>
+									<TemplateVariablesModal />
+								</>
+							) }
+						</VStack>
+					</PanelRow>
+				</PanelBody>
+			</Panel> */ }
 			<SaveButton onClick={ () => saveSettings( fetchManifest ) } />
 		</>
 	);

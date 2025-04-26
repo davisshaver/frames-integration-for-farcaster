@@ -413,6 +413,134 @@ const NotificationsEnabledControl = ( { value, onChange } ) => {
 	);
 };
 
+const NoIndexControl = ( { value, onChange } ) => {
+	return (
+		<ToggleControl
+			checked={ value }
+			label={ __(
+				'Exclude from search',
+				'frames-integration-for-farcaster'
+			) }
+			onChange={ onChange }
+			__nextHasNoMarginBottom
+		/>
+	);
+};
+
+const TaglineControl = ( { value, onChange } ) => {
+	return (
+		<div style={ { width: '100%' } }>
+			<TextControl
+				label={ __( 'Tagline', 'frames-integration-for-farcaster' ) }
+				value={ value }
+				onChange={ onChange }
+				maxLength={ 30 }
+			/>
+		</div>
+	);
+};
+
+const DescriptionControl = ( { value, onChange } ) => {
+	return (
+		<div style={ { width: '100%' } }>
+			<TextControl
+				label={ __(
+					'Description',
+					'frames-integration-for-farcaster'
+				) }
+				value={ value }
+				onChange={ onChange }
+				maxLength={ 170 }
+			/>
+		</div>
+	);
+};
+
+const CategoryControl = ( { value, onChange } ) => {
+	return (
+		<SelectControl
+			label={ __( 'Category', 'frames-integration-for-farcaster' ) }
+			value={ value }
+			options={ [
+				{
+					value: 'games',
+					label: __( 'Games', 'frames-integration-for-farcaster' ),
+				},
+				{
+					value: 'social',
+					label: __( 'Social', 'frames-integration-for-farcaster' ),
+				},
+				{
+					value: 'finance',
+					label: __( 'Finance', 'frames-integration-for-farcaster' ),
+				},
+				{
+					value: 'utility',
+					label: __( 'Utility', 'frames-integration-for-farcaster' ),
+				},
+				{
+					value: 'productivity',
+					label: __(
+						'Productivity',
+						'frames-integration-for-farcaster'
+					),
+				},
+				{
+					value: 'health-fitness',
+					label: __(
+						'Health & Fitness',
+						'frames-integration-for-farcaster'
+					),
+				},
+				{
+					value: 'news-media',
+					label: __(
+						'News & Media',
+						'frames-integration-for-farcaster'
+					),
+				},
+				{
+					value: 'music',
+					label: __( 'Music', 'frames-integration-for-farcaster' ),
+				},
+				{
+					value: 'shopping',
+					label: __( 'Shopping', 'frames-integration-for-farcaster' ),
+				},
+				{
+					value: 'education',
+					label: __(
+						'Education',
+						'frames-integration-for-farcaster'
+					),
+				},
+				{
+					value: 'developer-tools',
+					label: __(
+						'Developer Tools',
+						'frames-integration-for-farcaster'
+					),
+				},
+				{
+					value: 'entertainment',
+					label: __(
+						'Entertainment',
+						'frames-integration-for-farcaster'
+					),
+				},
+				{
+					value: 'art-creativity',
+					label: __(
+						'Art & Creativity',
+						'frames-integration-for-farcaster'
+					),
+				},
+			] }
+			onChange={ onChange }
+		/>
+	);
+};
+
 const DebugEnabledControl = ( { value, onChange } ) => {
 	return (
 		<ToggleControl
@@ -432,7 +560,7 @@ const FramesEnabledControl = ( { value, onChange } ) => {
 		<ToggleControl
 			checked={ value }
 			label={ __(
-				'Enable Farcaster Frames',
+				'Enable Mini App',
 				'frames-integration-for-farcaster'
 			) }
 			onChange={ onChange }
@@ -636,6 +764,49 @@ const RPCURLControl = ( { value, onChange } ) => {
 	);
 };
 
+// const AutoCastingControl = ( { value, onChange } ) => {
+// 	return (
+// 		<ToggleControl
+// 			checked={ value }
+// 			label={ __(
+// 				'Enable Auto-Casting',
+// 				'frames-integration-for-farcaster'
+// 			) }
+// 			onChange={ onChange }
+// 			__nextHasNoMarginBottom
+// 		/>
+// 	);
+// };
+
+// const AutoCastingDefaultControl = ( { value, onChange } ) => {
+// 	return (
+// 		<ToggleControl
+// 			checked={ value }
+// 			label={ __(
+// 				'Auto-Cast by Default',
+// 				'frames-integration-for-farcaster'
+// 			) }
+// 			onChange={ onChange }
+// 			__nextHasNoMarginBottom
+// 		/>
+// 	);
+// };
+
+// const AutoCastingTemplateControl = ( { value, onChange } ) => {
+// 	return (
+// 		<TextareaControl
+// 			label={ __(
+// 				'Auto-Cast Template',
+// 				'frames-integration-for-farcaster'
+// 			) }
+// 			value={ value }
+// 			placeholder={ '#title# #url#' }
+// 			onChange={ onChange }
+// 			__nextHasNoMarginBottom
+// 		/>
+// 	);
+// };
+
 export {
 	MessageControl,
 	DisplayControl,
@@ -653,4 +824,11 @@ export {
 	TippingAmountsControl,
 	ChainsControl,
 	RPCURLControl,
+	// AutoCastingControl,
+	// AutoCastingDefaultControl,
+	// AutoCastingTemplateControl,
+	NoIndexControl,
+	TaglineControl,
+	DescriptionControl,
+	CategoryControl,
 };

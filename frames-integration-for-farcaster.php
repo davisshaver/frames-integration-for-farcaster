@@ -1,15 +1,15 @@
 <?php
 /**
- * Frames Integration for Farcaster
+ * Mini App Integration for Farcaster
  *
  * @package           Farcaster_WP
  * @author            Davis Shaver
  * @license:          GPL-2.0-or-later
  *
  * @wordpress-plugin
- * Plugin Name:       Frames Integration for Farcaster
+ * Plugin Name:       Mini App Integration for Farcaster
  * Plugin URI:        https://davisshaver.com/frames-integration-for-farcaster/
- * Description:       Frames Integration for Farcaster connects your WordPress site to Farcaster.
+ * Description:       Mini App Integration for Farcaster connects your WordPress site to Farcaster.
  * Version:           0.0.43
  * Author:            Davis Shaver
  * Author URI:        https://davisshaver.com/

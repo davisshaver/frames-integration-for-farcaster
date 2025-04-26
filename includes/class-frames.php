@@ -28,6 +28,7 @@ class Frames {
 	public static function action_add_image_size() {
 		add_image_size( 'farcaster-wp-splash-image', 200, 200, array( 'center', 'center' ) );
 		add_image_size( 'farcaster-wp-frame-image', 2400, 1600, array( 'center', 'center' ) );
+		add_image_size( 'farcaster-wp-hero-image', 1200, 630, array( 'center', 'center' ) );
 	}
 
 	/**
@@ -86,6 +87,66 @@ class Frames {
 	 */
 	public static function get_splash_background_color( $options ) {
 		return $options['splash_background_color'] ?? '#ffffff';
+	}
+
+
+	/**
+	 * Get no index value from settings.
+	 *
+	 * @param array $options Plugin options.
+	 * @return boolean No index value.
+	 */
+	public static function get_no_index( $options ) {
+		return $options['no_index'] ?? false;
+	}
+
+	/**
+	 * Get tagline from settings.
+	 *
+	 * @param array $options Plugin options.
+	 * @return string Tagline.
+	 */
+	public static function get_tagline( $options ) {
+		return $options['tagline'] ?? '';
+	}
+
+	/**
+	 * Get description from settings.
+	 *
+	 * @param array $options Plugin options.
+	 * @return string Description.
+	 */
+	public static function get_description( $options ) {
+		return $options['description'] ?? '';
+	}
+
+	/**
+	 * Get category from settings.
+	 *
+	 * @param array $options Plugin options.
+	 * @return string Category.
+	 */
+	public static function get_category( $options ) {
+		return $options['category'] ?? '';
+	}
+
+	/**
+	 * Get hero image from settings.
+	 *
+	 * @param array $options Plugin options.
+	 * @return string Hero image URL.
+	 */
+	public static function get_hero_image( $options ) {
+		$frame_image = $options['fallback_image'] ?? '';
+		
+		if ( ! empty( $frame_image ) && ! empty( $frame_image['id'] ) ) {
+			$frame_image_src = wp_get_attachment_image_src( $frame_image['id'], 'farcaster-wp-hero-image' );
+			if ( ! empty( $frame_image_src ) ) {
+				return $frame_image_src[0];
+			}
+		}
+
+		return '';
 	}
 
 	/**

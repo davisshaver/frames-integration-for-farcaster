@@ -30,6 +30,17 @@ interface WPSettings {
 		tipping_amounts: number[];
 		tipping_chains: string[];
 		rpc_url: string;
+		// auto_casting: boolean;
+		// auto_casting_default: boolean;
+		no_index: boolean;
+		tagline: string;
+		description: string;
+		category: string;
+		// tags: string[];
+		hero_image: {
+			id: number;
+			url: string;
+		};
 	};
 }
 
@@ -41,6 +52,11 @@ export const useSettings = () => {
 		useState< boolean >( false );
 	const [ debugEnabled, setDebugEnabled ] = useState< boolean >( false );
 	const [ tippingEnabled, setTippingEnabled ] = useState< boolean >( false );
+	// const [ autoCasting, setAutoCasting ] = useState< boolean >( false );
+	// const [ autoCastingDefault, setAutoCastingDefault ] =
+	// 	useState< boolean >( false );
+	// const [ autoCastingTemplate, setAutoCastingTemplate ] =
+	// 	useState< string >();
 	const [ tippingAddress, setTippingAddress ] = useState< string >();
 	const [ tippingAmounts, setTippingAmounts ] = useState< number[] >( [] );
 	const [ tippingChains, setTippingChains ] = useState< string[] >( [] );
@@ -55,6 +71,18 @@ export const useSettings = () => {
 		url: '',
 	} );
 	const [ fallbackImage, setFallbackImage ] = useState< {
+		id: number;
+		url: string;
+	} >( {
+		id: 0,
+		url: '',
+	} );
+	const [ noIndex, setNoIndex ] = useState< boolean >( false );
+	const [ tagline, setTagline ] = useState< string >();
+	const [ description, setDescription ] = useState< string >();
+	const [ category, setCategory ] = useState< string >();
+	// const [ tags, setTags ] = useState< string[] >( [] );
+	const [ heroImage, setHeroImage ] = useState< {
 		id: number;
 		url: string;
 	} >( {
@@ -89,6 +117,19 @@ export const useSettings = () => {
 				setTippingAmounts( settings.farcaster_wp?.tipping_amounts );
 				setTippingChains( settings.farcaster_wp?.tipping_chains );
 				setRpcURL( settings.farcaster_wp?.rpc_url );
+				setNoIndex( settings.farcaster_wp?.no_index );
+				setTagline( settings.farcaster_wp?.tagline );
+				setDescription( settings.farcaster_wp?.description );
+				setCategory( settings.farcaster_wp?.category );
+				// setTags( settings.farcaster_wp?.tags );
+				setHeroImage( settings.farcaster_wp?.hero_image );
+				// setAutoCasting( settings.farcaster_wp?.auto_casting );
+				// setAutoCastingDefault(
+				// 	settings.farcaster_wp?.auto_casting_default
+				// );
+				// setAutoCastingTemplate(
+				// 	settings.farcaster_wp?.auto_casting_template
+				// );
 			}
 		);
 	}, [] );
@@ -185,6 +226,15 @@ export const useSettings = () => {
 					tipping_amounts: tippingAmounts,
 					tipping_chains: tippingChains,
 					rpc_url: rpcURL,
+					no_index: noIndex,
+					tagline,
+					description,
+					category,
+					// tags,
+					hero_image: heroImage,
+					// auto_casting: autoCasting,
+					// auto_casting_default: autoCastingDefault,
+					// auto_casting_template: autoCastingTemplate,
 				},
 			},
 		} )
@@ -250,5 +300,21 @@ export const useSettings = () => {
 		setTippingChains,
 		rpcURL,
 		setRpcURL,
+		noIndex,
+		setNoIndex,
+		tagline,
+		setTagline,
+		description,
+		setDescription,
+		category,
+		setCategory,
+		heroImage,
+		setHeroImage,
+		// autoCasting,
+		// setAutoCasting,
+		// autoCastingDefault,
+		// setAutoCastingDefault,
+		// autoCastingTemplate,
+		// setAutoCastingTemplate,
 	};
 };

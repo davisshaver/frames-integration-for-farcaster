@@ -81,6 +81,19 @@ const ManifestViewer = ( {
 				currentManifest?.frame?.buttonTitle,
 			imageUrl:
 				manifest?.frame?.imageUrl !== currentManifest?.frame?.imageUrl,
+			heroImageUrl:
+				manifest?.frame?.heroImageUrl !==
+				currentManifest?.frame?.heroImageUrl,
+			tagline:
+				manifest?.frame?.tagline !== currentManifest?.frame?.tagline,
+			description:
+				manifest?.frame?.description !==
+				currentManifest?.frame?.description,
+			primaryCategory:
+				manifest?.frame?.primaryCategory !==
+				currentManifest?.frame?.primaryCategory,
+			noindex:
+				manifest?.frame?.noindex !== currentManifest?.frame?.noindex,
 			...( currentManifest?.frame?.webhookUrl
 				? {
 						webhookUrl:
@@ -197,7 +210,7 @@ const ManifestViewer = ( {
 					) }
 				</a>{ ' ' }
 				{ __(
-					'Frames Integration for Farcaster can help you manage your manifest file. To start, enter the domain manifest obtained from the Warpcast app.',
+					'Mini App Integration for Farcaster can help you manage your manifest file. To start, enter the domain manifest obtained from the Warpcast app.',
 					'frames-integration-for-farcaster'
 				) }{ ' ' }
 				<a
