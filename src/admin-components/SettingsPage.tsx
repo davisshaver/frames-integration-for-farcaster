@@ -25,7 +25,14 @@ import {
 	TippingAmountsControl,
 	ChainsControl,
 	RPCURLControl,
+	NoIndexControl,
+	TaglineControl,
+	DescriptionControl,
+	CategoryControl,
+	OGTitleControl,
+	OGDescriptionControl,
 } from './Controls';
+import Tags from './Tags';
 import { ManifestViewer } from './ManifestViewer';
 import { SubscriptionsList } from './SubscriptionsList';
 import { EventsList } from './EventsList';
@@ -34,7 +41,7 @@ const SettingsTitle = () => {
 	return (
 		<Heading level={ 1 }>
 			{ __(
-				'Frames Integration for Farcaster Settings',
+				'Mini App Integration for Farcaster Settings',
 				'frames-integration-for-farcaster'
 			) }
 		</Heading>
@@ -80,6 +87,24 @@ const SettingsPage = () => {
 		setTippingChains,
 		rpcURL,
 		setRpcURL,
+		noIndex,
+		setNoIndex,
+		tagline,
+		setTagline,
+		description,
+		setDescription,
+		category,
+		setCategory,
+		tags,
+		setTags,
+		heroImage,
+		setHeroImage,
+		ogTitle,
+		setOgTitle,
+		ogDescription,
+		setOgDescription,
+		ogImage,
+		setOgImage,
 	} = useSettings();
 
 	const { manifest, fetchManifest } = useManifest();
@@ -88,7 +113,7 @@ const SettingsPage = () => {
 		<>
 			<SettingsTitle />
 			<Notices />
-			<Panel header="Frames">
+			<Panel header="🟪 Mini App General Settings">
 				<PanelBody>
 					<PanelRow>
 						<FramesEnabledControl
@@ -96,31 +121,59 @@ const SettingsPage = () => {
 							onChange={ ( value ) => setFramesEnabled( value ) }
 						/>
 					</PanelRow>
+					<PanelRow>
+						<DebugEnabledControl
+							value={ debugEnabled }
+							onChange={ setDebugEnabled }
+						/>
+					</PanelRow>
 				</PanelBody>
 				<PanelBody
 					title={ __(
-						'Frame Button',
+						'Mini App Button Default Text',
 						'frames-integration-for-farcaster'
 					) }
 					initialOpen={ framesEnabled }
 				>
 					<PanelRow>
-						<VStack spacing={ 4 }>
-							<UseTitleAsButtonTextControl
-								value={ useTitleAsButtonText }
-								onChange={ setUseTitleAsButtonText }
-							/>
-							<ButtonTextControl
-								useTitleAsButtonText={ useTitleAsButtonText }
-								value={ buttonText }
-								onChange={ setButtonText }
-							/>
-						</VStack>
+						<div style={ { width: '100%' } }>
+							<VStack spacing={ 4 }>
+								<UseTitleAsButtonTextControl
+									value={ useTitleAsButtonText }
+									onChange={ setUseTitleAsButtonText }
+								/>
+								<ButtonTextControl
+									disabled={ useTitleAsButtonText }
+									value={ buttonText }
+									onChange={ setButtonText }
+								/>
+							</VStack>
+						</div>
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
 					title={ __(
-						'Splash Background Color',
+						'Mini App Default Image',
+						'frames-integration-for-farcaster'
+					) }
+					initialOpen={ framesEnabled }
+				>
+					<PanelRow>
+						<ImageUploadControl
+							helpText={ __(
+								'Image will be displayed in 3:2 aspect ratio.',
+								'frames-integration-for-farcaster'
+							) }
+							value={ fallbackImage }
+							onChange={ setFallbackImage }
+						/>
+					</PanelRow>
+				</PanelBody>
+			</Panel>
+			<Panel header="🟪 Mini App Splash Page">
+				<PanelBody
+					title={ __(
+						'Mini AppSplash Background Color',
 						'frames-integration-for-farcaster'
 					) }
 					initialOpen={ framesEnabled }
@@ -134,7 +187,7 @@ const SettingsPage = () => {
 				</PanelBody>
 				<PanelBody
 					title={ __(
-						'Frame Splash Image',
+						'Mini App Splash Image',
 						'frames-integration-for-farcaster'
 					) }
 					initialOpen={ framesEnabled }
@@ -147,12 +200,95 @@ const SettingsPage = () => {
 								'Image will be displayed as 200x200px.',
 								'frames-integration-for-farcaster'
 							) }
+							helpText={ __(
+								'This image will be used as the splash image for all posts.',
+								'frames-integration-for-farcaster'
+							) }
+						/>
+					</PanelRow>
+				</PanelBody>
+			</Panel>
+			<Panel header="🟪 Mini App Promotional Asset">
+				<PanelBody
+					title={ __(
+						'Promotional Display Image',
+						'frames-integration-for-farcaster'
+					) }
+					initialOpen={ framesEnabled }
+				>
+					<PanelRow>
+						<ImageUploadControl
+							helpText={ __(
+								'Image will be displayed in 1.91:1 aspect ratio.',
+								'frames-integration-for-farcaster'
+							) }
+							value={ heroImage }
+							onChange={ setHeroImage }
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody initialOpen={ framesEnabled }>
+					<PanelRow>
+						<TaglineControl
+							value={ tagline }
+							onChange={ setTagline }
+						/>
+					</PanelRow>
+				</PanelBody>
+			</Panel>
+			<Panel header="🟪 Mini App Store Page">
+				<PanelBody initialOpen={ framesEnabled }>
+					<PanelRow>
+						<DescriptionControl
+							value={ description }
+							onChange={ setDescription }
+						/>
+					</PanelRow>
+				</PanelBody>
+			</Panel>
+			<Panel header="🟪 Search & Discovery">
+				<PanelBody initialOpen={ framesEnabled }>
+					<PanelRow>
+						<NoIndexControl
+							value={ noIndex }
+							onChange={ setNoIndex }
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody initialOpen={ framesEnabled }>
+					<PanelRow>
+						<CategoryControl
+							value={ category }
+							onChange={ setCategory }
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody initialOpen={ framesEnabled }>
+					<PanelRow>
+						<Tags value={ tags } onChange={ setTags } />
+					</PanelRow>
+				</PanelBody>
+			</Panel>
+			<Panel header="🟪 Sharing Experience">
+				<PanelBody initialOpen={ framesEnabled }>
+					<PanelRow>
+						<OGTitleControl
+							value={ ogTitle }
+							onChange={ setOgTitle }
+						/>
+					</PanelRow>
+				</PanelBody>
+				<PanelBody initialOpen={ framesEnabled }>
+					<PanelRow>
+						<OGDescriptionControl
+							value={ ogDescription }
+							onChange={ setOgDescription }
 						/>
 					</PanelRow>
 				</PanelBody>
 				<PanelBody
 					title={ __(
-						'Fallback Frame Image',
+						'OG Image',
 						'frames-integration-for-farcaster'
 					) }
 					initialOpen={ framesEnabled }
@@ -160,16 +296,20 @@ const SettingsPage = () => {
 					<PanelRow>
 						<ImageUploadControl
 							labelText={ __(
-								'Image will be displayed in 3:2 aspect ratio.',
+								'Image will be displayed in 1.91:1 aspect ratio.',
 								'frames-integration-for-farcaster'
 							) }
-							value={ fallbackImage }
-							onChange={ setFallbackImage }
+							value={ ogImage }
+							onChange={ setOgImage }
+							helpText={ __(
+								'1200x630 px JPG or PNG. Should show your brand clearly. No excessive text. Logo + tagline + UI is a good combo.',
+								'frames-integration-for-farcaster'
+							) }
 						/>
 					</PanelRow>
 				</PanelBody>
 			</Panel>
-			<Panel header="Tipping">
+			<Panel header="🟪 Tipping">
 				<PanelBody>
 					<PanelRow>
 						<TippingEnabledControl
@@ -213,7 +353,7 @@ const SettingsPage = () => {
 					</PanelRow>
 				</PanelBody>
 			</Panel>
-			<Panel header="Notifications">
+			<Panel header="🟪 Notifications">
 				<PanelBody>
 					<PanelRow>
 						<NotificationsEnabledControl
@@ -228,12 +368,6 @@ const SettingsPage = () => {
 						/>
 					</PanelRow>
 					<PanelRow>
-						<DebugEnabledControl
-							value={ debugEnabled }
-							onChange={ setDebugEnabled }
-						/>
-					</PanelRow>
-					<PanelRow>
 						<SubscriptionsList />
 					</PanelRow>
 					<PanelRow>
@@ -241,7 +375,7 @@ const SettingsPage = () => {
 					</PanelRow>
 				</PanelBody>
 			</Panel>
-			<Panel header="Manifest">
+			<Panel header="🟪 Manifest">
 				<PanelBody
 					title={ __(
 						'Manifest Validation',

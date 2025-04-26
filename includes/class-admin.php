@@ -97,7 +97,7 @@ class Admin {
 	 */
 	public static function action_admin_menu() {
 		add_options_page(
-			__( 'Frames Integration for Farcaster Settings', 'frames-integration-for-farcaster' ),
+			__( 'Mini App Integration for Farcaster Settings', 'frames-integration-for-farcaster' ),
 			__( 'Farcaster', 'frames-integration-for-farcaster' ),
 			'manage_options',
 			self::FARCASTER_WP_PAGE_SLUG,
@@ -149,6 +149,7 @@ class Admin {
 				'mainnet',
 				'zora',
 			),
+			'no_index'                 => false,
 		);
 		$schema  = array(
 			'type'       => 'object',
@@ -217,6 +218,71 @@ class Admin {
 				),
 				'rpc_url'                  => array(
 					'type' => 'string',
+				),
+				'no_index'                 => array(
+					'type' => 'boolean',
+				),
+				'tagline'                  => array(
+					'type'      => 'string',
+					'maxLength' => 30,
+				),
+				'description'              => array(
+					'type'      => 'string',
+					'maxLength' => 170,
+				),
+				'category'                 => array(
+					'type' => 'string',
+					'enum' => array(
+						'games',
+						'social',
+						'finance',
+						'utility',
+						'productivity',
+						'health-fitness',
+						'news-media',
+						'music',
+						'shopping',
+						'education',
+						'art-creativity',
+					),
+				),
+				'hero_image'               => array(
+					'type'       => 'object',
+					'properties' => array(
+						'id'  => array(
+							'type' => 'integer',
+						),
+						'url' => array(
+							'type' => 'string',
+						),
+					),
+				),
+				'tags'                     => array(
+					'type'     => 'array',
+					'items'    => array(
+						'type'      => 'string',
+						'maxLength' => 20,
+					),
+					'maxItems' => 5,
+				),
+				'og_title'                 => array(
+					'type'      => 'string',
+					'maxLength' => 30,
+				),
+				'og_description'           => array(
+					'type'      => 'string',
+					'maxLength' => 100,
+				),
+				'og_image'           => array(
+					'type'       => 'object',
+					'properties' => array(
+						'id'  => array(
+							'type' => 'integer',
+						),
+						'url' => array(
+							'type' => 'string',
+						),
+					),
 				),
 			),
 		);

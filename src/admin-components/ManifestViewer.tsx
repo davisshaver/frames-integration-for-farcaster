@@ -2,6 +2,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { useEffect, useState, useMemo } from '@wordpress/element';
 // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 import { Notice, __experimentalText as Text } from '@wordpress/components';
+import _ from 'lodash';
 import {
 	FarcasterManifest,
 	FarcasterManifestSchema,
@@ -23,6 +24,14 @@ interface ManifestMismatches {
 		header?: boolean;
 		payload?: boolean;
 		signature?: boolean;
+		heroImageUrl?: boolean;
+		tagline?: boolean;
+		description?: boolean;
+		primaryCategory?: boolean;
+		noindex?: boolean;
+		tags?: boolean;
+		ogTitle?: boolean;
+		ogDescription?: boolean;
 	};
 }
 
@@ -81,6 +90,28 @@ const ManifestViewer = ( {
 				currentManifest?.frame?.buttonTitle,
 			imageUrl:
 				manifest?.frame?.imageUrl !== currentManifest?.frame?.imageUrl,
+			heroImageUrl:
+				manifest?.frame?.heroImageUrl !==
+				currentManifest?.frame?.heroImageUrl,
+			tagline:
+				manifest?.frame?.tagline !== currentManifest?.frame?.tagline,
+			description:
+				manifest?.frame?.description !==
+				currentManifest?.frame?.description,
+			primaryCategory:
+				manifest?.frame?.primaryCategory !==
+				currentManifest?.frame?.primaryCategory,
+			noindex:
+				manifest?.frame?.noindex !== currentManifest?.frame?.noindex,
+			tags: ! _.isEqual(
+				_.sortBy( manifest?.frame?.tags ),
+				_.sortBy( currentManifest?.frame?.tags )
+			),
+			ogTitle:
+				manifest?.frame?.ogTitle !== currentManifest?.frame?.ogTitle,
+			ogDescription:
+				manifest?.frame?.ogDescription !==
+				currentManifest?.frame?.ogDescription,
 			...( currentManifest?.frame?.webhookUrl
 				? {
 						webhookUrl:
@@ -197,7 +228,7 @@ const ManifestViewer = ( {
 					) }
 				</a>{ ' ' }
 				{ __(
-					'Frames Integration for Farcaster can help you manage your manifest file. To start, enter the domain manifest obtained from the Warpcast app.',
+					'Mini App Integration for Farcaster can help you manage your manifest file. To start, enter the domain manifest obtained from the Warpcast app.',
 					'frames-integration-for-farcaster'
 				) }{ ' ' }
 				<a
@@ -359,6 +390,101 @@ const ManifestViewer = ( {
 									) }
 								</Notice>
 							) }
+							{ mismatches.details.heroImageUrl && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest hero image URL does not match the current site hero image URL.',
+										'frames-integration-for-farcaster'
+									) }
+								</Notice>
+							) }
+							{ mismatches.details.tagline && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest tagline does not match the current site tagline.',
+										'frames-integration-for-farcaster'
+									) }
+								</Notice>
+							) }
+
+							{ mismatches.details.description && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest description does not match the current site description.',
+										'frames-integration-for-farcaster'
+									) }
+								</Notice>
+							) }
+
+							{ mismatches.details.primaryCategory && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest primary category does not match the current site primary category.',
+										'frames-integration-for-farcaster'
+									) }
+								</Notice>
+							) }
+
+							{ mismatches.details.noindex && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest no index value does not match the current site no index value.',
+										'frames-integration-for-farcaster'
+									) }
+								</Notice>
+							) }
+
+							{ mismatches.details.tags && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest tags do not match the current site tags.',
+										'frames-integration-for-farcaster'
+									) }
+								</Notice>
+							) }
+
+							{ mismatches.details.ogTitle && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest OG title does not match the current site OG title.',
+										'frames-integration-for-farcaster'
+									) }
+								</Notice>
+							) }
+
+							{ mismatches.details.ogDescription && (
+								<Notice
+									status="warning"
+									isDismissible={ false }
+								>
+									{ __(
+										'The manifest OG description does not match the current site OG description.',
+										'frames-integration-for-farcaster'
+									) }
+								</Notice>
+							) }
+
 							{ mismatches.details.header && (
 								<Notice
 									status="warning"

@@ -1,10 +1,10 @@
-# Frames Integration for Farcaster
+# Mini App Integration for Farcaster
 
-Frames Integration for Farcaster connects your WordPress site to Farcaster. 
+Mini App Integration for Farcaster connects your WordPress site to Farcaster. 
 
 ## Installation
 
-The recommended way to install Frames Integration for Farcaster is downloading the ZIP file from [the most recent release](https://github.com/davisshaver/frames-integration-for-farcaster/releases).
+The recommended way to install Mini App Integration for Farcaster is downloading the ZIP file from [the most recent release](https://github.com/davisshaver/frames-integration-for-farcaster/releases).
 
 ## Development
 

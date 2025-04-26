@@ -1,4 +1,4 @@
-import sdk, { type FrameContext } from '@farcaster/frame-sdk';
+import sdk, { Context } from '@farcaster/frame-sdk';
 import {
 	createRoot,
 	useCallback,
@@ -29,7 +29,7 @@ import Provider from './WagmiProvider';
 const tippingAddress = window.farcasterWP?.tippingAddress;
 const tippingAmounts = window.farcasterWP?.tippingAmounts;
 
-export function FAB( { context }: { context: FrameContext } ) {
+export function FAB( { context }: { context: Context.FrameContext } ) {
 	const [ isAdded, setIsAdded ] = useState< boolean >( false );
 	const [ isSubscribed, setIsSubscribed ] = useState< boolean >( false );
 	useEffect( () => {
@@ -119,15 +119,15 @@ export function FAB( { context }: { context: FrameContext } ) {
 		document.body.style.overflow = 'unset';
 	}, [ isTipping ] );
 
-	const openWarpcastUrl = useCallback( () => {
+	const openCastCompose = useCallback( async () => {
 		const frameData = document
 			.querySelector( 'meta[name="fc:frame"]' )
 			?.getAttribute( 'content' );
 		const frameDataJson = JSON.parse( frameData );
-		const buttonTitle = window.farcasterWP?.castText;
-		const buttonUrl = encodeURIComponent( frameDataJson.button.action.url );
-		const url = `https://warpcast.com/~/compose?text=${ buttonTitle }&embeds[]=${ buttonUrl }`;
-		sdk.actions.openUrl( url );
+		await sdk.actions.composeCast( {
+			text: window.farcasterWP?.castText,
+			embeds: [ frameDataJson.button.action.url ],
+		} );
 	}, [] );
 
 	return (
@@ -475,14 +475,9 @@ export function FAB( { context }: { context: FrameContext } ) {
 					filter: 'drop-shadow( 0 0 4px rgba(0, 0, 0, .14))',
 					padding: 0,
 				} }
-				// event={ 'click' }
-				// actionButtonStyles={ {
-				// 	padding: 0,
-				// } }
 				style={ { bottom: 0, right: 0 } }
 				icon={ <FarcasterLogo /> }
 				alwaysShowTitle={ false }
-				// onClick={ () => {} }
 			>
 				<Action
 					style={ {
@@ -490,7 +485,7 @@ export function FAB( { context }: { context: FrameContext } ) {
 						color: 'white',
 					} }
 					text="Compose a cast with this link"
-					onClick={ openWarpcastUrl }
+					onClick={ openCastCompose }
 				>
 					Cast
 				</Action>

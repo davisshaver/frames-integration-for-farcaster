@@ -1,4 +1,4 @@
-import sdk, { type FrameContext } from '@farcaster/frame-sdk';
+import sdk, { Context } from '@farcaster/frame-sdk';
 import { showToast } from './utils/toast';
 import { renderTippingModal } from './components/TippingModal';
 
@@ -15,7 +15,7 @@ declare global {
 	}
 }
 
-const addFrame = ( context: FrameContext ) => {
+const addFrame = ( context: Context.FrameContext ) => {
 	sdk.actions
 		.addFrame()
 		.then( ( result ) => {
@@ -23,34 +23,24 @@ const addFrame = ( context: FrameContext ) => {
 				// eslint-disable-next-line no-console
 				console.log( 'FWP: addFrame result', result );
 			}
-			if ( result?.added ) {
-				if ( window.farcasterWP.debugEnabled ) {
-					// eslint-disable-next-line no-console
-					console.log(
-						'FWP: Showing you are subscribed to notifications toast'
-					);
-				}
-				showToast( {
-					message: 'You are subscribed to notifications.',
-					duration: 3000,
-					onDismiss: () => renderTippingModal( context ),
-				} );
-			} else {
-				renderTippingModal( context );
+			if ( window.farcasterWP.debugEnabled ) {
+				// eslint-disable-next-line no-console
+				console.log(
+					'FWP: Showing you are subscribed to notifications toast'
+				);
 			}
+			showToast( {
+				message: 'You are subscribed to notifications.',
+				duration: 3000,
+				onDismiss: () => renderTippingModal( context ),
+			} );
 		} )
 		.catch( ( error ) => {
 			if ( window.farcasterWP.debugEnabled ) {
 				// eslint-disable-next-line no-console
 				console.error( 'FWP: addFrame error', error );
 			}
-			showToast( {
-				type: 'error',
-				message:
-					'Error adding frame, addFrame error: ' +
-					JSON.stringify( error ),
-				duration: 3000,
-			} );
+			renderTippingModal( context );
 		} );
 };
 
@@ -63,14 +53,6 @@ const loadSdk = async () => {
 		console.log( 'FWP: Frame SDK loaded' );
 		// eslint-disable-next-line no-console
 		console.log( 'FWP: Context', context );
-	}
-
-	if ( ! window.farcasterWP.notificationsEnabled ) {
-		if ( window.farcasterWP.debugEnabled ) {
-			// eslint-disable-next-line no-console
-			console.log( 'FWP: Notifications not enabled' );
-		}
-		return;
 	}
 
 	if ( ! context ) {

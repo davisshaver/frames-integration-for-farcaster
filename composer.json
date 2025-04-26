@@ -1,6 +1,6 @@
 {
 	"name": "davisshaver/frames-integration-for-farcaster",
-	"description": "Frames Integration for Farcaster connects your WordPress site to Farcaster.",
+	"description": "Mini App Integration for Farcaster connects your WordPress site to Farcaster.",
 	"type": "wordpress-plugin",
 	"license": "GPL-3.0",
 	"require-dev": {

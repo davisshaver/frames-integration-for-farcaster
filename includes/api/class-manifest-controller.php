@@ -67,7 +67,17 @@ class Manifest_Controller extends WP_REST_Controller {
 		$domain_manifest         = json_decode( $options['domain_manifest'], true );
 		$frame_image_url         = Frames::get_frame_image_url( $options );
 		$button_title            = Frames::get_button_text( $options );
-		$header                  = '';
+		$no_index                = Frames::get_no_index( $options );
+		$tagline                 = Frames::get_tagline( $options );
+		$description             = Frames::get_description( $options );
+		$category                = Frames::get_category( $options );
+		$hero_image              = Frames::get_hero_image( $options );
+		$tags                    = Frames::get_tags( $options );
+		$og_title                = Frames::get_og_title( $options );
+		$og_description          = Frames::get_og_description( $options );
+		$og_image_url            = Frames::get_og_image_url( $options );
+
+		$header = '';
 		if ( ! empty( $domain_manifest['accountAssociation']['header'] ) ) {
 			$header = $domain_manifest['accountAssociation']['header'];
 		} elseif ( ! empty( $domain_manifest['header'] ) ) {
@@ -102,8 +112,18 @@ class Manifest_Controller extends WP_REST_Controller {
 				'iconUrl'               => get_site_icon_url(),
 				'splashImageUrl'        => $splash_image_url,
 				'splashBackgroundColor' => $splash_background_color,
-				'imageUrl'              => $frame_image_url,
-				'buttonTitle'           => $button_title,
+				'imageUrl'              => $frame_image_url, // Deprecated.
+				'buttonTitle'           => $button_title, // Deprecated.
+				'subtitle'              => get_bloginfo( 'description' ),
+				'description'           => $description,
+				'primaryCategory'       => $category,
+				'tags'                  => $tags,
+				'heroImageUrl'          => $hero_image,
+				'tagline'               => $tagline,
+				'noindex'               => $no_index,
+				'ogTitle'               => $og_title,
+				'ogDescription'         => $og_description,
+				'ogImageUrl'            => $og_image_url,
 			],
 		];
 
@@ -158,17 +178,17 @@ class Manifest_Controller extends WP_REST_Controller {
 						],
 						'homeUrl'               => [
 							'type'      => 'string',
-							'maxLength' => 512,
+							'maxLength' => 1024,
 							'format'    => 'uri',
 						],
 						'iconUrl'               => [
 							'type'      => 'string',
-							'maxLength' => 512,
+							'maxLength' => 1024,
 							'format'    => 'uri',
 						],
 						'splashImageUrl'        => [
 							'type'      => 'string',
-							'maxLength' => 512,
+							'maxLength' => 1024,
 							'format'    => 'uri',
 						],
 						'splashBackgroundColor' => [
@@ -177,7 +197,65 @@ class Manifest_Controller extends WP_REST_Controller {
 						],
 						'webhookUrl'            => [
 							'type'      => 'string',
-							'maxLength' => 512,
+							'maxLength' => 1024,
+							'format'    => 'uri',
+						],
+						'subtitle'              => [
+							'type'      => 'string',
+							'maxLength' => 30,
+						],
+						'description'           => [
+							'type'      => 'string',
+							'maxLength' => 170,
+						],
+						'primaryCategory'       => [
+							'type' => 'string',
+							'enum' => [
+								'games',
+								'social',
+								'finance',
+								'utility',
+								'productivity',
+								'health-fitness',
+								'news-media',
+								'music',
+								'shopping',
+								'education',
+								'developer-tools',
+								'entertainment',
+								'art-creativity',
+							],
+						],
+						'tags'                  => [
+							'type'  => 'array',
+							'items' => [
+								'type'      => 'string',
+								'maxLength' => 20,
+							],
+						],
+						'heroImageUrl'          => [
+							'type'      => 'string',
+							'maxLength' => 1024,
+							'format'    => 'uri',
+						],
+						'tagline'               => [
+							'type'      => 'string',
+							'maxLength' => 30,
+						],
+						'noindex'               => [
+							'type' => 'boolean',
+						],
+						'ogTitle'               => [
+							'type'      => 'string',
+							'maxLength' => 30,
+						],
+						'ogDescription'         => [
+							'type'      => 'string',
+							'maxLength' => 100,
+						],
+						'ogImageUrl'            => [
+							'type'      => 'string',
+							'maxLength' => 1024,
 							'format'    => 'uri',
 						],
 					],

@@ -30,6 +30,21 @@ interface WPSettings {
 		tipping_amounts: number[];
 		tipping_chains: string[];
 		rpc_url: string;
+		no_index: boolean;
+		tagline: string;
+		description: string;
+		category: string;
+		tags: string[];
+		hero_image: {
+			id: number;
+			url: string;
+		};
+		og_title: string;
+		og_description: string;
+		og_image: {
+			id: number;
+			url: string;
+		};
 	};
 }
 
@@ -55,6 +70,27 @@ export const useSettings = () => {
 		url: '',
 	} );
 	const [ fallbackImage, setFallbackImage ] = useState< {
+		id: number;
+		url: string;
+	} >( {
+		id: 0,
+		url: '',
+	} );
+	const [ noIndex, setNoIndex ] = useState< boolean >( false );
+	const [ tagline, setTagline ] = useState< string >();
+	const [ description, setDescription ] = useState< string >();
+	const [ category, setCategory ] = useState< string >();
+	const [ ogTitle, setOgTitle ] = useState< string >();
+	const [ ogDescription, setOgDescription ] = useState< string >();
+	const [ tags, setTags ] = useState< string[] >( [] );
+	const [ heroImage, setHeroImage ] = useState< {
+		id: number;
+		url: string;
+	} >( {
+		id: 0,
+		url: '',
+	} );
+	const [ ogImage, setOgImage ] = useState< {
 		id: number;
 		url: string;
 	} >( {
@@ -89,6 +125,15 @@ export const useSettings = () => {
 				setTippingAmounts( settings.farcaster_wp?.tipping_amounts );
 				setTippingChains( settings.farcaster_wp?.tipping_chains );
 				setRpcURL( settings.farcaster_wp?.rpc_url );
+				setNoIndex( settings.farcaster_wp?.no_index );
+				setTagline( settings.farcaster_wp?.tagline );
+				setDescription( settings.farcaster_wp?.description );
+				setCategory( settings.farcaster_wp?.category );
+				setTags( settings.farcaster_wp?.tags );
+				setHeroImage( settings.farcaster_wp?.hero_image );
+				setOgTitle( settings.farcaster_wp?.og_title );
+				setOgDescription( settings.farcaster_wp?.og_description );
+				setOgImage( settings.farcaster_wp?.og_image );
 			}
 		);
 	}, [] );
@@ -185,6 +230,15 @@ export const useSettings = () => {
 					tipping_amounts: tippingAmounts,
 					tipping_chains: tippingChains,
 					rpc_url: rpcURL,
+					no_index: noIndex,
+					tagline,
+					description,
+					category,
+					tags,
+					hero_image: heroImage,
+					og_title: ogTitle,
+					og_description: ogDescription,
+					og_image: ogImage,
 				},
 			},
 		} )
@@ -250,5 +304,23 @@ export const useSettings = () => {
 		setTippingChains,
 		rpcURL,
 		setRpcURL,
+		noIndex,
+		setNoIndex,
+		tagline,
+		setTagline,
+		description,
+		setDescription,
+		category,
+		setCategory,
+		heroImage,
+		setHeroImage,
+		tags,
+		setTags,
+		ogTitle,
+		setOgTitle,
+		ogDescription,
+		setOgDescription,
+		ogImage,
+		setOgImage,
 	};
 };

@@ -1,16 +1,16 @@
 <?php
 /**
- * Frames Integration for Farcaster
+ * Mini App Integration for Farcaster
  *
  * @package           Farcaster_WP
  * @author            Davis Shaver
  * @license:          GPL-2.0-or-later
  *
  * @wordpress-plugin
- * Plugin Name:       Frames Integration for Farcaster
+ * Plugin Name:       Mini App Integration for Farcaster
  * Plugin URI:        https://davisshaver.com/frames-integration-for-farcaster/
- * Description:       Frames Integration for Farcaster connects your WordPress site to Farcaster.
- * Version:           0.0.43
+ * Description:       Mini App Integration for Farcaster connects your WordPress site to Farcaster.
+ * Version:           0.0.44
  * Author:            Davis Shaver
  * Author URI:        https://davisshaver.com/
  * License:           GPL v2 or later
@@ -22,7 +22,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'FARCASTER_WP_VERSION', '0.0.43' );
+define( 'FARCASTER_WP_VERSION', '0.0.44' );
 
 define( 'FARCASTER_WP_API_NAMESPACE', 'farcaster-wp/v1' );
 define( 'FARCASTER_WP_API_URL', get_site_url() . '/wp-json/' . FARCASTER_WP_API_NAMESPACE );
