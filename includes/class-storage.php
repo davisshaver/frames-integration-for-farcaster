@@ -186,6 +186,7 @@ class Storage {
 		$table_name = self::get_events_table_name();
 		
 		// Check if the table exists before querying.
+		 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) ) === $table_name;
 		
 		if ( ! $table_exists ) {
