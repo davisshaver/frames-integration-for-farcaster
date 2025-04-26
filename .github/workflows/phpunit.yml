@@ -36,10 +36,9 @@ jobs:
             - name: Install PHP Dependencies
               uses: ramsey/composer-install@v3
 
-            - name: Set Up WordPress and WordPress Test Library
-              uses: sjinks/setup-wordpress-test-library@master
-              with:
-                version: 6.7.2
+            - name: Install WP
+              shell: bash
+              run: tests/bin/install-wp-tests.sh wordpress_tests root '' 127.0.0.1:3306 latest
 
             - name: Verify MariaDB Connection
               run: |
