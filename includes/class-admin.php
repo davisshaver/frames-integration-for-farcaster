@@ -287,7 +287,7 @@ class Admin {
 					'type'      => 'string',
 					'maxLength' => 100,
 				),
-				'og_image'           => array(
+				'og_image'                 => array(
 					'type'       => 'object',
 					'properties' => array(
 						'id'  => array(
