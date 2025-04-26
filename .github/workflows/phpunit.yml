@@ -39,7 +39,7 @@ jobs:
             - name: Set Up WordPress and WordPress Test Library
               uses: sjinks/setup-wordpress-test-library@master
               with:
-                version: 6.8
+                version: 6.7.2
 
             - name: Verify MariaDB Connection
               run: |
